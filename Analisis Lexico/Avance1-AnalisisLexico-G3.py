@@ -53,7 +53,6 @@ tokens = (
   'MENORQUE',
   'EQUALS',
   #JAVIER VERGARA
-  'COMMENTANIDADO',
   'CADENA',
   'MULTIPLY',
   'NOT',
@@ -91,7 +90,7 @@ t_EQUALS = r'=='
 t_LCHORCHETE = r'\['
 t_RCHORCHETE = r'\]'
 t_ASSIGN = r'='
-t_CALLMETHOD = r'\.[A-Za-z]*\(\)$'
+t_CALLMETHOD = r'\.[A-Za-z]*(\(.\))'
 t_NOT = r'!'
 t_NOTEQUALS= r'!='
 t_OFTYPE = r'\:'
@@ -103,7 +102,7 @@ t_MULTIPLY = r'\*'
 t_PLUSONE = r'\+='
 t_MINUSONE = r'\-='
 #JOSSELINE ASTUDILLO
-t_SETVARIABLE=r'\.[A-Za-z]*$'
+t_SETVARIABLE=r'\.[A-Za-z]*'
 t_AND=r'\&\&'
 t_OR=r'\|\|'
 t_RANGO=r'\.\.\.'
@@ -122,16 +121,11 @@ def t_VARIABLE(t):
 # Ignorar lo que no sea un token en mi LP
 t_ignore = ' \t'
 
-
-#ignorar comments
 def t_COMMENT(t):
-  r'\/\*.*'
-  t.type = reserved.get(t.value, 'COMMENT')
-  return t
-def t_COMMENTANIDADO(t):
-  r'\/\*.*\*\/$'
-  t.type = reserved.get(t.value, 'COMMENTANIDADO')
-  return t
+        r'(\/\*(.|\n)*?\*\/)|(\/\/.*)'
+        #t.lineno -= t.value.count('\n')
+        t.type = reserved.get(t.value,'COMMENT')
+        return t
 
 #Presentación de errores léxicos
 def t_error(t):
@@ -143,8 +137,10 @@ def t_error(t):
 lexer = lex.lex()
 
 #Testeando JAVIER VERGARA
-dataJV = '''/*abc
-/*  ASDASD */
+dataJV = '''//abc
+/*  ASDASD
+   asdasd
+ */
   func isPalindrome(str: String) -> Bool {
     guard !str.isEmpty else {
         return false
@@ -180,7 +176,7 @@ dataJA= '''
 '''.lower()
 #Datos de entrada
 #lexer.input(dataJV)
-lexer.input(dataJA)
+lexer.input(dataJV)
 
 # Tokenizador
 while True:
