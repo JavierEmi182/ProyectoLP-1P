@@ -145,7 +145,8 @@ data= '''
 
 '''.lower()
 #Datos de entrada
-lexer.input(dataJV)
+#lexer.input(dataJV)
+lexer.input(data)
 
 # Tokenizador
 while True:
