@@ -36,7 +36,9 @@ reserved = {
   'case':'CASE',
   'double': 'DOUBLE',
   'in':'IN',
-  'init':'INIT'
+  'init':'INIT',
+  'default':'DEFAULT',
+  'repeat':'REPEAT',
 }
 
 #Sequencia de tokens, puede ser lista o tupla
@@ -73,6 +75,7 @@ tokens = (
   'AND',
   'OR',
   'RANGO',
+  'OPTIONALVARIABLE',
 ) + tuple(reserved.values())
 
 #Exp Regulares para tokens de símbolos
@@ -90,22 +93,23 @@ t_EQUALS = r'=='
 t_LCHORCHETE = r'\['
 t_RCHORCHETE = r'\]'
 t_ASSIGN = r'='
-t_CALLMETHOD = r'\.[A-Za-z]*(\(.\))'
+t_CALLMETHOD = r'\.[A-Za-z]*(\(.+?\))'
 t_NOT = r'!'
 t_NOTEQUALS= r'!='
 t_OFTYPE = r'\:'
 t_RETURNVALUE = r'->'
 t_LLLAVE = r'\{'
 t_RLLAVE = r'\}'
-t_CADENA = r'"[^".]*"'
+t_CADENA = r'"[^"].*"'
 t_MULTIPLY = r'\*'
 t_PLUSONE = r'\+='
 t_MINUSONE = r'\-='
 #JOSSELINE ASTUDILLO
-t_SETVARIABLE=r'\.[A-Za-z]*'
+t_SETVARIABLE=r'\.[A-Za-z0-9]+'
 t_AND=r'\&\&'
 t_OR=r'\|\|'
 t_RANGO=r'\.\.\.'
+t_OPTIONALVARIABLE=r'\?'
 
 #Para contabilizar nro de líneas
 def t_newline(t):
@@ -114,7 +118,8 @@ def t_newline(t):
 
 
 def t_VARIABLE(t):
-  r'[a-zA-Z]\w*'
+  r'`[a-zA-Z]+`|([a-zA-Z]+[\w\d]*)'
+  #r'[a-zA-Z]+[\w\d]*'
   t.type = reserved.get(t.value, 'VARIABLE')
   return t
 
@@ -163,20 +168,35 @@ dataJV = '''//abc
     '''.lower()
 
 dataJA= '''
+  let `let` = 3
   for i in 1...4 { print(i) }
     class Person: CustomStringConvertible {
       let name: String
       var address: String
+      let age :Int?
 
       init(name: String, address: String) {
       self.name = name
       self.address = address
+
     }
+
+   let vegetable = "red pepper"
+   switch vegetable {
+   case "celery":
+    let vegetableComment = "Add some raisins and make ants on a log."
+   case "cucumber", "watercress":
+   let vegetableComment = "That would make a good tea sandwich."
+   case let x where x.hasSuffix("pepper"):
+   let vegetableComment = "Is it a spicy \(x)?"
+   default:
+   let vegetableComment = "Everything tastes good in soup."
+ }
 
 '''.lower()
 #Datos de entrada
 #lexer.input(dataJV)
-lexer.input(dataJV)
+lexer.input(dataJA)
 
 # Tokenizador
 while True:
