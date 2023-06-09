@@ -3,8 +3,6 @@ import ply.lex as lex
 #Diccionario de palabras reservadas
 reserved = {
   #JAVIER VERGARA
-  'and': 'AND',
-  'or': 'OR',
   'print': 'PRINT',
   'func':'FUNC',
   'string':'STRING',
@@ -19,9 +17,26 @@ reserved = {
   'var':'VAR',
   'array':'ARRAY',
   'true':'TRUE',
-  'whike':'WHILE',
+  'while':'WHILE',
   'if':'IF',
-  #
+  #JOSSELINE ASTUDILLO
+  'import':'IMPORT',
+  'class':'CLASS',
+  'switch':'SWITCH',
+  'for':'FOR',
+  'continue':'CONTINUE',
+  'break':'BREAK',
+  'struct':'STRUCT',
+  'enum':'ENUM',
+  'public':'PUBLIC',
+  'private':'PRIVATE',
+  'character':'CHARACTER',
+  'static':'STATIC',
+  'typealias':'TYPEALIAS',
+  'case':'CASE',
+  'double': 'DOUBLE',
+  'in':'IN',
+  'init':'INIT'
 }
 
 #Sequencia de tokens, puede ser lista o tupla
@@ -54,6 +69,11 @@ tokens = (
   'RCHORCHETE',
   'PLUSONE',
   'MINUSONE',
+  #JOSSELINE ASTUDILLO
+  'SETVARIABLE',
+  'AND',
+  'OR',
+  'RANGO',
 ) + tuple(reserved.values())
 
 #Exp Regulares para tokens de símbolos
@@ -71,7 +91,7 @@ t_EQUALS = r'=='
 t_LCHORCHETE = r'\['
 t_RCHORCHETE = r'\]'
 t_ASSIGN = r'='
-t_CALLMETHOD = r'\.[A-Za-z]*'
+t_CALLMETHOD = r'\.[A-Za-z]*\(\)$'
 t_NOT = r'!'
 t_NOTEQUALS= r'!='
 t_OFTYPE = r'\:'
@@ -82,6 +102,11 @@ t_CADENA = r'"[^".]*"'
 t_MULTIPLY = r'\*'
 t_PLUSONE = r'\+='
 t_MINUSONE = r'\-='
+#JOSSELINE ASTUDILLO
+t_SETVARIABLE=r'\.[A-Za-z]*$'
+t_AND=r'\&\&'
+t_OR=r'\|\|'
+t_RANGO=r'\.\.\.'
 
 #Para contabilizar nro de líneas
 def t_newline(t):
@@ -141,12 +166,21 @@ dataJV = '''/*abc
 }
     '''.lower()
 
-data= '''
+dataJA= '''
+  for i in 1...4 { print(i) }
+    class Person: CustomStringConvertible {
+      let name: String
+      var address: String
+
+      init(name: String, address: String) {
+      self.name = name
+      self.address = address
+    }
 
 '''.lower()
 #Datos de entrada
 #lexer.input(dataJV)
-lexer.input(data)
+lexer.input(dataJA)
 
 # Tokenizador
 while True:
