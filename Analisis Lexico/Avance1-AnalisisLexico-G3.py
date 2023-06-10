@@ -100,7 +100,8 @@ t_OFTYPE = r'\:'
 t_RETURNVALUE = r'->'
 t_LLLAVE = r'\{'
 t_RLLAVE = r'\}'
-t_CADENA = r'"[^"].*"'
+#t_CADENA = r'"[^"].*"'
+t_CADENA= r'("[^"]*")'
 t_MULTIPLY = r'\*'
 t_PLUSONE = r'\+='
 t_MINUSONE = r'\-='
@@ -168,8 +169,12 @@ dataJV = '''//abc
     '''.lower()
 
 dataJA= '''
+  //prueba: usar keyword como identificador 
   let `let` = 3
+  //for 
   for i in 1...4 { print(i) }
+
+  // clases - atributos
     class Person: CustomStringConvertible {
       let name: String
       var address: String
@@ -180,17 +185,17 @@ dataJA= '''
       self.address = address
 
     }
-
-   let vegetable = "red pepper"
+    //switch
+   let vegetable = "red pepper \n "
    switch vegetable {
    case "celery":
-    let vegetableComment = "Add some raisins and make ants on a log."
+        let vegetableComment = "Add some raisins and make ants on a log."
    case "cucumber", "watercress":
-   let vegetableComment = "That would make a good tea sandwich."
+        let vegetableComment = "That would make a good tea sandwich."
    case let x where x.hasSuffix("pepper"):
-   let vegetableComment = "Is it a spicy \(x)?"
+        let vegetableComment = "Is it a spicy \(x)?"
    default:
-   let vegetableComment = "Everything tastes good in soup."
+        let vegetableComment = "Everything tastes good in soup."
  }
 
 '''.lower()
