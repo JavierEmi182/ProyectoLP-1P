@@ -40,7 +40,7 @@ reserved = {
   'default':'DEFAULT',
   'repeat':'REPEAT',
   #VICTOR PEÑA
-  'int':'INTEGER',
+  'int':'INT',
   'float':'FLOAT',
   'set':'SET'
 
@@ -60,26 +60,27 @@ tokens = (
   'MENORQUE',
   'EQUALS',
   #JAVIER VERGARA
-  'CADENA',
+  'WSTRING',
   'MULTIPLY',
   'NOT',
   'NOTEQUALS',
   'OFTYPE',
   'RETURNVALUE',
-  'LLLAVE',
-  'RLLAVE',
+  'LBRACES',
+  'RBRACES',
   'COMMENT',
   'CALLMETHOD',
   'ASSIGN',
-  'LCHORCHETE',
-  'RCHORCHETE',
+  'LSQUAREBRACKET',
+  'RSQUAREBRACKET',
   'PLUSONE',
   'MINUSONE',
+  'DECIMAL',
   #JOSSELINE ASTUDILLO
   'SETVARIABLE',
   'AND',
   'OR',
-  'RANGO',
+  'RANGE',
   'OPTIONALVARIABLE',
   #VICTOR PEÑA
   'COLLECTIONTYPE',
@@ -99,18 +100,19 @@ t_MAYORQUE = r'>'
 t_MENORQUE = r'<'
 t_EQUALS = r'=='
 #JAVIER VERGARA
-t_LCHORCHETE = r'\['
-t_RCHORCHETE = r'\]'
+t_LSQUAREBRACKET = r'\['
+t_RSQUAREBRACKET = r'\]'
 t_ASSIGN = r'='
 t_CALLMETHOD = r'\.[A-Za-z]*(\(.+?\))'
 t_NOT = r'!'
 t_NOTEQUALS= r'!='
 t_OFTYPE = r'\:'
 t_RETURNVALUE = r'->'
-t_LLLAVE = r'\{'
-t_RLLAVE = r'\}'
+t_LBRACES = r'\{'
+t_RBRACES = r'\}'
+t_DECIMAL = r'[-+]?([0-9]*\.[0-9]+|[0-9]+)'
 #t_CADENA = r'"[^"].*"'
-t_CADENA= r'("[^"]*")'
+t_WSTRING= r'("[^"]*")'
 t_MULTIPLY = r'\*'
 t_PLUSONE = r'\+='
 t_MINUSONE = r'\-='
@@ -118,7 +120,7 @@ t_MINUSONE = r'\-='
 t_SETVARIABLE=r'\.[A-Za-z0-9]+'
 t_AND=r'\&\&'
 t_OR=r'\|\|'
-t_RANGO=r'\.\.\.'
+t_RANGE=r'\.\.\.'
 t_OPTIONALVARIABLE=r'\?'
 #VICTOR PEÑA
 t_COLLECTIONTYPE = r'<(int|string|bool|double|float)+>'
