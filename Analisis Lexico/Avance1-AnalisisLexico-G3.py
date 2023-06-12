@@ -41,7 +41,8 @@ reserved = {
   'repeat':'REPEAT',
   #VICTOR PEÑA
   'int':'INTEGER',
-  'float':'FLOAT'
+  'float':'FLOAT',
+  'set':'SET'
 
 }
 
@@ -120,9 +121,9 @@ t_OR=r'\|\|'
 t_RANGO=r'\.\.\.'
 t_OPTIONALVARIABLE=r'\?'
 #VICTOR PEÑA
-t_COLLECTIONTYPE = r'<[int|string|bool|double|float]+>'
-t_DICTIONARYTYPE = r'\[[int|string]+\:\ ?[int|string|bool|double|float]+\]'
-t_VALUESTYPE = r'\[[int|string|bool|double|float]+\]'
+t_COLLECTIONTYPE = r'<(int|string|bool|double|float)+>'
+t_DICTIONARYTYPE = r'\[(int|string)\:\ ?(int|string|bool|double|float)\]'
+t_VALUESTYPE = r'\[(int|string|bool|double|float)\]'
 
 #Para contabilizar nro de líneas
 def t_newline(t):
