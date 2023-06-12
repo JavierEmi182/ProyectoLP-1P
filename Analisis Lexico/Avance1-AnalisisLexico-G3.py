@@ -39,6 +39,10 @@ reserved = {
   'init':'INIT',
   'default':'DEFAULT',
   'repeat':'REPEAT',
+  #VICTOR PEÑA
+  'int':'INTEGER',
+  'float':'FLOAT'
+
 }
 
 #Sequencia de tokens, puede ser lista o tupla
@@ -76,6 +80,10 @@ tokens = (
   'OR',
   'RANGO',
   'OPTIONALVARIABLE',
+  #VICTOR PEÑA
+  'COLLECTIONTYPE',
+  'DICTIONARYTYPE',
+  'VALUESTYPE'
 ) + tuple(reserved.values())
 
 #Exp Regulares para tokens de símbolos
@@ -111,6 +119,10 @@ t_AND=r'\&\&'
 t_OR=r'\|\|'
 t_RANGO=r'\.\.\.'
 t_OPTIONALVARIABLE=r'\?'
+#VICTOR PEÑA
+t_COLLECTIONTYPE = r'<[int|string|bool|double|float]+>'
+t_DICTIONARYTYPE = r'\[[int|string]+\:\ ?[int|string|bool|double|float]+\]'
+t_VALUESTYPE = r'\[[int|string|bool|double|float]+\]'
 
 #Para contabilizar nro de líneas
 def t_newline(t):
@@ -199,9 +211,39 @@ dataJA= '''
  }
 
 '''.lower()
+
+dataVP = '''
+// Conjuntos (Sets)
+var fruits: Set<String> = ["apple", "banana", "orange"]
+fruits.insert("pear")
+fruits.remove("banana")
+
+if fruits.contains("apple") {
+    print("El conjunto de frutas contiene una manzana.")
+}
+
+// Arreglos (Arrays)
+var numbers: [Int] = [1, 2, 3, 4, 5]
+numbers.append(6)
+numbers.remove(at: 3)
+
+for number in numbers {
+    print(number)
+}
+
+// Diccionarios (Dictionaries)
+var ages: [String: Int] = ["John": 25, "Emily": 30, "Tom": 35]
+ages["Sarah"] = 28
+ages.removeValue(forKey: "Emily")
+
+for (name, age) in ages {
+    print("\(name) tiene \(age) años.")
+}
+'''.lower()
 #Datos de entrada
 #lexer.input(dataJV)
-lexer.input(dataJA)
+#lexer.input(dataJA)
+lexer.input(dataVP)
 
 # Tokenizador
 while True:
