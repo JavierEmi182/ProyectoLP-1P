@@ -56,8 +56,8 @@ tokens = (
   'RPAREN',
   'VARIABLE',
   'COMMA',
-  'MAYORQUE',
-  'MENORQUE',
+  'GREATERTHAN',
+  'LESSTHAN',
   'EQUALS',
   #JAVIER VERGARA
   'WSTRING',
@@ -96,8 +96,8 @@ t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_NUMBER = r'\d+'
 t_COMMA = r','
-t_MAYORQUE = r'>'
-t_MENORQUE = r'<'
+t_GREATERTHAN = r'>'
+t_LESSTHAN = r'<'
 t_EQUALS = r'=='
 #JAVIER VERGARA
 t_LSQUAREBRACKET = r'\['
