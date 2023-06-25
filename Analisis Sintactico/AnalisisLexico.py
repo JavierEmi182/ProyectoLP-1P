@@ -264,13 +264,15 @@ func add(a: int, b: int) -> int {
 #lexer.input(dataJV)
 #lexer.input(dataJA)
 #lexer.input(dataVP)
-lexer.input(dataS)
+#lexer.input(dataS)
 
-# Tokenizador
-while True:
-  tok = lexer.token()
-  if not tok:
-    break  #Rompe
+def getTokens(lexer):
+  while True:
+    tok = lexer.token()
+    if not tok:
+      break  #Rompe
   print(tok)
+# Tokenizador
+
 
 #lexer.lineno=0

@@ -84,11 +84,16 @@ Rule 42    expression -> LPAREN expression RPAREN
 Rule 43    expression -> NOT expression
 Rule 44    expression -> VARIABLE
 Rule 45    expression -> type
-Rule 46    expression -> empty
-Rule 47    type -> BOOL
-Rule 48    type -> DECIMAL
-Rule 49    type -> WSTRING
-Rule 50    empty -> <empty>
+Rule 46    expression -> function_call
+Rule 47    expression -> empty
+Rule 48    type -> BOOL
+Rule 49    type -> DECIMAL
+Rule 50    type -> WSTRING
+Rule 51    function_call -> VARIABLE LPAREN function_arguments RPAREN
+Rule 52    function_arguments -> function_arguments COMMA expression
+Rule 53    function_arguments -> expression
+Rule 54    function_arguments -> empty
+Rule 55    empty -> <empty>
 
 Terminals, with rules where they appear
 
@@ -96,7 +101,7 @@ AND                  : 39
 ARRAY                : 
 ARROW                : 18
 ASSIGN               : 8 9
-BOOL                 : 47
+BOOL                 : 48
 BOOLEAN              : 25
 BREAK                : 30
 CALLMETHOD           : 
@@ -105,10 +110,10 @@ CHARACTER            :
 CLASS                : 
 COLLECTIONTYPE       : 29
 COLON                : 9 15 16
-COMMA                : 15 41
+COMMA                : 15 41 52
 COMMENT              : 
 CONTINUE             : 
-DECIMAL              : 48
+DECIMAL              : 49
 DEFAULT              : 
 DICTIONARYTYPE       : 
 DIVIDE               : 34
@@ -131,7 +136,7 @@ INTEGER              : 23
 LBRACES              : 12 13 13 14
 LESSTHAN             : 36
 LET                  : 21
-LPAREN               : 11 12 13 14 42
+LPAREN               : 11 12 13 14 42 51
 LSQUAREBRACKET       : 10
 MINUS                : 32
 MINUSONE             : 
@@ -150,7 +155,7 @@ RANGE                :
 RBRACES              : 12 13 13 14
 REPEAT               : 
 RETURN               : 20
-RPAREN               : 11 12 13 14 42
+RPAREN               : 11 12 13 14 42 51
 RSQUAREBRACKET       : 10
 SET                  : 
 SETVARIABLE          : 
@@ -162,9 +167,9 @@ TRUE                 :
 TYPEALIAS            : 
 VALUESTYPE           : 
 VAR                  : 22
-VARIABLE             : 8 9 14 15 16 44
+VARIABLE             : 8 9 14 15 16 44 51
 WHILE                : 
-WSTRING              : 49
+WSTRING              : 50
 error                : 
 
 Nonterminals, with rules where they appear
@@ -174,8 +179,10 @@ break_statement      :
 collection_block     : 9
 data_collection_type : 9
 data_type            : 15 16 18
-empty                : 17 19 46
-expression           : 8 10 11 12 13 14 20 31 31 32 32 33 33 34 34 35 35 36 36 37 37 38 38 39 39 40 40 41 41 42 43
+empty                : 17 19 47 54
+expression           : 8 10 11 12 13 14 20 31 31 32 32 33 33 34 34 35 35 36 36 37 37 38 38 39 39 40 40 41 41 42 43 52 53
+function_arguments   : 51 52
+function_call        : 46
 function_declaration : 7
 function_parameters  : 14 15
 function_return_type : 14
@@ -410,34 +417,37 @@ state 16
     (43) expression -> . NOT expression
     (44) expression -> . VARIABLE
     (45) expression -> . type
-    (46) expression -> . empty
-    (47) type -> . BOOL
-    (48) type -> . DECIMAL
-    (49) type -> . WSTRING
-    (50) empty -> .
+    (46) expression -> . function_call
+    (47) expression -> . empty
+    (48) type -> . BOOL
+    (49) type -> . DECIMAL
+    (50) type -> . WSTRING
+    (51) function_call -> . VARIABLE LPAREN function_arguments RPAREN
+    (55) empty -> .
 
     LPAREN          shift and go to state 21
     NOT             shift and go to state 23
     VARIABLE        shift and go to state 24
-    BOOL            shift and go to state 27
-    DECIMAL         shift and go to state 28
-    WSTRING         shift and go to state 29
-    RPAREN          reduce using rule 50 (empty -> .)
-    PLUS            reduce using rule 50 (empty -> .)
-    MINUS           reduce using rule 50 (empty -> .)
-    MULTIPLY        reduce using rule 50 (empty -> .)
-    DIVIDE          reduce using rule 50 (empty -> .)
-    GREATERTHAN     reduce using rule 50 (empty -> .)
-    LESSTHAN        reduce using rule 50 (empty -> .)
-    EQUALS          reduce using rule 50 (empty -> .)
-    NOTEQUALS       reduce using rule 50 (empty -> .)
-    AND             reduce using rule 50 (empty -> .)
-    OR              reduce using rule 50 (empty -> .)
-    COMMA           reduce using rule 50 (empty -> .)
+    BOOL            shift and go to state 28
+    DECIMAL         shift and go to state 29
+    WSTRING         shift and go to state 30
+    RPAREN          reduce using rule 55 (empty -> .)
+    PLUS            reduce using rule 55 (empty -> .)
+    MINUS           reduce using rule 55 (empty -> .)
+    MULTIPLY        reduce using rule 55 (empty -> .)
+    DIVIDE          reduce using rule 55 (empty -> .)
+    GREATERTHAN     reduce using rule 55 (empty -> .)
+    LESSTHAN        reduce using rule 55 (empty -> .)
+    EQUALS          reduce using rule 55 (empty -> .)
+    NOTEQUALS       reduce using rule 55 (empty -> .)
+    AND             reduce using rule 55 (empty -> .)
+    OR              reduce using rule 55 (empty -> .)
+    COMMA           reduce using rule 55 (empty -> .)
 
     expression                     shift and go to state 22
     type                           shift and go to state 25
-    empty                          shift and go to state 26
+    function_call                  shift and go to state 26
+    empty                          shift and go to state 27
 
 state 17
 
@@ -458,40 +468,43 @@ state 17
     (43) expression -> . NOT expression
     (44) expression -> . VARIABLE
     (45) expression -> . type
-    (46) expression -> . empty
-    (47) type -> . BOOL
-    (48) type -> . DECIMAL
-    (49) type -> . WSTRING
-    (50) empty -> .
+    (46) expression -> . function_call
+    (47) expression -> . empty
+    (48) type -> . BOOL
+    (49) type -> . DECIMAL
+    (50) type -> . WSTRING
+    (51) function_call -> . VARIABLE LPAREN function_arguments RPAREN
+    (55) empty -> .
 
     LPAREN          shift and go to state 21
     NOT             shift and go to state 23
     VARIABLE        shift and go to state 24
-    BOOL            shift and go to state 27
-    DECIMAL         shift and go to state 28
-    WSTRING         shift and go to state 29
-    RPAREN          reduce using rule 50 (empty -> .)
-    PLUS            reduce using rule 50 (empty -> .)
-    MINUS           reduce using rule 50 (empty -> .)
-    MULTIPLY        reduce using rule 50 (empty -> .)
-    DIVIDE          reduce using rule 50 (empty -> .)
-    GREATERTHAN     reduce using rule 50 (empty -> .)
-    LESSTHAN        reduce using rule 50 (empty -> .)
-    EQUALS          reduce using rule 50 (empty -> .)
-    NOTEQUALS       reduce using rule 50 (empty -> .)
-    AND             reduce using rule 50 (empty -> .)
-    OR              reduce using rule 50 (empty -> .)
-    COMMA           reduce using rule 50 (empty -> .)
+    BOOL            shift and go to state 28
+    DECIMAL         shift and go to state 29
+    WSTRING         shift and go to state 30
+    RPAREN          reduce using rule 55 (empty -> .)
+    PLUS            reduce using rule 55 (empty -> .)
+    MINUS           reduce using rule 55 (empty -> .)
+    MULTIPLY        reduce using rule 55 (empty -> .)
+    DIVIDE          reduce using rule 55 (empty -> .)
+    GREATERTHAN     reduce using rule 55 (empty -> .)
+    LESSTHAN        reduce using rule 55 (empty -> .)
+    EQUALS          reduce using rule 55 (empty -> .)
+    NOTEQUALS       reduce using rule 55 (empty -> .)
+    AND             reduce using rule 55 (empty -> .)
+    OR              reduce using rule 55 (empty -> .)
+    COMMA           reduce using rule 55 (empty -> .)
 
-    expression                     shift and go to state 30
+    expression                     shift and go to state 31
     type                           shift and go to state 25
-    empty                          shift and go to state 26
+    function_call                  shift and go to state 26
+    empty                          shift and go to state 27
 
 state 18
 
     (14) function_declaration -> FUNC VARIABLE . LPAREN function_parameters RPAREN function_return_type LBRACES expression return_statement RBRACES
 
-    LPAREN          shift and go to state 31
+    LPAREN          shift and go to state 32
 
 
 state 19
@@ -512,49 +525,52 @@ state 19
     (43) expression -> . NOT expression
     (44) expression -> . VARIABLE
     (45) expression -> . type
-    (46) expression -> . empty
-    (47) type -> . BOOL
-    (48) type -> . DECIMAL
-    (49) type -> . WSTRING
-    (50) empty -> .
+    (46) expression -> . function_call
+    (47) expression -> . empty
+    (48) type -> . BOOL
+    (49) type -> . DECIMAL
+    (50) type -> . WSTRING
+    (51) function_call -> . VARIABLE LPAREN function_arguments RPAREN
+    (55) empty -> .
 
     LPAREN          shift and go to state 21
     NOT             shift and go to state 23
     VARIABLE        shift and go to state 24
-    BOOL            shift and go to state 27
-    DECIMAL         shift and go to state 28
-    WSTRING         shift and go to state 29
-    PLUS            reduce using rule 50 (empty -> .)
-    MINUS           reduce using rule 50 (empty -> .)
-    MULTIPLY        reduce using rule 50 (empty -> .)
-    DIVIDE          reduce using rule 50 (empty -> .)
-    GREATERTHAN     reduce using rule 50 (empty -> .)
-    LESSTHAN        reduce using rule 50 (empty -> .)
-    EQUALS          reduce using rule 50 (empty -> .)
-    NOTEQUALS       reduce using rule 50 (empty -> .)
-    AND             reduce using rule 50 (empty -> .)
-    OR              reduce using rule 50 (empty -> .)
-    COMMA           reduce using rule 50 (empty -> .)
-    PRINT           reduce using rule 50 (empty -> .)
-    IF              reduce using rule 50 (empty -> .)
-    FUNC            reduce using rule 50 (empty -> .)
-    LET             reduce using rule 50 (empty -> .)
-    VAR             reduce using rule 50 (empty -> .)
-    $end            reduce using rule 50 (empty -> .)
-    RBRACES         reduce using rule 50 (empty -> .)
+    BOOL            shift and go to state 28
+    DECIMAL         shift and go to state 29
+    WSTRING         shift and go to state 30
+    PLUS            reduce using rule 55 (empty -> .)
+    MINUS           reduce using rule 55 (empty -> .)
+    MULTIPLY        reduce using rule 55 (empty -> .)
+    DIVIDE          reduce using rule 55 (empty -> .)
+    GREATERTHAN     reduce using rule 55 (empty -> .)
+    LESSTHAN        reduce using rule 55 (empty -> .)
+    EQUALS          reduce using rule 55 (empty -> .)
+    NOTEQUALS       reduce using rule 55 (empty -> .)
+    AND             reduce using rule 55 (empty -> .)
+    OR              reduce using rule 55 (empty -> .)
+    COMMA           reduce using rule 55 (empty -> .)
+    PRINT           reduce using rule 55 (empty -> .)
+    IF              reduce using rule 55 (empty -> .)
+    FUNC            reduce using rule 55 (empty -> .)
+    LET             reduce using rule 55 (empty -> .)
+    VAR             reduce using rule 55 (empty -> .)
+    $end            reduce using rule 55 (empty -> .)
+    RBRACES         reduce using rule 55 (empty -> .)
 
-    expression                     shift and go to state 32
+    expression                     shift and go to state 33
     type                           shift and go to state 25
-    empty                          shift and go to state 26
+    function_call                  shift and go to state 26
+    empty                          shift and go to state 27
 
 state 20
 
     (9) assignment_statement -> variable_declarator VARIABLE COLON . data_collection_type ASSIGN collection_block
     (29) data_collection_type -> . COLLECTIONTYPE
 
-    COLLECTIONTYPE  shift and go to state 34
+    COLLECTIONTYPE  shift and go to state 35
 
-    data_collection_type           shift and go to state 33
+    data_collection_type           shift and go to state 34
 
 state 21
 
@@ -574,34 +590,37 @@ state 21
     (43) expression -> . NOT expression
     (44) expression -> . VARIABLE
     (45) expression -> . type
-    (46) expression -> . empty
-    (47) type -> . BOOL
-    (48) type -> . DECIMAL
-    (49) type -> . WSTRING
-    (50) empty -> .
+    (46) expression -> . function_call
+    (47) expression -> . empty
+    (48) type -> . BOOL
+    (49) type -> . DECIMAL
+    (50) type -> . WSTRING
+    (51) function_call -> . VARIABLE LPAREN function_arguments RPAREN
+    (55) empty -> .
 
     LPAREN          shift and go to state 21
     NOT             shift and go to state 23
     VARIABLE        shift and go to state 24
-    BOOL            shift and go to state 27
-    DECIMAL         shift and go to state 28
-    WSTRING         shift and go to state 29
-    RPAREN          reduce using rule 50 (empty -> .)
-    PLUS            reduce using rule 50 (empty -> .)
-    MINUS           reduce using rule 50 (empty -> .)
-    MULTIPLY        reduce using rule 50 (empty -> .)
-    DIVIDE          reduce using rule 50 (empty -> .)
-    GREATERTHAN     reduce using rule 50 (empty -> .)
-    LESSTHAN        reduce using rule 50 (empty -> .)
-    EQUALS          reduce using rule 50 (empty -> .)
-    NOTEQUALS       reduce using rule 50 (empty -> .)
-    AND             reduce using rule 50 (empty -> .)
-    OR              reduce using rule 50 (empty -> .)
-    COMMA           reduce using rule 50 (empty -> .)
+    BOOL            shift and go to state 28
+    DECIMAL         shift and go to state 29
+    WSTRING         shift and go to state 30
+    RPAREN          reduce using rule 55 (empty -> .)
+    PLUS            reduce using rule 55 (empty -> .)
+    MINUS           reduce using rule 55 (empty -> .)
+    MULTIPLY        reduce using rule 55 (empty -> .)
+    DIVIDE          reduce using rule 55 (empty -> .)
+    GREATERTHAN     reduce using rule 55 (empty -> .)
+    LESSTHAN        reduce using rule 55 (empty -> .)
+    EQUALS          reduce using rule 55 (empty -> .)
+    NOTEQUALS       reduce using rule 55 (empty -> .)
+    AND             reduce using rule 55 (empty -> .)
+    OR              reduce using rule 55 (empty -> .)
+    COMMA           reduce using rule 55 (empty -> .)
 
-    expression                     shift and go to state 35
+    expression                     shift and go to state 36
     type                           shift and go to state 25
-    empty                          shift and go to state 26
+    function_call                  shift and go to state 26
+    empty                          shift and go to state 27
 
 state 22
 
@@ -618,18 +637,18 @@ state 22
     (40) expression -> expression . OR expression
     (41) expression -> expression . COMMA expression
 
-    RPAREN          shift and go to state 36
-    PLUS            shift and go to state 37
-    MINUS           shift and go to state 38
-    MULTIPLY        shift and go to state 39
-    DIVIDE          shift and go to state 40
-    GREATERTHAN     shift and go to state 41
-    LESSTHAN        shift and go to state 42
-    EQUALS          shift and go to state 43
-    NOTEQUALS       shift and go to state 44
-    AND             shift and go to state 45
-    OR              shift and go to state 46
-    COMMA           shift and go to state 47
+    RPAREN          shift and go to state 37
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MULTIPLY        shift and go to state 40
+    DIVIDE          shift and go to state 41
+    GREATERTHAN     shift and go to state 42
+    LESSTHAN        shift and go to state 43
+    EQUALS          shift and go to state 44
+    NOTEQUALS       shift and go to state 45
+    AND             shift and go to state 46
+    OR              shift and go to state 47
+    COMMA           shift and go to state 48
 
 
 state 23
@@ -650,47 +669,51 @@ state 23
     (43) expression -> . NOT expression
     (44) expression -> . VARIABLE
     (45) expression -> . type
-    (46) expression -> . empty
-    (47) type -> . BOOL
-    (48) type -> . DECIMAL
-    (49) type -> . WSTRING
-    (50) empty -> .
+    (46) expression -> . function_call
+    (47) expression -> . empty
+    (48) type -> . BOOL
+    (49) type -> . DECIMAL
+    (50) type -> . WSTRING
+    (51) function_call -> . VARIABLE LPAREN function_arguments RPAREN
+    (55) empty -> .
 
     LPAREN          shift and go to state 21
     NOT             shift and go to state 23
     VARIABLE        shift and go to state 24
-    BOOL            shift and go to state 27
-    DECIMAL         shift and go to state 28
-    WSTRING         shift and go to state 29
-    PLUS            reduce using rule 50 (empty -> .)
-    MINUS           reduce using rule 50 (empty -> .)
-    MULTIPLY        reduce using rule 50 (empty -> .)
-    DIVIDE          reduce using rule 50 (empty -> .)
-    GREATERTHAN     reduce using rule 50 (empty -> .)
-    LESSTHAN        reduce using rule 50 (empty -> .)
-    EQUALS          reduce using rule 50 (empty -> .)
-    NOTEQUALS       reduce using rule 50 (empty -> .)
-    AND             reduce using rule 50 (empty -> .)
-    OR              reduce using rule 50 (empty -> .)
-    COMMA           reduce using rule 50 (empty -> .)
-    RPAREN          reduce using rule 50 (empty -> .)
-    PRINT           reduce using rule 50 (empty -> .)
-    IF              reduce using rule 50 (empty -> .)
-    FUNC            reduce using rule 50 (empty -> .)
-    LET             reduce using rule 50 (empty -> .)
-    VAR             reduce using rule 50 (empty -> .)
-    $end            reduce using rule 50 (empty -> .)
-    RBRACES         reduce using rule 50 (empty -> .)
-    RSQUAREBRACKET  reduce using rule 50 (empty -> .)
-    RETURN          reduce using rule 50 (empty -> .)
+    BOOL            shift and go to state 28
+    DECIMAL         shift and go to state 29
+    WSTRING         shift and go to state 30
+    PLUS            reduce using rule 55 (empty -> .)
+    MINUS           reduce using rule 55 (empty -> .)
+    MULTIPLY        reduce using rule 55 (empty -> .)
+    DIVIDE          reduce using rule 55 (empty -> .)
+    GREATERTHAN     reduce using rule 55 (empty -> .)
+    LESSTHAN        reduce using rule 55 (empty -> .)
+    EQUALS          reduce using rule 55 (empty -> .)
+    NOTEQUALS       reduce using rule 55 (empty -> .)
+    AND             reduce using rule 55 (empty -> .)
+    OR              reduce using rule 55 (empty -> .)
+    COMMA           reduce using rule 55 (empty -> .)
+    RPAREN          reduce using rule 55 (empty -> .)
+    PRINT           reduce using rule 55 (empty -> .)
+    IF              reduce using rule 55 (empty -> .)
+    FUNC            reduce using rule 55 (empty -> .)
+    LET             reduce using rule 55 (empty -> .)
+    VAR             reduce using rule 55 (empty -> .)
+    $end            reduce using rule 55 (empty -> .)
+    RBRACES         reduce using rule 55 (empty -> .)
+    RSQUAREBRACKET  reduce using rule 55 (empty -> .)
+    RETURN          reduce using rule 55 (empty -> .)
 
-    expression                     shift and go to state 48
+    expression                     shift and go to state 49
     type                           shift and go to state 25
-    empty                          shift and go to state 26
+    function_call                  shift and go to state 26
+    empty                          shift and go to state 27
 
 state 24
 
     (44) expression -> VARIABLE .
+    (51) function_call -> VARIABLE . LPAREN function_arguments RPAREN
 
     RPAREN          reduce using rule 44 (expression -> VARIABLE .)
     PLUS            reduce using rule 44 (expression -> VARIABLE .)
@@ -713,6 +736,7 @@ state 24
     RBRACES         reduce using rule 44 (expression -> VARIABLE .)
     RSQUAREBRACKET  reduce using rule 44 (expression -> VARIABLE .)
     RETURN          reduce using rule 44 (expression -> VARIABLE .)
+    LPAREN          shift and go to state 50
 
 
 state 25
@@ -744,113 +768,140 @@ state 25
 
 state 26
 
-    (46) expression -> empty .
+    (46) expression -> function_call .
 
-    RPAREN          reduce using rule 46 (expression -> empty .)
-    PLUS            reduce using rule 46 (expression -> empty .)
-    MINUS           reduce using rule 46 (expression -> empty .)
-    MULTIPLY        reduce using rule 46 (expression -> empty .)
-    DIVIDE          reduce using rule 46 (expression -> empty .)
-    GREATERTHAN     reduce using rule 46 (expression -> empty .)
-    LESSTHAN        reduce using rule 46 (expression -> empty .)
-    EQUALS          reduce using rule 46 (expression -> empty .)
-    NOTEQUALS       reduce using rule 46 (expression -> empty .)
-    AND             reduce using rule 46 (expression -> empty .)
-    OR              reduce using rule 46 (expression -> empty .)
-    COMMA           reduce using rule 46 (expression -> empty .)
-    PRINT           reduce using rule 46 (expression -> empty .)
-    IF              reduce using rule 46 (expression -> empty .)
-    FUNC            reduce using rule 46 (expression -> empty .)
-    LET             reduce using rule 46 (expression -> empty .)
-    VAR             reduce using rule 46 (expression -> empty .)
-    $end            reduce using rule 46 (expression -> empty .)
-    RBRACES         reduce using rule 46 (expression -> empty .)
-    RSQUAREBRACKET  reduce using rule 46 (expression -> empty .)
-    RETURN          reduce using rule 46 (expression -> empty .)
+    RPAREN          reduce using rule 46 (expression -> function_call .)
+    PLUS            reduce using rule 46 (expression -> function_call .)
+    MINUS           reduce using rule 46 (expression -> function_call .)
+    MULTIPLY        reduce using rule 46 (expression -> function_call .)
+    DIVIDE          reduce using rule 46 (expression -> function_call .)
+    GREATERTHAN     reduce using rule 46 (expression -> function_call .)
+    LESSTHAN        reduce using rule 46 (expression -> function_call .)
+    EQUALS          reduce using rule 46 (expression -> function_call .)
+    NOTEQUALS       reduce using rule 46 (expression -> function_call .)
+    AND             reduce using rule 46 (expression -> function_call .)
+    OR              reduce using rule 46 (expression -> function_call .)
+    COMMA           reduce using rule 46 (expression -> function_call .)
+    PRINT           reduce using rule 46 (expression -> function_call .)
+    IF              reduce using rule 46 (expression -> function_call .)
+    FUNC            reduce using rule 46 (expression -> function_call .)
+    LET             reduce using rule 46 (expression -> function_call .)
+    VAR             reduce using rule 46 (expression -> function_call .)
+    $end            reduce using rule 46 (expression -> function_call .)
+    RBRACES         reduce using rule 46 (expression -> function_call .)
+    RSQUAREBRACKET  reduce using rule 46 (expression -> function_call .)
+    RETURN          reduce using rule 46 (expression -> function_call .)
 
 
 state 27
 
-    (47) type -> BOOL .
+    (47) expression -> empty .
 
-    RPAREN          reduce using rule 47 (type -> BOOL .)
-    PLUS            reduce using rule 47 (type -> BOOL .)
-    MINUS           reduce using rule 47 (type -> BOOL .)
-    MULTIPLY        reduce using rule 47 (type -> BOOL .)
-    DIVIDE          reduce using rule 47 (type -> BOOL .)
-    GREATERTHAN     reduce using rule 47 (type -> BOOL .)
-    LESSTHAN        reduce using rule 47 (type -> BOOL .)
-    EQUALS          reduce using rule 47 (type -> BOOL .)
-    NOTEQUALS       reduce using rule 47 (type -> BOOL .)
-    AND             reduce using rule 47 (type -> BOOL .)
-    OR              reduce using rule 47 (type -> BOOL .)
-    COMMA           reduce using rule 47 (type -> BOOL .)
-    PRINT           reduce using rule 47 (type -> BOOL .)
-    IF              reduce using rule 47 (type -> BOOL .)
-    FUNC            reduce using rule 47 (type -> BOOL .)
-    LET             reduce using rule 47 (type -> BOOL .)
-    VAR             reduce using rule 47 (type -> BOOL .)
-    $end            reduce using rule 47 (type -> BOOL .)
-    RBRACES         reduce using rule 47 (type -> BOOL .)
-    RSQUAREBRACKET  reduce using rule 47 (type -> BOOL .)
-    RETURN          reduce using rule 47 (type -> BOOL .)
+    RPAREN          reduce using rule 47 (expression -> empty .)
+    PLUS            reduce using rule 47 (expression -> empty .)
+    MINUS           reduce using rule 47 (expression -> empty .)
+    MULTIPLY        reduce using rule 47 (expression -> empty .)
+    DIVIDE          reduce using rule 47 (expression -> empty .)
+    GREATERTHAN     reduce using rule 47 (expression -> empty .)
+    LESSTHAN        reduce using rule 47 (expression -> empty .)
+    EQUALS          reduce using rule 47 (expression -> empty .)
+    NOTEQUALS       reduce using rule 47 (expression -> empty .)
+    AND             reduce using rule 47 (expression -> empty .)
+    OR              reduce using rule 47 (expression -> empty .)
+    COMMA           reduce using rule 47 (expression -> empty .)
+    PRINT           reduce using rule 47 (expression -> empty .)
+    IF              reduce using rule 47 (expression -> empty .)
+    FUNC            reduce using rule 47 (expression -> empty .)
+    LET             reduce using rule 47 (expression -> empty .)
+    VAR             reduce using rule 47 (expression -> empty .)
+    $end            reduce using rule 47 (expression -> empty .)
+    RBRACES         reduce using rule 47 (expression -> empty .)
+    RSQUAREBRACKET  reduce using rule 47 (expression -> empty .)
+    RETURN          reduce using rule 47 (expression -> empty .)
 
 
 state 28
 
-    (48) type -> DECIMAL .
+    (48) type -> BOOL .
 
-    RPAREN          reduce using rule 48 (type -> DECIMAL .)
-    PLUS            reduce using rule 48 (type -> DECIMAL .)
-    MINUS           reduce using rule 48 (type -> DECIMAL .)
-    MULTIPLY        reduce using rule 48 (type -> DECIMAL .)
-    DIVIDE          reduce using rule 48 (type -> DECIMAL .)
-    GREATERTHAN     reduce using rule 48 (type -> DECIMAL .)
-    LESSTHAN        reduce using rule 48 (type -> DECIMAL .)
-    EQUALS          reduce using rule 48 (type -> DECIMAL .)
-    NOTEQUALS       reduce using rule 48 (type -> DECIMAL .)
-    AND             reduce using rule 48 (type -> DECIMAL .)
-    OR              reduce using rule 48 (type -> DECIMAL .)
-    COMMA           reduce using rule 48 (type -> DECIMAL .)
-    PRINT           reduce using rule 48 (type -> DECIMAL .)
-    IF              reduce using rule 48 (type -> DECIMAL .)
-    FUNC            reduce using rule 48 (type -> DECIMAL .)
-    LET             reduce using rule 48 (type -> DECIMAL .)
-    VAR             reduce using rule 48 (type -> DECIMAL .)
-    $end            reduce using rule 48 (type -> DECIMAL .)
-    RBRACES         reduce using rule 48 (type -> DECIMAL .)
-    RSQUAREBRACKET  reduce using rule 48 (type -> DECIMAL .)
-    RETURN          reduce using rule 48 (type -> DECIMAL .)
+    RPAREN          reduce using rule 48 (type -> BOOL .)
+    PLUS            reduce using rule 48 (type -> BOOL .)
+    MINUS           reduce using rule 48 (type -> BOOL .)
+    MULTIPLY        reduce using rule 48 (type -> BOOL .)
+    DIVIDE          reduce using rule 48 (type -> BOOL .)
+    GREATERTHAN     reduce using rule 48 (type -> BOOL .)
+    LESSTHAN        reduce using rule 48 (type -> BOOL .)
+    EQUALS          reduce using rule 48 (type -> BOOL .)
+    NOTEQUALS       reduce using rule 48 (type -> BOOL .)
+    AND             reduce using rule 48 (type -> BOOL .)
+    OR              reduce using rule 48 (type -> BOOL .)
+    COMMA           reduce using rule 48 (type -> BOOL .)
+    PRINT           reduce using rule 48 (type -> BOOL .)
+    IF              reduce using rule 48 (type -> BOOL .)
+    FUNC            reduce using rule 48 (type -> BOOL .)
+    LET             reduce using rule 48 (type -> BOOL .)
+    VAR             reduce using rule 48 (type -> BOOL .)
+    $end            reduce using rule 48 (type -> BOOL .)
+    RBRACES         reduce using rule 48 (type -> BOOL .)
+    RSQUAREBRACKET  reduce using rule 48 (type -> BOOL .)
+    RETURN          reduce using rule 48 (type -> BOOL .)
 
 
 state 29
 
-    (49) type -> WSTRING .
+    (49) type -> DECIMAL .
 
-    RPAREN          reduce using rule 49 (type -> WSTRING .)
-    PLUS            reduce using rule 49 (type -> WSTRING .)
-    MINUS           reduce using rule 49 (type -> WSTRING .)
-    MULTIPLY        reduce using rule 49 (type -> WSTRING .)
-    DIVIDE          reduce using rule 49 (type -> WSTRING .)
-    GREATERTHAN     reduce using rule 49 (type -> WSTRING .)
-    LESSTHAN        reduce using rule 49 (type -> WSTRING .)
-    EQUALS          reduce using rule 49 (type -> WSTRING .)
-    NOTEQUALS       reduce using rule 49 (type -> WSTRING .)
-    AND             reduce using rule 49 (type -> WSTRING .)
-    OR              reduce using rule 49 (type -> WSTRING .)
-    COMMA           reduce using rule 49 (type -> WSTRING .)
-    PRINT           reduce using rule 49 (type -> WSTRING .)
-    IF              reduce using rule 49 (type -> WSTRING .)
-    FUNC            reduce using rule 49 (type -> WSTRING .)
-    LET             reduce using rule 49 (type -> WSTRING .)
-    VAR             reduce using rule 49 (type -> WSTRING .)
-    $end            reduce using rule 49 (type -> WSTRING .)
-    RBRACES         reduce using rule 49 (type -> WSTRING .)
-    RSQUAREBRACKET  reduce using rule 49 (type -> WSTRING .)
-    RETURN          reduce using rule 49 (type -> WSTRING .)
+    RPAREN          reduce using rule 49 (type -> DECIMAL .)
+    PLUS            reduce using rule 49 (type -> DECIMAL .)
+    MINUS           reduce using rule 49 (type -> DECIMAL .)
+    MULTIPLY        reduce using rule 49 (type -> DECIMAL .)
+    DIVIDE          reduce using rule 49 (type -> DECIMAL .)
+    GREATERTHAN     reduce using rule 49 (type -> DECIMAL .)
+    LESSTHAN        reduce using rule 49 (type -> DECIMAL .)
+    EQUALS          reduce using rule 49 (type -> DECIMAL .)
+    NOTEQUALS       reduce using rule 49 (type -> DECIMAL .)
+    AND             reduce using rule 49 (type -> DECIMAL .)
+    OR              reduce using rule 49 (type -> DECIMAL .)
+    COMMA           reduce using rule 49 (type -> DECIMAL .)
+    PRINT           reduce using rule 49 (type -> DECIMAL .)
+    IF              reduce using rule 49 (type -> DECIMAL .)
+    FUNC            reduce using rule 49 (type -> DECIMAL .)
+    LET             reduce using rule 49 (type -> DECIMAL .)
+    VAR             reduce using rule 49 (type -> DECIMAL .)
+    $end            reduce using rule 49 (type -> DECIMAL .)
+    RBRACES         reduce using rule 49 (type -> DECIMAL .)
+    RSQUAREBRACKET  reduce using rule 49 (type -> DECIMAL .)
+    RETURN          reduce using rule 49 (type -> DECIMAL .)
 
 
 state 30
+
+    (50) type -> WSTRING .
+
+    RPAREN          reduce using rule 50 (type -> WSTRING .)
+    PLUS            reduce using rule 50 (type -> WSTRING .)
+    MINUS           reduce using rule 50 (type -> WSTRING .)
+    MULTIPLY        reduce using rule 50 (type -> WSTRING .)
+    DIVIDE          reduce using rule 50 (type -> WSTRING .)
+    GREATERTHAN     reduce using rule 50 (type -> WSTRING .)
+    LESSTHAN        reduce using rule 50 (type -> WSTRING .)
+    EQUALS          reduce using rule 50 (type -> WSTRING .)
+    NOTEQUALS       reduce using rule 50 (type -> WSTRING .)
+    AND             reduce using rule 50 (type -> WSTRING .)
+    OR              reduce using rule 50 (type -> WSTRING .)
+    COMMA           reduce using rule 50 (type -> WSTRING .)
+    PRINT           reduce using rule 50 (type -> WSTRING .)
+    IF              reduce using rule 50 (type -> WSTRING .)
+    FUNC            reduce using rule 50 (type -> WSTRING .)
+    LET             reduce using rule 50 (type -> WSTRING .)
+    VAR             reduce using rule 50 (type -> WSTRING .)
+    $end            reduce using rule 50 (type -> WSTRING .)
+    RBRACES         reduce using rule 50 (type -> WSTRING .)
+    RSQUAREBRACKET  reduce using rule 50 (type -> WSTRING .)
+    RETURN          reduce using rule 50 (type -> WSTRING .)
+
+
+state 31
 
     (12) if_statement -> IF LPAREN expression . RPAREN LBRACES statements RBRACES
     (13) if_statement -> IF LPAREN expression . RPAREN LBRACES statements RBRACES ELSE LBRACES statements RBRACES
@@ -866,36 +917,36 @@ state 30
     (40) expression -> expression . OR expression
     (41) expression -> expression . COMMA expression
 
-    RPAREN          shift and go to state 49
-    PLUS            shift and go to state 37
-    MINUS           shift and go to state 38
-    MULTIPLY        shift and go to state 39
-    DIVIDE          shift and go to state 40
-    GREATERTHAN     shift and go to state 41
-    LESSTHAN        shift and go to state 42
-    EQUALS          shift and go to state 43
-    NOTEQUALS       shift and go to state 44
-    AND             shift and go to state 45
-    OR              shift and go to state 46
-    COMMA           shift and go to state 47
+    RPAREN          shift and go to state 51
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MULTIPLY        shift and go to state 40
+    DIVIDE          shift and go to state 41
+    GREATERTHAN     shift and go to state 42
+    LESSTHAN        shift and go to state 43
+    EQUALS          shift and go to state 44
+    NOTEQUALS       shift and go to state 45
+    AND             shift and go to state 46
+    OR              shift and go to state 47
+    COMMA           shift and go to state 48
 
 
-state 31
+state 32
 
     (14) function_declaration -> FUNC VARIABLE LPAREN . function_parameters RPAREN function_return_type LBRACES expression return_statement RBRACES
     (15) function_parameters -> . function_parameters COMMA VARIABLE COLON data_type
     (16) function_parameters -> . VARIABLE COLON data_type
     (17) function_parameters -> . empty
-    (50) empty -> .
+    (55) empty -> .
 
-    VARIABLE        shift and go to state 50
-    RPAREN          reduce using rule 50 (empty -> .)
-    COMMA           reduce using rule 50 (empty -> .)
+    VARIABLE        shift and go to state 52
+    RPAREN          reduce using rule 55 (empty -> .)
+    COMMA           reduce using rule 55 (empty -> .)
 
-    function_parameters            shift and go to state 51
-    empty                          shift and go to state 52
+    function_parameters            shift and go to state 53
+    empty                          shift and go to state 54
 
-state 32
+state 33
 
     (8) assignment_statement -> variable_declarator VARIABLE ASSIGN expression .
     (31) expression -> expression . PLUS expression
@@ -917,34 +968,34 @@ state 32
     VAR             reduce using rule 8 (assignment_statement -> variable_declarator VARIABLE ASSIGN expression .)
     $end            reduce using rule 8 (assignment_statement -> variable_declarator VARIABLE ASSIGN expression .)
     RBRACES         reduce using rule 8 (assignment_statement -> variable_declarator VARIABLE ASSIGN expression .)
-    PLUS            shift and go to state 37
-    MINUS           shift and go to state 38
-    MULTIPLY        shift and go to state 39
-    DIVIDE          shift and go to state 40
-    GREATERTHAN     shift and go to state 41
-    LESSTHAN        shift and go to state 42
-    EQUALS          shift and go to state 43
-    NOTEQUALS       shift and go to state 44
-    AND             shift and go to state 45
-    OR              shift and go to state 46
-    COMMA           shift and go to state 47
-
-
-state 33
-
-    (9) assignment_statement -> variable_declarator VARIABLE COLON data_collection_type . ASSIGN collection_block
-
-    ASSIGN          shift and go to state 53
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MULTIPLY        shift and go to state 40
+    DIVIDE          shift and go to state 41
+    GREATERTHAN     shift and go to state 42
+    LESSTHAN        shift and go to state 43
+    EQUALS          shift and go to state 44
+    NOTEQUALS       shift and go to state 45
+    AND             shift and go to state 46
+    OR              shift and go to state 47
+    COMMA           shift and go to state 48
 
 
 state 34
+
+    (9) assignment_statement -> variable_declarator VARIABLE COLON data_collection_type . ASSIGN collection_block
+
+    ASSIGN          shift and go to state 55
+
+
+state 35
 
     (29) data_collection_type -> COLLECTIONTYPE .
 
     ASSIGN          reduce using rule 29 (data_collection_type -> COLLECTIONTYPE .)
 
 
-state 35
+state 36
 
     (42) expression -> LPAREN expression . RPAREN
     (31) expression -> expression . PLUS expression
@@ -959,21 +1010,21 @@ state 35
     (40) expression -> expression . OR expression
     (41) expression -> expression . COMMA expression
 
-    RPAREN          shift and go to state 54
-    PLUS            shift and go to state 37
-    MINUS           shift and go to state 38
-    MULTIPLY        shift and go to state 39
-    DIVIDE          shift and go to state 40
-    GREATERTHAN     shift and go to state 41
-    LESSTHAN        shift and go to state 42
-    EQUALS          shift and go to state 43
-    NOTEQUALS       shift and go to state 44
-    AND             shift and go to state 45
-    OR              shift and go to state 46
-    COMMA           shift and go to state 47
+    RPAREN          shift and go to state 56
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MULTIPLY        shift and go to state 40
+    DIVIDE          shift and go to state 41
+    GREATERTHAN     shift and go to state 42
+    LESSTHAN        shift and go to state 43
+    EQUALS          shift and go to state 44
+    NOTEQUALS       shift and go to state 45
+    AND             shift and go to state 46
+    OR              shift and go to state 47
+    COMMA           shift and go to state 48
 
 
-state 36
+state 37
 
     (11) print_statement -> PRINT LPAREN expression RPAREN .
 
@@ -986,7 +1037,7 @@ state 36
     RBRACES         reduce using rule 11 (print_statement -> PRINT LPAREN expression RPAREN .)
 
 
-state 37
+state 38
 
     (31) expression -> expression PLUS . expression
     (31) expression -> . expression PLUS expression
@@ -1004,45 +1055,48 @@ state 37
     (43) expression -> . NOT expression
     (44) expression -> . VARIABLE
     (45) expression -> . type
-    (46) expression -> . empty
-    (47) type -> . BOOL
-    (48) type -> . DECIMAL
-    (49) type -> . WSTRING
-    (50) empty -> .
+    (46) expression -> . function_call
+    (47) expression -> . empty
+    (48) type -> . BOOL
+    (49) type -> . DECIMAL
+    (50) type -> . WSTRING
+    (51) function_call -> . VARIABLE LPAREN function_arguments RPAREN
+    (55) empty -> .
 
     LPAREN          shift and go to state 21
     NOT             shift and go to state 23
     VARIABLE        shift and go to state 24
-    BOOL            shift and go to state 27
-    DECIMAL         shift and go to state 28
-    WSTRING         shift and go to state 29
-    PLUS            reduce using rule 50 (empty -> .)
-    MINUS           reduce using rule 50 (empty -> .)
-    MULTIPLY        reduce using rule 50 (empty -> .)
-    DIVIDE          reduce using rule 50 (empty -> .)
-    GREATERTHAN     reduce using rule 50 (empty -> .)
-    LESSTHAN        reduce using rule 50 (empty -> .)
-    EQUALS          reduce using rule 50 (empty -> .)
-    NOTEQUALS       reduce using rule 50 (empty -> .)
-    AND             reduce using rule 50 (empty -> .)
-    OR              reduce using rule 50 (empty -> .)
-    COMMA           reduce using rule 50 (empty -> .)
-    RPAREN          reduce using rule 50 (empty -> .)
-    PRINT           reduce using rule 50 (empty -> .)
-    IF              reduce using rule 50 (empty -> .)
-    FUNC            reduce using rule 50 (empty -> .)
-    LET             reduce using rule 50 (empty -> .)
-    VAR             reduce using rule 50 (empty -> .)
-    $end            reduce using rule 50 (empty -> .)
-    RBRACES         reduce using rule 50 (empty -> .)
-    RSQUAREBRACKET  reduce using rule 50 (empty -> .)
-    RETURN          reduce using rule 50 (empty -> .)
+    BOOL            shift and go to state 28
+    DECIMAL         shift and go to state 29
+    WSTRING         shift and go to state 30
+    PLUS            reduce using rule 55 (empty -> .)
+    MINUS           reduce using rule 55 (empty -> .)
+    MULTIPLY        reduce using rule 55 (empty -> .)
+    DIVIDE          reduce using rule 55 (empty -> .)
+    GREATERTHAN     reduce using rule 55 (empty -> .)
+    LESSTHAN        reduce using rule 55 (empty -> .)
+    EQUALS          reduce using rule 55 (empty -> .)
+    NOTEQUALS       reduce using rule 55 (empty -> .)
+    AND             reduce using rule 55 (empty -> .)
+    OR              reduce using rule 55 (empty -> .)
+    COMMA           reduce using rule 55 (empty -> .)
+    RPAREN          reduce using rule 55 (empty -> .)
+    PRINT           reduce using rule 55 (empty -> .)
+    IF              reduce using rule 55 (empty -> .)
+    FUNC            reduce using rule 55 (empty -> .)
+    LET             reduce using rule 55 (empty -> .)
+    VAR             reduce using rule 55 (empty -> .)
+    $end            reduce using rule 55 (empty -> .)
+    RBRACES         reduce using rule 55 (empty -> .)
+    RSQUAREBRACKET  reduce using rule 55 (empty -> .)
+    RETURN          reduce using rule 55 (empty -> .)
 
-    expression                     shift and go to state 55
+    expression                     shift and go to state 57
     type                           shift and go to state 25
-    empty                          shift and go to state 26
+    function_call                  shift and go to state 26
+    empty                          shift and go to state 27
 
-state 38
+state 39
 
     (32) expression -> expression MINUS . expression
     (31) expression -> . expression PLUS expression
@@ -1060,45 +1114,48 @@ state 38
     (43) expression -> . NOT expression
     (44) expression -> . VARIABLE
     (45) expression -> . type
-    (46) expression -> . empty
-    (47) type -> . BOOL
-    (48) type -> . DECIMAL
-    (49) type -> . WSTRING
-    (50) empty -> .
+    (46) expression -> . function_call
+    (47) expression -> . empty
+    (48) type -> . BOOL
+    (49) type -> . DECIMAL
+    (50) type -> . WSTRING
+    (51) function_call -> . VARIABLE LPAREN function_arguments RPAREN
+    (55) empty -> .
 
     LPAREN          shift and go to state 21
     NOT             shift and go to state 23
     VARIABLE        shift and go to state 24
-    BOOL            shift and go to state 27
-    DECIMAL         shift and go to state 28
-    WSTRING         shift and go to state 29
-    PLUS            reduce using rule 50 (empty -> .)
-    MINUS           reduce using rule 50 (empty -> .)
-    MULTIPLY        reduce using rule 50 (empty -> .)
-    DIVIDE          reduce using rule 50 (empty -> .)
-    GREATERTHAN     reduce using rule 50 (empty -> .)
-    LESSTHAN        reduce using rule 50 (empty -> .)
-    EQUALS          reduce using rule 50 (empty -> .)
-    NOTEQUALS       reduce using rule 50 (empty -> .)
-    AND             reduce using rule 50 (empty -> .)
-    OR              reduce using rule 50 (empty -> .)
-    COMMA           reduce using rule 50 (empty -> .)
-    RPAREN          reduce using rule 50 (empty -> .)
-    PRINT           reduce using rule 50 (empty -> .)
-    IF              reduce using rule 50 (empty -> .)
-    FUNC            reduce using rule 50 (empty -> .)
-    LET             reduce using rule 50 (empty -> .)
-    VAR             reduce using rule 50 (empty -> .)
-    $end            reduce using rule 50 (empty -> .)
-    RBRACES         reduce using rule 50 (empty -> .)
-    RSQUAREBRACKET  reduce using rule 50 (empty -> .)
-    RETURN          reduce using rule 50 (empty -> .)
+    BOOL            shift and go to state 28
+    DECIMAL         shift and go to state 29
+    WSTRING         shift and go to state 30
+    PLUS            reduce using rule 55 (empty -> .)
+    MINUS           reduce using rule 55 (empty -> .)
+    MULTIPLY        reduce using rule 55 (empty -> .)
+    DIVIDE          reduce using rule 55 (empty -> .)
+    GREATERTHAN     reduce using rule 55 (empty -> .)
+    LESSTHAN        reduce using rule 55 (empty -> .)
+    EQUALS          reduce using rule 55 (empty -> .)
+    NOTEQUALS       reduce using rule 55 (empty -> .)
+    AND             reduce using rule 55 (empty -> .)
+    OR              reduce using rule 55 (empty -> .)
+    COMMA           reduce using rule 55 (empty -> .)
+    RPAREN          reduce using rule 55 (empty -> .)
+    PRINT           reduce using rule 55 (empty -> .)
+    IF              reduce using rule 55 (empty -> .)
+    FUNC            reduce using rule 55 (empty -> .)
+    LET             reduce using rule 55 (empty -> .)
+    VAR             reduce using rule 55 (empty -> .)
+    $end            reduce using rule 55 (empty -> .)
+    RBRACES         reduce using rule 55 (empty -> .)
+    RSQUAREBRACKET  reduce using rule 55 (empty -> .)
+    RETURN          reduce using rule 55 (empty -> .)
 
-    expression                     shift and go to state 56
+    expression                     shift and go to state 58
     type                           shift and go to state 25
-    empty                          shift and go to state 26
+    function_call                  shift and go to state 26
+    empty                          shift and go to state 27
 
-state 39
+state 40
 
     (33) expression -> expression MULTIPLY . expression
     (31) expression -> . expression PLUS expression
@@ -1116,45 +1173,48 @@ state 39
     (43) expression -> . NOT expression
     (44) expression -> . VARIABLE
     (45) expression -> . type
-    (46) expression -> . empty
-    (47) type -> . BOOL
-    (48) type -> . DECIMAL
-    (49) type -> . WSTRING
-    (50) empty -> .
+    (46) expression -> . function_call
+    (47) expression -> . empty
+    (48) type -> . BOOL
+    (49) type -> . DECIMAL
+    (50) type -> . WSTRING
+    (51) function_call -> . VARIABLE LPAREN function_arguments RPAREN
+    (55) empty -> .
 
     LPAREN          shift and go to state 21
     NOT             shift and go to state 23
     VARIABLE        shift and go to state 24
-    BOOL            shift and go to state 27
-    DECIMAL         shift and go to state 28
-    WSTRING         shift and go to state 29
-    PLUS            reduce using rule 50 (empty -> .)
-    MINUS           reduce using rule 50 (empty -> .)
-    MULTIPLY        reduce using rule 50 (empty -> .)
-    DIVIDE          reduce using rule 50 (empty -> .)
-    GREATERTHAN     reduce using rule 50 (empty -> .)
-    LESSTHAN        reduce using rule 50 (empty -> .)
-    EQUALS          reduce using rule 50 (empty -> .)
-    NOTEQUALS       reduce using rule 50 (empty -> .)
-    AND             reduce using rule 50 (empty -> .)
-    OR              reduce using rule 50 (empty -> .)
-    COMMA           reduce using rule 50 (empty -> .)
-    RPAREN          reduce using rule 50 (empty -> .)
-    PRINT           reduce using rule 50 (empty -> .)
-    IF              reduce using rule 50 (empty -> .)
-    FUNC            reduce using rule 50 (empty -> .)
-    LET             reduce using rule 50 (empty -> .)
-    VAR             reduce using rule 50 (empty -> .)
-    $end            reduce using rule 50 (empty -> .)
-    RBRACES         reduce using rule 50 (empty -> .)
-    RSQUAREBRACKET  reduce using rule 50 (empty -> .)
-    RETURN          reduce using rule 50 (empty -> .)
+    BOOL            shift and go to state 28
+    DECIMAL         shift and go to state 29
+    WSTRING         shift and go to state 30
+    PLUS            reduce using rule 55 (empty -> .)
+    MINUS           reduce using rule 55 (empty -> .)
+    MULTIPLY        reduce using rule 55 (empty -> .)
+    DIVIDE          reduce using rule 55 (empty -> .)
+    GREATERTHAN     reduce using rule 55 (empty -> .)
+    LESSTHAN        reduce using rule 55 (empty -> .)
+    EQUALS          reduce using rule 55 (empty -> .)
+    NOTEQUALS       reduce using rule 55 (empty -> .)
+    AND             reduce using rule 55 (empty -> .)
+    OR              reduce using rule 55 (empty -> .)
+    COMMA           reduce using rule 55 (empty -> .)
+    RPAREN          reduce using rule 55 (empty -> .)
+    PRINT           reduce using rule 55 (empty -> .)
+    IF              reduce using rule 55 (empty -> .)
+    FUNC            reduce using rule 55 (empty -> .)
+    LET             reduce using rule 55 (empty -> .)
+    VAR             reduce using rule 55 (empty -> .)
+    $end            reduce using rule 55 (empty -> .)
+    RBRACES         reduce using rule 55 (empty -> .)
+    RSQUAREBRACKET  reduce using rule 55 (empty -> .)
+    RETURN          reduce using rule 55 (empty -> .)
 
-    expression                     shift and go to state 57
+    expression                     shift and go to state 59
     type                           shift and go to state 25
-    empty                          shift and go to state 26
+    function_call                  shift and go to state 26
+    empty                          shift and go to state 27
 
-state 40
+state 41
 
     (34) expression -> expression DIVIDE . expression
     (31) expression -> . expression PLUS expression
@@ -1172,45 +1232,48 @@ state 40
     (43) expression -> . NOT expression
     (44) expression -> . VARIABLE
     (45) expression -> . type
-    (46) expression -> . empty
-    (47) type -> . BOOL
-    (48) type -> . DECIMAL
-    (49) type -> . WSTRING
-    (50) empty -> .
+    (46) expression -> . function_call
+    (47) expression -> . empty
+    (48) type -> . BOOL
+    (49) type -> . DECIMAL
+    (50) type -> . WSTRING
+    (51) function_call -> . VARIABLE LPAREN function_arguments RPAREN
+    (55) empty -> .
 
     LPAREN          shift and go to state 21
     NOT             shift and go to state 23
     VARIABLE        shift and go to state 24
-    BOOL            shift and go to state 27
-    DECIMAL         shift and go to state 28
-    WSTRING         shift and go to state 29
-    PLUS            reduce using rule 50 (empty -> .)
-    MINUS           reduce using rule 50 (empty -> .)
-    MULTIPLY        reduce using rule 50 (empty -> .)
-    DIVIDE          reduce using rule 50 (empty -> .)
-    GREATERTHAN     reduce using rule 50 (empty -> .)
-    LESSTHAN        reduce using rule 50 (empty -> .)
-    EQUALS          reduce using rule 50 (empty -> .)
-    NOTEQUALS       reduce using rule 50 (empty -> .)
-    AND             reduce using rule 50 (empty -> .)
-    OR              reduce using rule 50 (empty -> .)
-    COMMA           reduce using rule 50 (empty -> .)
-    RPAREN          reduce using rule 50 (empty -> .)
-    PRINT           reduce using rule 50 (empty -> .)
-    IF              reduce using rule 50 (empty -> .)
-    FUNC            reduce using rule 50 (empty -> .)
-    LET             reduce using rule 50 (empty -> .)
-    VAR             reduce using rule 50 (empty -> .)
-    $end            reduce using rule 50 (empty -> .)
-    RBRACES         reduce using rule 50 (empty -> .)
-    RSQUAREBRACKET  reduce using rule 50 (empty -> .)
-    RETURN          reduce using rule 50 (empty -> .)
+    BOOL            shift and go to state 28
+    DECIMAL         shift and go to state 29
+    WSTRING         shift and go to state 30
+    PLUS            reduce using rule 55 (empty -> .)
+    MINUS           reduce using rule 55 (empty -> .)
+    MULTIPLY        reduce using rule 55 (empty -> .)
+    DIVIDE          reduce using rule 55 (empty -> .)
+    GREATERTHAN     reduce using rule 55 (empty -> .)
+    LESSTHAN        reduce using rule 55 (empty -> .)
+    EQUALS          reduce using rule 55 (empty -> .)
+    NOTEQUALS       reduce using rule 55 (empty -> .)
+    AND             reduce using rule 55 (empty -> .)
+    OR              reduce using rule 55 (empty -> .)
+    COMMA           reduce using rule 55 (empty -> .)
+    RPAREN          reduce using rule 55 (empty -> .)
+    PRINT           reduce using rule 55 (empty -> .)
+    IF              reduce using rule 55 (empty -> .)
+    FUNC            reduce using rule 55 (empty -> .)
+    LET             reduce using rule 55 (empty -> .)
+    VAR             reduce using rule 55 (empty -> .)
+    $end            reduce using rule 55 (empty -> .)
+    RBRACES         reduce using rule 55 (empty -> .)
+    RSQUAREBRACKET  reduce using rule 55 (empty -> .)
+    RETURN          reduce using rule 55 (empty -> .)
 
-    expression                     shift and go to state 58
+    expression                     shift and go to state 60
     type                           shift and go to state 25
-    empty                          shift and go to state 26
+    function_call                  shift and go to state 26
+    empty                          shift and go to state 27
 
-state 41
+state 42
 
     (35) expression -> expression GREATERTHAN . expression
     (31) expression -> . expression PLUS expression
@@ -1228,45 +1291,48 @@ state 41
     (43) expression -> . NOT expression
     (44) expression -> . VARIABLE
     (45) expression -> . type
-    (46) expression -> . empty
-    (47) type -> . BOOL
-    (48) type -> . DECIMAL
-    (49) type -> . WSTRING
-    (50) empty -> .
+    (46) expression -> . function_call
+    (47) expression -> . empty
+    (48) type -> . BOOL
+    (49) type -> . DECIMAL
+    (50) type -> . WSTRING
+    (51) function_call -> . VARIABLE LPAREN function_arguments RPAREN
+    (55) empty -> .
 
     LPAREN          shift and go to state 21
     NOT             shift and go to state 23
     VARIABLE        shift and go to state 24
-    BOOL            shift and go to state 27
-    DECIMAL         shift and go to state 28
-    WSTRING         shift and go to state 29
-    PLUS            reduce using rule 50 (empty -> .)
-    MINUS           reduce using rule 50 (empty -> .)
-    MULTIPLY        reduce using rule 50 (empty -> .)
-    DIVIDE          reduce using rule 50 (empty -> .)
-    GREATERTHAN     reduce using rule 50 (empty -> .)
-    LESSTHAN        reduce using rule 50 (empty -> .)
-    EQUALS          reduce using rule 50 (empty -> .)
-    NOTEQUALS       reduce using rule 50 (empty -> .)
-    AND             reduce using rule 50 (empty -> .)
-    OR              reduce using rule 50 (empty -> .)
-    COMMA           reduce using rule 50 (empty -> .)
-    RPAREN          reduce using rule 50 (empty -> .)
-    PRINT           reduce using rule 50 (empty -> .)
-    IF              reduce using rule 50 (empty -> .)
-    FUNC            reduce using rule 50 (empty -> .)
-    LET             reduce using rule 50 (empty -> .)
-    VAR             reduce using rule 50 (empty -> .)
-    $end            reduce using rule 50 (empty -> .)
-    RBRACES         reduce using rule 50 (empty -> .)
-    RSQUAREBRACKET  reduce using rule 50 (empty -> .)
-    RETURN          reduce using rule 50 (empty -> .)
+    BOOL            shift and go to state 28
+    DECIMAL         shift and go to state 29
+    WSTRING         shift and go to state 30
+    PLUS            reduce using rule 55 (empty -> .)
+    MINUS           reduce using rule 55 (empty -> .)
+    MULTIPLY        reduce using rule 55 (empty -> .)
+    DIVIDE          reduce using rule 55 (empty -> .)
+    GREATERTHAN     reduce using rule 55 (empty -> .)
+    LESSTHAN        reduce using rule 55 (empty -> .)
+    EQUALS          reduce using rule 55 (empty -> .)
+    NOTEQUALS       reduce using rule 55 (empty -> .)
+    AND             reduce using rule 55 (empty -> .)
+    OR              reduce using rule 55 (empty -> .)
+    COMMA           reduce using rule 55 (empty -> .)
+    RPAREN          reduce using rule 55 (empty -> .)
+    PRINT           reduce using rule 55 (empty -> .)
+    IF              reduce using rule 55 (empty -> .)
+    FUNC            reduce using rule 55 (empty -> .)
+    LET             reduce using rule 55 (empty -> .)
+    VAR             reduce using rule 55 (empty -> .)
+    $end            reduce using rule 55 (empty -> .)
+    RBRACES         reduce using rule 55 (empty -> .)
+    RSQUAREBRACKET  reduce using rule 55 (empty -> .)
+    RETURN          reduce using rule 55 (empty -> .)
 
-    expression                     shift and go to state 59
+    expression                     shift and go to state 61
     type                           shift and go to state 25
-    empty                          shift and go to state 26
+    function_call                  shift and go to state 26
+    empty                          shift and go to state 27
 
-state 42
+state 43
 
     (36) expression -> expression LESSTHAN . expression
     (31) expression -> . expression PLUS expression
@@ -1284,45 +1350,48 @@ state 42
     (43) expression -> . NOT expression
     (44) expression -> . VARIABLE
     (45) expression -> . type
-    (46) expression -> . empty
-    (47) type -> . BOOL
-    (48) type -> . DECIMAL
-    (49) type -> . WSTRING
-    (50) empty -> .
+    (46) expression -> . function_call
+    (47) expression -> . empty
+    (48) type -> . BOOL
+    (49) type -> . DECIMAL
+    (50) type -> . WSTRING
+    (51) function_call -> . VARIABLE LPAREN function_arguments RPAREN
+    (55) empty -> .
 
     LPAREN          shift and go to state 21
     NOT             shift and go to state 23
     VARIABLE        shift and go to state 24
-    BOOL            shift and go to state 27
-    DECIMAL         shift and go to state 28
-    WSTRING         shift and go to state 29
-    PLUS            reduce using rule 50 (empty -> .)
-    MINUS           reduce using rule 50 (empty -> .)
-    MULTIPLY        reduce using rule 50 (empty -> .)
-    DIVIDE          reduce using rule 50 (empty -> .)
-    GREATERTHAN     reduce using rule 50 (empty -> .)
-    LESSTHAN        reduce using rule 50 (empty -> .)
-    EQUALS          reduce using rule 50 (empty -> .)
-    NOTEQUALS       reduce using rule 50 (empty -> .)
-    AND             reduce using rule 50 (empty -> .)
-    OR              reduce using rule 50 (empty -> .)
-    COMMA           reduce using rule 50 (empty -> .)
-    RPAREN          reduce using rule 50 (empty -> .)
-    PRINT           reduce using rule 50 (empty -> .)
-    IF              reduce using rule 50 (empty -> .)
-    FUNC            reduce using rule 50 (empty -> .)
-    LET             reduce using rule 50 (empty -> .)
-    VAR             reduce using rule 50 (empty -> .)
-    $end            reduce using rule 50 (empty -> .)
-    RBRACES         reduce using rule 50 (empty -> .)
-    RSQUAREBRACKET  reduce using rule 50 (empty -> .)
-    RETURN          reduce using rule 50 (empty -> .)
+    BOOL            shift and go to state 28
+    DECIMAL         shift and go to state 29
+    WSTRING         shift and go to state 30
+    PLUS            reduce using rule 55 (empty -> .)
+    MINUS           reduce using rule 55 (empty -> .)
+    MULTIPLY        reduce using rule 55 (empty -> .)
+    DIVIDE          reduce using rule 55 (empty -> .)
+    GREATERTHAN     reduce using rule 55 (empty -> .)
+    LESSTHAN        reduce using rule 55 (empty -> .)
+    EQUALS          reduce using rule 55 (empty -> .)
+    NOTEQUALS       reduce using rule 55 (empty -> .)
+    AND             reduce using rule 55 (empty -> .)
+    OR              reduce using rule 55 (empty -> .)
+    COMMA           reduce using rule 55 (empty -> .)
+    RPAREN          reduce using rule 55 (empty -> .)
+    PRINT           reduce using rule 55 (empty -> .)
+    IF              reduce using rule 55 (empty -> .)
+    FUNC            reduce using rule 55 (empty -> .)
+    LET             reduce using rule 55 (empty -> .)
+    VAR             reduce using rule 55 (empty -> .)
+    $end            reduce using rule 55 (empty -> .)
+    RBRACES         reduce using rule 55 (empty -> .)
+    RSQUAREBRACKET  reduce using rule 55 (empty -> .)
+    RETURN          reduce using rule 55 (empty -> .)
 
-    expression                     shift and go to state 60
+    expression                     shift and go to state 62
     type                           shift and go to state 25
-    empty                          shift and go to state 26
+    function_call                  shift and go to state 26
+    empty                          shift and go to state 27
 
-state 43
+state 44
 
     (37) expression -> expression EQUALS . expression
     (31) expression -> . expression PLUS expression
@@ -1340,45 +1409,48 @@ state 43
     (43) expression -> . NOT expression
     (44) expression -> . VARIABLE
     (45) expression -> . type
-    (46) expression -> . empty
-    (47) type -> . BOOL
-    (48) type -> . DECIMAL
-    (49) type -> . WSTRING
-    (50) empty -> .
+    (46) expression -> . function_call
+    (47) expression -> . empty
+    (48) type -> . BOOL
+    (49) type -> . DECIMAL
+    (50) type -> . WSTRING
+    (51) function_call -> . VARIABLE LPAREN function_arguments RPAREN
+    (55) empty -> .
 
     LPAREN          shift and go to state 21
     NOT             shift and go to state 23
     VARIABLE        shift and go to state 24
-    BOOL            shift and go to state 27
-    DECIMAL         shift and go to state 28
-    WSTRING         shift and go to state 29
-    PLUS            reduce using rule 50 (empty -> .)
-    MINUS           reduce using rule 50 (empty -> .)
-    MULTIPLY        reduce using rule 50 (empty -> .)
-    DIVIDE          reduce using rule 50 (empty -> .)
-    GREATERTHAN     reduce using rule 50 (empty -> .)
-    LESSTHAN        reduce using rule 50 (empty -> .)
-    EQUALS          reduce using rule 50 (empty -> .)
-    NOTEQUALS       reduce using rule 50 (empty -> .)
-    AND             reduce using rule 50 (empty -> .)
-    OR              reduce using rule 50 (empty -> .)
-    COMMA           reduce using rule 50 (empty -> .)
-    RPAREN          reduce using rule 50 (empty -> .)
-    PRINT           reduce using rule 50 (empty -> .)
-    IF              reduce using rule 50 (empty -> .)
-    FUNC            reduce using rule 50 (empty -> .)
-    LET             reduce using rule 50 (empty -> .)
-    VAR             reduce using rule 50 (empty -> .)
-    $end            reduce using rule 50 (empty -> .)
-    RBRACES         reduce using rule 50 (empty -> .)
-    RSQUAREBRACKET  reduce using rule 50 (empty -> .)
-    RETURN          reduce using rule 50 (empty -> .)
+    BOOL            shift and go to state 28
+    DECIMAL         shift and go to state 29
+    WSTRING         shift and go to state 30
+    PLUS            reduce using rule 55 (empty -> .)
+    MINUS           reduce using rule 55 (empty -> .)
+    MULTIPLY        reduce using rule 55 (empty -> .)
+    DIVIDE          reduce using rule 55 (empty -> .)
+    GREATERTHAN     reduce using rule 55 (empty -> .)
+    LESSTHAN        reduce using rule 55 (empty -> .)
+    EQUALS          reduce using rule 55 (empty -> .)
+    NOTEQUALS       reduce using rule 55 (empty -> .)
+    AND             reduce using rule 55 (empty -> .)
+    OR              reduce using rule 55 (empty -> .)
+    COMMA           reduce using rule 55 (empty -> .)
+    RPAREN          reduce using rule 55 (empty -> .)
+    PRINT           reduce using rule 55 (empty -> .)
+    IF              reduce using rule 55 (empty -> .)
+    FUNC            reduce using rule 55 (empty -> .)
+    LET             reduce using rule 55 (empty -> .)
+    VAR             reduce using rule 55 (empty -> .)
+    $end            reduce using rule 55 (empty -> .)
+    RBRACES         reduce using rule 55 (empty -> .)
+    RSQUAREBRACKET  reduce using rule 55 (empty -> .)
+    RETURN          reduce using rule 55 (empty -> .)
 
-    expression                     shift and go to state 61
+    expression                     shift and go to state 63
     type                           shift and go to state 25
-    empty                          shift and go to state 26
+    function_call                  shift and go to state 26
+    empty                          shift and go to state 27
 
-state 44
+state 45
 
     (38) expression -> expression NOTEQUALS . expression
     (31) expression -> . expression PLUS expression
@@ -1396,45 +1468,48 @@ state 44
     (43) expression -> . NOT expression
     (44) expression -> . VARIABLE
     (45) expression -> . type
-    (46) expression -> . empty
-    (47) type -> . BOOL
-    (48) type -> . DECIMAL
-    (49) type -> . WSTRING
-    (50) empty -> .
+    (46) expression -> . function_call
+    (47) expression -> . empty
+    (48) type -> . BOOL
+    (49) type -> . DECIMAL
+    (50) type -> . WSTRING
+    (51) function_call -> . VARIABLE LPAREN function_arguments RPAREN
+    (55) empty -> .
 
     LPAREN          shift and go to state 21
     NOT             shift and go to state 23
     VARIABLE        shift and go to state 24
-    BOOL            shift and go to state 27
-    DECIMAL         shift and go to state 28
-    WSTRING         shift and go to state 29
-    PLUS            reduce using rule 50 (empty -> .)
-    MINUS           reduce using rule 50 (empty -> .)
-    MULTIPLY        reduce using rule 50 (empty -> .)
-    DIVIDE          reduce using rule 50 (empty -> .)
-    GREATERTHAN     reduce using rule 50 (empty -> .)
-    LESSTHAN        reduce using rule 50 (empty -> .)
-    EQUALS          reduce using rule 50 (empty -> .)
-    NOTEQUALS       reduce using rule 50 (empty -> .)
-    AND             reduce using rule 50 (empty -> .)
-    OR              reduce using rule 50 (empty -> .)
-    COMMA           reduce using rule 50 (empty -> .)
-    RPAREN          reduce using rule 50 (empty -> .)
-    PRINT           reduce using rule 50 (empty -> .)
-    IF              reduce using rule 50 (empty -> .)
-    FUNC            reduce using rule 50 (empty -> .)
-    LET             reduce using rule 50 (empty -> .)
-    VAR             reduce using rule 50 (empty -> .)
-    $end            reduce using rule 50 (empty -> .)
-    RBRACES         reduce using rule 50 (empty -> .)
-    RSQUAREBRACKET  reduce using rule 50 (empty -> .)
-    RETURN          reduce using rule 50 (empty -> .)
+    BOOL            shift and go to state 28
+    DECIMAL         shift and go to state 29
+    WSTRING         shift and go to state 30
+    PLUS            reduce using rule 55 (empty -> .)
+    MINUS           reduce using rule 55 (empty -> .)
+    MULTIPLY        reduce using rule 55 (empty -> .)
+    DIVIDE          reduce using rule 55 (empty -> .)
+    GREATERTHAN     reduce using rule 55 (empty -> .)
+    LESSTHAN        reduce using rule 55 (empty -> .)
+    EQUALS          reduce using rule 55 (empty -> .)
+    NOTEQUALS       reduce using rule 55 (empty -> .)
+    AND             reduce using rule 55 (empty -> .)
+    OR              reduce using rule 55 (empty -> .)
+    COMMA           reduce using rule 55 (empty -> .)
+    RPAREN          reduce using rule 55 (empty -> .)
+    PRINT           reduce using rule 55 (empty -> .)
+    IF              reduce using rule 55 (empty -> .)
+    FUNC            reduce using rule 55 (empty -> .)
+    LET             reduce using rule 55 (empty -> .)
+    VAR             reduce using rule 55 (empty -> .)
+    $end            reduce using rule 55 (empty -> .)
+    RBRACES         reduce using rule 55 (empty -> .)
+    RSQUAREBRACKET  reduce using rule 55 (empty -> .)
+    RETURN          reduce using rule 55 (empty -> .)
 
-    expression                     shift and go to state 62
+    expression                     shift and go to state 64
     type                           shift and go to state 25
-    empty                          shift and go to state 26
+    function_call                  shift and go to state 26
+    empty                          shift and go to state 27
 
-state 45
+state 46
 
     (39) expression -> expression AND . expression
     (31) expression -> . expression PLUS expression
@@ -1452,45 +1527,48 @@ state 45
     (43) expression -> . NOT expression
     (44) expression -> . VARIABLE
     (45) expression -> . type
-    (46) expression -> . empty
-    (47) type -> . BOOL
-    (48) type -> . DECIMAL
-    (49) type -> . WSTRING
-    (50) empty -> .
+    (46) expression -> . function_call
+    (47) expression -> . empty
+    (48) type -> . BOOL
+    (49) type -> . DECIMAL
+    (50) type -> . WSTRING
+    (51) function_call -> . VARIABLE LPAREN function_arguments RPAREN
+    (55) empty -> .
 
     LPAREN          shift and go to state 21
     NOT             shift and go to state 23
     VARIABLE        shift and go to state 24
-    BOOL            shift and go to state 27
-    DECIMAL         shift and go to state 28
-    WSTRING         shift and go to state 29
-    PLUS            reduce using rule 50 (empty -> .)
-    MINUS           reduce using rule 50 (empty -> .)
-    MULTIPLY        reduce using rule 50 (empty -> .)
-    DIVIDE          reduce using rule 50 (empty -> .)
-    GREATERTHAN     reduce using rule 50 (empty -> .)
-    LESSTHAN        reduce using rule 50 (empty -> .)
-    EQUALS          reduce using rule 50 (empty -> .)
-    NOTEQUALS       reduce using rule 50 (empty -> .)
-    AND             reduce using rule 50 (empty -> .)
-    OR              reduce using rule 50 (empty -> .)
-    COMMA           reduce using rule 50 (empty -> .)
-    RPAREN          reduce using rule 50 (empty -> .)
-    PRINT           reduce using rule 50 (empty -> .)
-    IF              reduce using rule 50 (empty -> .)
-    FUNC            reduce using rule 50 (empty -> .)
-    LET             reduce using rule 50 (empty -> .)
-    VAR             reduce using rule 50 (empty -> .)
-    $end            reduce using rule 50 (empty -> .)
-    RBRACES         reduce using rule 50 (empty -> .)
-    RSQUAREBRACKET  reduce using rule 50 (empty -> .)
-    RETURN          reduce using rule 50 (empty -> .)
+    BOOL            shift and go to state 28
+    DECIMAL         shift and go to state 29
+    WSTRING         shift and go to state 30
+    PLUS            reduce using rule 55 (empty -> .)
+    MINUS           reduce using rule 55 (empty -> .)
+    MULTIPLY        reduce using rule 55 (empty -> .)
+    DIVIDE          reduce using rule 55 (empty -> .)
+    GREATERTHAN     reduce using rule 55 (empty -> .)
+    LESSTHAN        reduce using rule 55 (empty -> .)
+    EQUALS          reduce using rule 55 (empty -> .)
+    NOTEQUALS       reduce using rule 55 (empty -> .)
+    AND             reduce using rule 55 (empty -> .)
+    OR              reduce using rule 55 (empty -> .)
+    COMMA           reduce using rule 55 (empty -> .)
+    RPAREN          reduce using rule 55 (empty -> .)
+    PRINT           reduce using rule 55 (empty -> .)
+    IF              reduce using rule 55 (empty -> .)
+    FUNC            reduce using rule 55 (empty -> .)
+    LET             reduce using rule 55 (empty -> .)
+    VAR             reduce using rule 55 (empty -> .)
+    $end            reduce using rule 55 (empty -> .)
+    RBRACES         reduce using rule 55 (empty -> .)
+    RSQUAREBRACKET  reduce using rule 55 (empty -> .)
+    RETURN          reduce using rule 55 (empty -> .)
 
-    expression                     shift and go to state 63
+    expression                     shift and go to state 65
     type                           shift and go to state 25
-    empty                          shift and go to state 26
+    function_call                  shift and go to state 26
+    empty                          shift and go to state 27
 
-state 46
+state 47
 
     (40) expression -> expression OR . expression
     (31) expression -> . expression PLUS expression
@@ -1508,45 +1586,48 @@ state 46
     (43) expression -> . NOT expression
     (44) expression -> . VARIABLE
     (45) expression -> . type
-    (46) expression -> . empty
-    (47) type -> . BOOL
-    (48) type -> . DECIMAL
-    (49) type -> . WSTRING
-    (50) empty -> .
+    (46) expression -> . function_call
+    (47) expression -> . empty
+    (48) type -> . BOOL
+    (49) type -> . DECIMAL
+    (50) type -> . WSTRING
+    (51) function_call -> . VARIABLE LPAREN function_arguments RPAREN
+    (55) empty -> .
 
     LPAREN          shift and go to state 21
     NOT             shift and go to state 23
     VARIABLE        shift and go to state 24
-    BOOL            shift and go to state 27
-    DECIMAL         shift and go to state 28
-    WSTRING         shift and go to state 29
-    PLUS            reduce using rule 50 (empty -> .)
-    MINUS           reduce using rule 50 (empty -> .)
-    MULTIPLY        reduce using rule 50 (empty -> .)
-    DIVIDE          reduce using rule 50 (empty -> .)
-    GREATERTHAN     reduce using rule 50 (empty -> .)
-    LESSTHAN        reduce using rule 50 (empty -> .)
-    EQUALS          reduce using rule 50 (empty -> .)
-    NOTEQUALS       reduce using rule 50 (empty -> .)
-    AND             reduce using rule 50 (empty -> .)
-    OR              reduce using rule 50 (empty -> .)
-    COMMA           reduce using rule 50 (empty -> .)
-    RPAREN          reduce using rule 50 (empty -> .)
-    PRINT           reduce using rule 50 (empty -> .)
-    IF              reduce using rule 50 (empty -> .)
-    FUNC            reduce using rule 50 (empty -> .)
-    LET             reduce using rule 50 (empty -> .)
-    VAR             reduce using rule 50 (empty -> .)
-    $end            reduce using rule 50 (empty -> .)
-    RBRACES         reduce using rule 50 (empty -> .)
-    RSQUAREBRACKET  reduce using rule 50 (empty -> .)
-    RETURN          reduce using rule 50 (empty -> .)
+    BOOL            shift and go to state 28
+    DECIMAL         shift and go to state 29
+    WSTRING         shift and go to state 30
+    PLUS            reduce using rule 55 (empty -> .)
+    MINUS           reduce using rule 55 (empty -> .)
+    MULTIPLY        reduce using rule 55 (empty -> .)
+    DIVIDE          reduce using rule 55 (empty -> .)
+    GREATERTHAN     reduce using rule 55 (empty -> .)
+    LESSTHAN        reduce using rule 55 (empty -> .)
+    EQUALS          reduce using rule 55 (empty -> .)
+    NOTEQUALS       reduce using rule 55 (empty -> .)
+    AND             reduce using rule 55 (empty -> .)
+    OR              reduce using rule 55 (empty -> .)
+    COMMA           reduce using rule 55 (empty -> .)
+    RPAREN          reduce using rule 55 (empty -> .)
+    PRINT           reduce using rule 55 (empty -> .)
+    IF              reduce using rule 55 (empty -> .)
+    FUNC            reduce using rule 55 (empty -> .)
+    LET             reduce using rule 55 (empty -> .)
+    VAR             reduce using rule 55 (empty -> .)
+    $end            reduce using rule 55 (empty -> .)
+    RBRACES         reduce using rule 55 (empty -> .)
+    RSQUAREBRACKET  reduce using rule 55 (empty -> .)
+    RETURN          reduce using rule 55 (empty -> .)
 
-    expression                     shift and go to state 64
+    expression                     shift and go to state 66
     type                           shift and go to state 25
-    empty                          shift and go to state 26
+    function_call                  shift and go to state 26
+    empty                          shift and go to state 27
 
-state 47
+state 48
 
     (41) expression -> expression COMMA . expression
     (31) expression -> . expression PLUS expression
@@ -1564,45 +1645,48 @@ state 47
     (43) expression -> . NOT expression
     (44) expression -> . VARIABLE
     (45) expression -> . type
-    (46) expression -> . empty
-    (47) type -> . BOOL
-    (48) type -> . DECIMAL
-    (49) type -> . WSTRING
-    (50) empty -> .
+    (46) expression -> . function_call
+    (47) expression -> . empty
+    (48) type -> . BOOL
+    (49) type -> . DECIMAL
+    (50) type -> . WSTRING
+    (51) function_call -> . VARIABLE LPAREN function_arguments RPAREN
+    (55) empty -> .
 
     LPAREN          shift and go to state 21
     NOT             shift and go to state 23
     VARIABLE        shift and go to state 24
-    BOOL            shift and go to state 27
-    DECIMAL         shift and go to state 28
-    WSTRING         shift and go to state 29
-    PLUS            reduce using rule 50 (empty -> .)
-    MINUS           reduce using rule 50 (empty -> .)
-    MULTIPLY        reduce using rule 50 (empty -> .)
-    DIVIDE          reduce using rule 50 (empty -> .)
-    GREATERTHAN     reduce using rule 50 (empty -> .)
-    LESSTHAN        reduce using rule 50 (empty -> .)
-    EQUALS          reduce using rule 50 (empty -> .)
-    NOTEQUALS       reduce using rule 50 (empty -> .)
-    AND             reduce using rule 50 (empty -> .)
-    OR              reduce using rule 50 (empty -> .)
-    COMMA           reduce using rule 50 (empty -> .)
-    RPAREN          reduce using rule 50 (empty -> .)
-    PRINT           reduce using rule 50 (empty -> .)
-    IF              reduce using rule 50 (empty -> .)
-    FUNC            reduce using rule 50 (empty -> .)
-    LET             reduce using rule 50 (empty -> .)
-    VAR             reduce using rule 50 (empty -> .)
-    $end            reduce using rule 50 (empty -> .)
-    RBRACES         reduce using rule 50 (empty -> .)
-    RSQUAREBRACKET  reduce using rule 50 (empty -> .)
-    RETURN          reduce using rule 50 (empty -> .)
+    BOOL            shift and go to state 28
+    DECIMAL         shift and go to state 29
+    WSTRING         shift and go to state 30
+    PLUS            reduce using rule 55 (empty -> .)
+    MINUS           reduce using rule 55 (empty -> .)
+    MULTIPLY        reduce using rule 55 (empty -> .)
+    DIVIDE          reduce using rule 55 (empty -> .)
+    GREATERTHAN     reduce using rule 55 (empty -> .)
+    LESSTHAN        reduce using rule 55 (empty -> .)
+    EQUALS          reduce using rule 55 (empty -> .)
+    NOTEQUALS       reduce using rule 55 (empty -> .)
+    AND             reduce using rule 55 (empty -> .)
+    OR              reduce using rule 55 (empty -> .)
+    COMMA           reduce using rule 55 (empty -> .)
+    RPAREN          reduce using rule 55 (empty -> .)
+    PRINT           reduce using rule 55 (empty -> .)
+    IF              reduce using rule 55 (empty -> .)
+    FUNC            reduce using rule 55 (empty -> .)
+    LET             reduce using rule 55 (empty -> .)
+    VAR             reduce using rule 55 (empty -> .)
+    $end            reduce using rule 55 (empty -> .)
+    RBRACES         reduce using rule 55 (empty -> .)
+    RSQUAREBRACKET  reduce using rule 55 (empty -> .)
+    RETURN          reduce using rule 55 (empty -> .)
 
-    expression                     shift and go to state 65
+    expression                     shift and go to state 67
     type                           shift and go to state 25
-    empty                          shift and go to state 26
+    function_call                  shift and go to state 26
+    empty                          shift and go to state 27
 
-state 48
+state 49
 
     (43) expression -> NOT expression .
     (31) expression -> expression . PLUS expression
@@ -1638,17 +1722,17 @@ state 48
     RBRACES         reduce using rule 43 (expression -> NOT expression .)
     RSQUAREBRACKET  reduce using rule 43 (expression -> NOT expression .)
     RETURN          reduce using rule 43 (expression -> NOT expression .)
-    PLUS            shift and go to state 37
-    MINUS           shift and go to state 38
-    MULTIPLY        shift and go to state 39
-    DIVIDE          shift and go to state 40
-    GREATERTHAN     shift and go to state 41
-    LESSTHAN        shift and go to state 42
-    EQUALS          shift and go to state 43
-    NOTEQUALS       shift and go to state 44
-    AND             shift and go to state 45
-    OR              shift and go to state 46
-    COMMA           shift and go to state 47
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MULTIPLY        shift and go to state 40
+    DIVIDE          shift and go to state 41
+    GREATERTHAN     shift and go to state 42
+    LESSTHAN        shift and go to state 43
+    EQUALS          shift and go to state 44
+    NOTEQUALS       shift and go to state 45
+    AND             shift and go to state 46
+    OR              shift and go to state 47
+    COMMA           shift and go to state 48
 
   ! PLUS            [ reduce using rule 43 (expression -> NOT expression .) ]
   ! MINUS           [ reduce using rule 43 (expression -> NOT expression .) ]
@@ -1663,31 +1747,85 @@ state 48
   ! COMMA           [ reduce using rule 43 (expression -> NOT expression .) ]
 
 
-state 49
+state 50
+
+    (51) function_call -> VARIABLE LPAREN . function_arguments RPAREN
+    (52) function_arguments -> . function_arguments COMMA expression
+    (53) function_arguments -> . expression
+    (54) function_arguments -> . empty
+    (31) expression -> . expression PLUS expression
+    (32) expression -> . expression MINUS expression
+    (33) expression -> . expression MULTIPLY expression
+    (34) expression -> . expression DIVIDE expression
+    (35) expression -> . expression GREATERTHAN expression
+    (36) expression -> . expression LESSTHAN expression
+    (37) expression -> . expression EQUALS expression
+    (38) expression -> . expression NOTEQUALS expression
+    (39) expression -> . expression AND expression
+    (40) expression -> . expression OR expression
+    (41) expression -> . expression COMMA expression
+    (42) expression -> . LPAREN expression RPAREN
+    (43) expression -> . NOT expression
+    (44) expression -> . VARIABLE
+    (45) expression -> . type
+    (46) expression -> . function_call
+    (47) expression -> . empty
+    (55) empty -> .
+    (48) type -> . BOOL
+    (49) type -> . DECIMAL
+    (50) type -> . WSTRING
+    (51) function_call -> . VARIABLE LPAREN function_arguments RPAREN
+
+    LPAREN          shift and go to state 21
+    NOT             shift and go to state 23
+    VARIABLE        shift and go to state 24
+    RPAREN          reduce using rule 55 (empty -> .)
+    COMMA           reduce using rule 55 (empty -> .)
+    PLUS            reduce using rule 55 (empty -> .)
+    MINUS           reduce using rule 55 (empty -> .)
+    MULTIPLY        reduce using rule 55 (empty -> .)
+    DIVIDE          reduce using rule 55 (empty -> .)
+    GREATERTHAN     reduce using rule 55 (empty -> .)
+    LESSTHAN        reduce using rule 55 (empty -> .)
+    EQUALS          reduce using rule 55 (empty -> .)
+    NOTEQUALS       reduce using rule 55 (empty -> .)
+    AND             reduce using rule 55 (empty -> .)
+    OR              reduce using rule 55 (empty -> .)
+    BOOL            shift and go to state 28
+    DECIMAL         shift and go to state 29
+    WSTRING         shift and go to state 30
+
+    function_arguments             shift and go to state 68
+    expression                     shift and go to state 69
+    empty                          shift and go to state 70
+    type                           shift and go to state 25
+    function_call                  shift and go to state 26
+
+state 51
 
     (12) if_statement -> IF LPAREN expression RPAREN . LBRACES statements RBRACES
     (13) if_statement -> IF LPAREN expression RPAREN . LBRACES statements RBRACES ELSE LBRACES statements RBRACES
 
-    LBRACES         shift and go to state 66
+    LBRACES         shift and go to state 71
 
 
-state 50
+state 52
 
     (16) function_parameters -> VARIABLE . COLON data_type
 
-    COLON           shift and go to state 67
+    COLON           shift and go to state 72
 
 
-state 51
+state 53
 
     (14) function_declaration -> FUNC VARIABLE LPAREN function_parameters . RPAREN function_return_type LBRACES expression return_statement RBRACES
     (15) function_parameters -> function_parameters . COMMA VARIABLE COLON data_type
 
-    RPAREN          shift and go to state 68
-    COMMA           shift and go to state 69
+    RPAREN          shift and go to state 73
+    COMMA           shift and go to state 74
 
 
-state 52
+state 54
 
     (17) function_parameters -> empty .
 
@@ -1695,16 +1833,16 @@ state 52
     COMMA           reduce using rule 17 (function_parameters -> empty .)
 
 
-state 53
+state 55
 
     (9) assignment_statement -> variable_declarator VARIABLE COLON data_collection_type ASSIGN . collection_block
     (10) collection_block -> . LSQUAREBRACKET expression RSQUAREBRACKET
 
-    LSQUAREBRACKET  shift and go to state 71
+    LSQUAREBRACKET  shift and go to state 76
 
-    collection_block               shift and go to state 70
+    collection_block               shift and go to state 75
 
-state 54
+state 56
 
     (42) expression -> LPAREN expression RPAREN .
 
@@ -1731,7 +1869,7 @@ state 54
     RETURN          reduce using rule 42 (expression -> LPAREN expression RPAREN .)
 
 
-state 55
+state 57
 
     (31) expression -> expression PLUS expression .
     (31) expression -> expression . PLUS expression
@@ -1767,17 +1905,17 @@ state 55
     RBRACES         reduce using rule 31 (expression -> expression PLUS expression .)
     RSQUAREBRACKET  reduce using rule 31 (expression -> expression PLUS expression .)
     RETURN          reduce using rule 31 (expression -> expression PLUS expression .)
-    PLUS            shift and go to state 37
-    MINUS           shift and go to state 38
-    MULTIPLY        shift and go to state 39
-    DIVIDE          shift and go to state 40
-    GREATERTHAN     shift and go to state 41
-    LESSTHAN        shift and go to state 42
-    EQUALS          shift and go to state 43
-    NOTEQUALS       shift and go to state 44
-    AND             shift and go to state 45
-    OR              shift and go to state 46
-    COMMA           shift and go to state 47
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MULTIPLY        shift and go to state 40
+    DIVIDE          shift and go to state 41
+    GREATERTHAN     shift and go to state 42
+    LESSTHAN        shift and go to state 43
+    EQUALS          shift and go to state 44
+    NOTEQUALS       shift and go to state 45
+    AND             shift and go to state 46
+    OR              shift and go to state 47
+    COMMA           shift and go to state 48
 
   ! PLUS            [ reduce using rule 31 (expression -> expression PLUS expression .) ]
   ! MINUS           [ reduce using rule 31 (expression -> expression PLUS expression .) ]
@@ -1792,7 +1930,7 @@ state 55
   ! COMMA           [ reduce using rule 31 (expression -> expression PLUS expression .) ]
 
 
-state 56
+state 58
 
     (32) expression -> expression MINUS expression .
     (31) expression -> expression . PLUS expression
@@ -1828,17 +1966,17 @@ state 56
     RBRACES         reduce using rule 32 (expression -> expression MINUS expression .)
     RSQUAREBRACKET  reduce using rule 32 (expression -> expression MINUS expression .)
     RETURN          reduce using rule 32 (expression -> expression MINUS expression .)
-    PLUS            shift and go to state 37
-    MINUS           shift and go to state 38
-    MULTIPLY        shift and go to state 39
-    DIVIDE          shift and go to state 40
-    GREATERTHAN     shift and go to state 41
-    LESSTHAN        shift and go to state 42
-    EQUALS          shift and go to state 43
-    NOTEQUALS       shift and go to state 44
-    AND             shift and go to state 45
-    OR              shift and go to state 46
-    COMMA           shift and go to state 47
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MULTIPLY        shift and go to state 40
+    DIVIDE          shift and go to state 41
+    GREATERTHAN     shift and go to state 42
+    LESSTHAN        shift and go to state 43
+    EQUALS          shift and go to state 44
+    NOTEQUALS       shift and go to state 45
+    AND             shift and go to state 46
+    OR              shift and go to state 47
+    COMMA           shift and go to state 48
 
   ! PLUS            [ reduce using rule 32 (expression -> expression MINUS expression .) ]
   ! MINUS           [ reduce using rule 32 (expression -> expression MINUS expression .) ]
@@ -1853,7 +1991,7 @@ state 56
   ! COMMA           [ reduce using rule 32 (expression -> expression MINUS expression .) ]
 
 
-state 57
+state 59
 
     (33) expression -> expression MULTIPLY expression .
     (31) expression -> expression . PLUS expression
@@ -1889,17 +2027,17 @@ state 57
     RBRACES         reduce using rule 33 (expression -> expression MULTIPLY expression .)
     RSQUAREBRACKET  reduce using rule 33 (expression -> expression MULTIPLY expression .)
     RETURN          reduce using rule 33 (expression -> expression MULTIPLY expression .)
-    PLUS            shift and go to state 37
-    MINUS           shift and go to state 38
-    MULTIPLY        shift and go to state 39
-    DIVIDE          shift and go to state 40
-    GREATERTHAN     shift and go to state 41
-    LESSTHAN        shift and go to state 42
-    EQUALS          shift and go to state 43
-    NOTEQUALS       shift and go to state 44
-    AND             shift and go to state 45
-    OR              shift and go to state 46
-    COMMA           shift and go to state 47
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MULTIPLY        shift and go to state 40
+    DIVIDE          shift and go to state 41
+    GREATERTHAN     shift and go to state 42
+    LESSTHAN        shift and go to state 43
+    EQUALS          shift and go to state 44
+    NOTEQUALS       shift and go to state 45
+    AND             shift and go to state 46
+    OR              shift and go to state 47
+    COMMA           shift and go to state 48
 
   ! PLUS            [ reduce using rule 33 (expression -> expression MULTIPLY expression .) ]
   ! MINUS           [ reduce using rule 33 (expression -> expression MULTIPLY expression .) ]
@@ -1914,7 +2052,7 @@ state 57
   ! COMMA           [ reduce using rule 33 (expression -> expression MULTIPLY expression .) ]
 
 
-state 58
+state 60
 
     (34) expression -> expression DIVIDE expression .
     (31) expression -> expression . PLUS expression
@@ -1950,17 +2088,17 @@ state 58
     RBRACES         reduce using rule 34 (expression -> expression DIVIDE expression .)
     RSQUAREBRACKET  reduce using rule 34 (expression -> expression DIVIDE expression .)
     RETURN          reduce using rule 34 (expression -> expression DIVIDE expression .)
-    PLUS            shift and go to state 37
-    MINUS           shift and go to state 38
-    MULTIPLY        shift and go to state 39
-    DIVIDE          shift and go to state 40
-    GREATERTHAN     shift and go to state 41
-    LESSTHAN        shift and go to state 42
-    EQUALS          shift and go to state 43
-    NOTEQUALS       shift and go to state 44
-    AND             shift and go to state 45
-    OR              shift and go to state 46
-    COMMA           shift and go to state 47
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MULTIPLY        shift and go to state 40
+    DIVIDE          shift and go to state 41
+    GREATERTHAN     shift and go to state 42
+    LESSTHAN        shift and go to state 43
+    EQUALS          shift and go to state 44
+    NOTEQUALS       shift and go to state 45
+    AND             shift and go to state 46
+    OR              shift and go to state 47
+    COMMA           shift and go to state 48
 
   ! PLUS            [ reduce using rule 34 (expression -> expression DIVIDE expression .) ]
   ! MINUS           [ reduce using rule 34 (expression -> expression DIVIDE expression .) ]
@@ -1975,7 +2113,7 @@ state 58
   ! COMMA           [ reduce using rule 34 (expression -> expression DIVIDE expression .) ]
 
 
-state 59
+state 61
 
     (35) expression -> expression GREATERTHAN expression .
     (31) expression -> expression . PLUS expression
@@ -2011,17 +2149,17 @@ state 59
     RBRACES         reduce using rule 35 (expression -> expression GREATERTHAN expression .)
     RSQUAREBRACKET  reduce using rule 35 (expression -> expression GREATERTHAN expression .)
     RETURN          reduce using rule 35 (expression -> expression GREATERTHAN expression .)
-    PLUS            shift and go to state 37
-    MINUS           shift and go to state 38
-    MULTIPLY        shift and go to state 39
-    DIVIDE          shift and go to state 40
-    GREATERTHAN     shift and go to state 41
-    LESSTHAN        shift and go to state 42
-    EQUALS          shift and go to state 43
-    NOTEQUALS       shift and go to state 44
-    AND             shift and go to state 45
-    OR              shift and go to state 46
-    COMMA           shift and go to state 47
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MULTIPLY        shift and go to state 40
+    DIVIDE          shift and go to state 41
+    GREATERTHAN     shift and go to state 42
+    LESSTHAN        shift and go to state 43
+    EQUALS          shift and go to state 44
+    NOTEQUALS       shift and go to state 45
+    AND             shift and go to state 46
+    OR              shift and go to state 47
+    COMMA           shift and go to state 48
 
   ! PLUS            [ reduce using rule 35 (expression -> expression GREATERTHAN expression .) ]
   ! MINUS           [ reduce using rule 35 (expression -> expression GREATERTHAN expression .) ]
@@ -2036,7 +2174,7 @@ state 59
   ! COMMA           [ reduce using rule 35 (expression -> expression GREATERTHAN expression .) ]
 
 
-state 60
+state 62
 
     (36) expression -> expression LESSTHAN expression .
     (31) expression -> expression . PLUS expression
@@ -2072,17 +2210,17 @@ state 60
     RBRACES         reduce using rule 36 (expression -> expression LESSTHAN expression .)
     RSQUAREBRACKET  reduce using rule 36 (expression -> expression LESSTHAN expression .)
     RETURN          reduce using rule 36 (expression -> expression LESSTHAN expression .)
-    PLUS            shift and go to state 37
-    MINUS           shift and go to state 38
-    MULTIPLY        shift and go to state 39
-    DIVIDE          shift and go to state 40
-    GREATERTHAN     shift and go to state 41
-    LESSTHAN        shift and go to state 42
-    EQUALS          shift and go to state 43
-    NOTEQUALS       shift and go to state 44
-    AND             shift and go to state 45
-    OR              shift and go to state 46
-    COMMA           shift and go to state 47
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MULTIPLY        shift and go to state 40
+    DIVIDE          shift and go to state 41
+    GREATERTHAN     shift and go to state 42
+    LESSTHAN        shift and go to state 43
+    EQUALS          shift and go to state 44
+    NOTEQUALS       shift and go to state 45
+    AND             shift and go to state 46
+    OR              shift and go to state 47
+    COMMA           shift and go to state 48
 
   ! PLUS            [ reduce using rule 36 (expression -> expression LESSTHAN expression .) ]
   ! MINUS           [ reduce using rule 36 (expression -> expression LESSTHAN expression .) ]
@@ -2097,7 +2235,7 @@ state 60
   ! COMMA           [ reduce using rule 36 (expression -> expression LESSTHAN expression .) ]
 
 
-state 61
+state 63
 
     (37) expression -> expression EQUALS expression .
     (31) expression -> expression . PLUS expression
@@ -2133,17 +2271,17 @@ state 61
     RBRACES         reduce using rule 37 (expression -> expression EQUALS expression .)
     RSQUAREBRACKET  reduce using rule 37 (expression -> expression EQUALS expression .)
     RETURN          reduce using rule 37 (expression -> expression EQUALS expression .)
-    PLUS            shift and go to state 37
-    MINUS           shift and go to state 38
-    MULTIPLY        shift and go to state 39
-    DIVIDE          shift and go to state 40
-    GREATERTHAN     shift and go to state 41
-    LESSTHAN        shift and go to state 42
-    EQUALS          shift and go to state 43
-    NOTEQUALS       shift and go to state 44
-    AND             shift and go to state 45
-    OR              shift and go to state 46
-    COMMA           shift and go to state 47
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MULTIPLY        shift and go to state 40
+    DIVIDE          shift and go to state 41
+    GREATERTHAN     shift and go to state 42
+    LESSTHAN        shift and go to state 43
+    EQUALS          shift and go to state 44
+    NOTEQUALS       shift and go to state 45
+    AND             shift and go to state 46
+    OR              shift and go to state 47
+    COMMA           shift and go to state 48
 
   ! PLUS            [ reduce using rule 37 (expression -> expression EQUALS expression .) ]
   ! MINUS           [ reduce using rule 37 (expression -> expression EQUALS expression .) ]
@@ -2158,7 +2296,7 @@ state 61
   ! COMMA           [ reduce using rule 37 (expression -> expression EQUALS expression .) ]
 
 
-state 62
+state 64
 
     (38) expression -> expression NOTEQUALS expression .
     (31) expression -> expression . PLUS expression
@@ -2194,17 +2332,17 @@ state 62
     RBRACES         reduce using rule 38 (expression -> expression NOTEQUALS expression .)
     RSQUAREBRACKET  reduce using rule 38 (expression -> expression NOTEQUALS expression .)
     RETURN          reduce using rule 38 (expression -> expression NOTEQUALS expression .)
-    PLUS            shift and go to state 37
-    MINUS           shift and go to state 38
-    MULTIPLY        shift and go to state 39
-    DIVIDE          shift and go to state 40
-    GREATERTHAN     shift and go to state 41
-    LESSTHAN        shift and go to state 42
-    EQUALS          shift and go to state 43
-    NOTEQUALS       shift and go to state 44
-    AND             shift and go to state 45
-    OR              shift and go to state 46
-    COMMA           shift and go to state 47
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MULTIPLY        shift and go to state 40
+    DIVIDE          shift and go to state 41
+    GREATERTHAN     shift and go to state 42
+    LESSTHAN        shift and go to state 43
+    EQUALS          shift and go to state 44
+    NOTEQUALS       shift and go to state 45
+    AND             shift and go to state 46
+    OR              shift and go to state 47
+    COMMA           shift and go to state 48
 
   ! PLUS            [ reduce using rule 38 (expression -> expression NOTEQUALS expression .) ]
   ! MINUS           [ reduce using rule 38 (expression -> expression NOTEQUALS expression .) ]
@@ -2219,7 +2357,7 @@ state 62
   ! COMMA           [ reduce using rule 38 (expression -> expression NOTEQUALS expression .) ]
 
 
-state 63
+state 65
 
     (39) expression -> expression AND expression .
     (31) expression -> expression . PLUS expression
@@ -2255,17 +2393,17 @@ state 63
     RBRACES         reduce using rule 39 (expression -> expression AND expression .)
     RSQUAREBRACKET  reduce using rule 39 (expression -> expression AND expression .)
     RETURN          reduce using rule 39 (expression -> expression AND expression .)
-    PLUS            shift and go to state 37
-    MINUS           shift and go to state 38
-    MULTIPLY        shift and go to state 39
-    DIVIDE          shift and go to state 40
-    GREATERTHAN     shift and go to state 41
-    LESSTHAN        shift and go to state 42
-    EQUALS          shift and go to state 43
-    NOTEQUALS       shift and go to state 44
-    AND             shift and go to state 45
-    OR              shift and go to state 46
-    COMMA           shift and go to state 47
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MULTIPLY        shift and go to state 40
+    DIVIDE          shift and go to state 41
+    GREATERTHAN     shift and go to state 42
+    LESSTHAN        shift and go to state 43
+    EQUALS          shift and go to state 44
+    NOTEQUALS       shift and go to state 45
+    AND             shift and go to state 46
+    OR              shift and go to state 47
+    COMMA           shift and go to state 48
 
   ! PLUS            [ reduce using rule 39 (expression -> expression AND expression .) ]
   ! MINUS           [ reduce using rule 39 (expression -> expression AND expression .) ]
@@ -2280,7 +2418,7 @@ state 63
   ! COMMA           [ reduce using rule 39 (expression -> expression AND expression .) ]
 
 
-state 64
+state 66
 
     (40) expression -> expression OR expression .
     (31) expression -> expression . PLUS expression
@@ -2316,17 +2454,17 @@ state 64
     RBRACES         reduce using rule 40 (expression -> expression OR expression .)
     RSQUAREBRACKET  reduce using rule 40 (expression -> expression OR expression .)
     RETURN          reduce using rule 40 (expression -> expression OR expression .)
-    PLUS            shift and go to state 37
-    MINUS           shift and go to state 38
-    MULTIPLY        shift and go to state 39
-    DIVIDE          shift and go to state 40
-    GREATERTHAN     shift and go to state 41
-    LESSTHAN        shift and go to state 42
-    EQUALS          shift and go to state 43
-    NOTEQUALS       shift and go to state 44
-    AND             shift and go to state 45
-    OR              shift and go to state 46
-    COMMA           shift and go to state 47
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MULTIPLY        shift and go to state 40
+    DIVIDE          shift and go to state 41
+    GREATERTHAN     shift and go to state 42
+    LESSTHAN        shift and go to state 43
+    EQUALS          shift and go to state 44
+    NOTEQUALS       shift and go to state 45
+    AND             shift and go to state 46
+    OR              shift and go to state 47
+    COMMA           shift and go to state 48
 
   ! PLUS            [ reduce using rule 40 (expression -> expression OR expression .) ]
   ! MINUS           [ reduce using rule 40 (expression -> expression OR expression .) ]
@@ -2341,7 +2479,7 @@ state 64
   ! COMMA           [ reduce using rule 40 (expression -> expression OR expression .) ]
 
 
-state 65
+state 67
 
     (41) expression -> expression COMMA expression .
     (31) expression -> expression . PLUS expression
@@ -2377,17 +2515,17 @@ state 65
     RBRACES         reduce using rule 41 (expression -> expression COMMA expression .)
     RSQUAREBRACKET  reduce using rule 41 (expression -> expression COMMA expression .)
     RETURN          reduce using rule 41 (expression -> expression COMMA expression .)
-    PLUS            shift and go to state 37
-    MINUS           shift and go to state 38
-    MULTIPLY        shift and go to state 39
-    DIVIDE          shift and go to state 40
-    GREATERTHAN     shift and go to state 41
-    LESSTHAN        shift and go to state 42
-    EQUALS          shift and go to state 43
-    NOTEQUALS       shift and go to state 44
-    AND             shift and go to state 45
-    OR              shift and go to state 46
-    COMMA           shift and go to state 47
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MULTIPLY        shift and go to state 40
+    DIVIDE          shift and go to state 41
+    GREATERTHAN     shift and go to state 42
+    LESSTHAN        shift and go to state 43
+    EQUALS          shift and go to state 44
+    NOTEQUALS       shift and go to state 45
+    AND             shift and go to state 46
+    OR              shift and go to state 47
+    COMMA           shift and go to state 48
 
   ! PLUS            [ reduce using rule 41 (expression -> expression COMMA expression .) ]
   ! MINUS           [ reduce using rule 41 (expression -> expression COMMA expression .) ]
@@ -2402,7 +2540,72 @@ state 65
   ! COMMA           [ reduce using rule 41 (expression -> expression COMMA expression .) ]
 
 
-state 66
+state 68
+
+    (51) function_call -> VARIABLE LPAREN function_arguments . RPAREN
+    (52) function_arguments -> function_arguments . COMMA expression
+
+    RPAREN          shift and go to state 77
+    COMMA           shift and go to state 78
+
+
+state 69
+
+    (53) function_arguments -> expression .
+    (31) expression -> expression . PLUS expression
+    (32) expression -> expression . MINUS expression
+    (33) expression -> expression . MULTIPLY expression
+    (34) expression -> expression . DIVIDE expression
+    (35) expression -> expression . GREATERTHAN expression
+    (36) expression -> expression . LESSTHAN expression
+    (37) expression -> expression . EQUALS expression
+    (38) expression -> expression . NOTEQUALS expression
+    (39) expression -> expression . AND expression
+    (40) expression -> expression . OR expression
+    (41) expression -> expression . COMMA expression
+
+  ! shift/reduce conflict for COMMA resolved as shift
+    RPAREN          reduce using rule 53 (function_arguments -> expression .)
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MULTIPLY        shift and go to state 40
+    DIVIDE          shift and go to state 41
+    GREATERTHAN     shift and go to state 42
+    LESSTHAN        shift and go to state 43
+    EQUALS          shift and go to state 44
+    NOTEQUALS       shift and go to state 45
+    AND             shift and go to state 46
+    OR              shift and go to state 47
+    COMMA           shift and go to state 48
+
+  ! COMMA           [ reduce using rule 53 (function_arguments -> expression .) ]
+
+
+state 70
+
+    (54) function_arguments -> empty .
+    (47) expression -> empty .
+
+  ! reduce/reduce conflict for COMMA resolved using rule 47 (expression -> empty .)
+  ! reduce/reduce conflict for RPAREN resolved using rule 47 (expression -> empty .)
+    PLUS            reduce using rule 47 (expression -> empty .)
+    MINUS           reduce using rule 47 (expression -> empty .)
+    MULTIPLY        reduce using rule 47 (expression -> empty .)
+    DIVIDE          reduce using rule 47 (expression -> empty .)
+    GREATERTHAN     reduce using rule 47 (expression -> empty .)
+    LESSTHAN        reduce using rule 47 (expression -> empty .)
+    EQUALS          reduce using rule 47 (expression -> empty .)
+    NOTEQUALS       reduce using rule 47 (expression -> empty .)
+    AND             reduce using rule 47 (expression -> empty .)
+    OR              reduce using rule 47 (expression -> empty .)
+    COMMA           reduce using rule 47 (expression -> empty .)
+    RPAREN          reduce using rule 47 (expression -> empty .)
+
+  ! RPAREN          [ reduce using rule 54 (function_arguments -> empty .) ]
+  ! COMMA           [ reduce using rule 54 (function_arguments -> empty .) ]
+
+
+state 71
 
     (12) if_statement -> IF LPAREN expression RPAREN LBRACES . statements RBRACES
     (13) if_statement -> IF LPAREN expression RPAREN LBRACES . statements RBRACES ELSE LBRACES statements RBRACES
@@ -2427,7 +2630,7 @@ state 66
     LET             shift and go to state 12
     VAR             shift and go to state 13
 
-    statements                     shift and go to state 72
+    statements                     shift and go to state 79
     statement                      shift and go to state 3
     assignment_statement           shift and go to state 4
     print_statement                shift and go to state 5
@@ -2435,7 +2638,7 @@ state 66
     function_declaration           shift and go to state 7
     variable_declarator            shift and go to state 8
 
-state 67
+state 72
 
     (16) function_parameters -> VARIABLE COLON . data_type
     (23) data_type -> . INTEGER
@@ -2445,36 +2648,36 @@ state 67
     (27) data_type -> . FLOAT
     (28) data_type -> . INT
 
-    INTEGER         shift and go to state 74
-    STRING          shift and go to state 75
-    BOOLEAN         shift and go to state 76
-    DOUBLE          shift and go to state 77
-    FLOAT           shift and go to state 78
-    INT             shift and go to state 79
+    INTEGER         shift and go to state 81
+    STRING          shift and go to state 82
+    BOOLEAN         shift and go to state 83
+    DOUBLE          shift and go to state 84
+    FLOAT           shift and go to state 85
+    INT             shift and go to state 86
 
-    data_type                      shift and go to state 73
+    data_type                      shift and go to state 80
 
-state 68
+state 73
 
     (14) function_declaration -> FUNC VARIABLE LPAREN function_parameters RPAREN . function_return_type LBRACES expression return_statement RBRACES
     (18) function_return_type -> . ARROW data_type
     (19) function_return_type -> . empty
-    (50) empty -> .
+    (55) empty -> .
 
-    ARROW           shift and go to state 81
-    LBRACES         reduce using rule 50 (empty -> .)
+    ARROW           shift and go to state 88
+    LBRACES         reduce using rule 55 (empty -> .)
 
-    function_return_type           shift and go to state 80
-    empty                          shift and go to state 82
+    function_return_type           shift and go to state 87
+    empty                          shift and go to state 89
 
-state 69
+state 74
 
     (15) function_parameters -> function_parameters COMMA . VARIABLE COLON data_type
 
-    VARIABLE        shift and go to state 83
+    VARIABLE        shift and go to state 90
 
 
-state 70
+state 75
 
     (9) assignment_statement -> variable_declarator VARIABLE COLON data_collection_type ASSIGN collection_block .
 
@@ -2487,7 +2690,7 @@ state 70
     RBRACES         reduce using rule 9 (assignment_statement -> variable_declarator VARIABLE COLON data_collection_type ASSIGN collection_block .)
 
 
-state 71
+state 76
 
     (10) collection_block -> LSQUAREBRACKET . expression RSQUAREBRACKET
     (31) expression -> . expression PLUS expression
@@ -2505,36 +2708,116 @@ state 71
     (43) expression -> . NOT expression
     (44) expression -> . VARIABLE
     (45) expression -> . type
-    (46) expression -> . empty
-    (47) type -> . BOOL
-    (48) type -> . DECIMAL
-    (49) type -> . WSTRING
-    (50) empty -> .
+    (46) expression -> . function_call
+    (47) expression -> . empty
+    (48) type -> . BOOL
+    (49) type -> . DECIMAL
+    (50) type -> . WSTRING
+    (51) function_call -> . VARIABLE LPAREN function_arguments RPAREN
+    (55) empty -> .
 
     LPAREN          shift and go to state 21
     NOT             shift and go to state 23
     VARIABLE        shift and go to state 24
-    BOOL            shift and go to state 27
-    DECIMAL         shift and go to state 28
-    WSTRING         shift and go to state 29
-    RSQUAREBRACKET  reduce using rule 50 (empty -> .)
-    PLUS            reduce using rule 50 (empty -> .)
-    MINUS           reduce using rule 50 (empty -> .)
-    MULTIPLY        reduce using rule 50 (empty -> .)
-    DIVIDE          reduce using rule 50 (empty -> .)
-    GREATERTHAN     reduce using rule 50 (empty -> .)
-    LESSTHAN        reduce using rule 50 (empty -> .)
-    EQUALS          reduce using rule 50 (empty -> .)
-    NOTEQUALS       reduce using rule 50 (empty -> .)
-    AND             reduce using rule 50 (empty -> .)
-    OR              reduce using rule 50 (empty -> .)
-    COMMA           reduce using rule 50 (empty -> .)
+    BOOL            shift and go to state 28
+    DECIMAL         shift and go to state 29
+    WSTRING         shift and go to state 30
+    RSQUAREBRACKET  reduce using rule 55 (empty -> .)
+    PLUS            reduce using rule 55 (empty -> .)
+    MINUS           reduce using rule 55 (empty -> .)
+    MULTIPLY        reduce using rule 55 (empty -> .)
+    DIVIDE          reduce using rule 55 (empty -> .)
+    GREATERTHAN     reduce using rule 55 (empty -> .)
+    LESSTHAN        reduce using rule 55 (empty -> .)
+    EQUALS          reduce using rule 55 (empty -> .)
+    NOTEQUALS       reduce using rule 55 (empty -> .)
+    AND             reduce using rule 55 (empty -> .)
+    OR              reduce using rule 55 (empty -> .)
+    COMMA           reduce using rule 55 (empty -> .)
 
-    expression                     shift and go to state 84
+    expression                     shift and go to state 91
     type                           shift and go to state 25
-    empty                          shift and go to state 26
+    function_call                  shift and go to state 26
+    empty                          shift and go to state 27
 
-state 72
+state 77
+
+    (51) function_call -> VARIABLE LPAREN function_arguments RPAREN .
+
+    RPAREN          reduce using rule 51 (function_call -> VARIABLE LPAREN function_arguments RPAREN .)
+    PLUS            reduce using rule 51 (function_call -> VARIABLE LPAREN function_arguments RPAREN .)
+    MINUS           reduce using rule 51 (function_call -> VARIABLE LPAREN function_arguments RPAREN .)
+    MULTIPLY        reduce using rule 51 (function_call -> VARIABLE LPAREN function_arguments RPAREN .)
+    DIVIDE          reduce using rule 51 (function_call -> VARIABLE LPAREN function_arguments RPAREN .)
+    GREATERTHAN     reduce using rule 51 (function_call -> VARIABLE LPAREN function_arguments RPAREN .)
+    LESSTHAN        reduce using rule 51 (function_call -> VARIABLE LPAREN function_arguments RPAREN .)
+    EQUALS          reduce using rule 51 (function_call -> VARIABLE LPAREN function_arguments RPAREN .)
+    NOTEQUALS       reduce using rule 51 (function_call -> VARIABLE LPAREN function_arguments RPAREN .)
+    AND             reduce using rule 51 (function_call -> VARIABLE LPAREN function_arguments RPAREN .)
+    OR              reduce using rule 51 (function_call -> VARIABLE LPAREN function_arguments RPAREN .)
+    COMMA           reduce using rule 51 (function_call -> VARIABLE LPAREN function_arguments RPAREN .)
+    PRINT           reduce using rule 51 (function_call -> VARIABLE LPAREN function_arguments RPAREN .)
+    IF              reduce using rule 51 (function_call -> VARIABLE LPAREN function_arguments RPAREN .)
+    FUNC            reduce using rule 51 (function_call -> VARIABLE LPAREN function_arguments RPAREN .)
+    LET             reduce using rule 51 (function_call -> VARIABLE LPAREN function_arguments RPAREN .)
+    VAR             reduce using rule 51 (function_call -> VARIABLE LPAREN function_arguments RPAREN .)
+    $end            reduce using rule 51 (function_call -> VARIABLE LPAREN function_arguments RPAREN .)
+    RBRACES         reduce using rule 51 (function_call -> VARIABLE LPAREN function_arguments RPAREN .)
+    RSQUAREBRACKET  reduce using rule 51 (function_call -> VARIABLE LPAREN function_arguments RPAREN .)
+    RETURN          reduce using rule 51 (function_call -> VARIABLE LPAREN function_arguments RPAREN .)
+
+
+state 78
+
+    (52) function_arguments -> function_arguments COMMA . expression
+    (31) expression -> . expression PLUS expression
+    (32) expression -> . expression MINUS expression
+    (33) expression -> . expression MULTIPLY expression
+    (34) expression -> . expression DIVIDE expression
+    (35) expression -> . expression GREATERTHAN expression
+    (36) expression -> . expression LESSTHAN expression
+    (37) expression -> . expression EQUALS expression
+    (38) expression -> . expression NOTEQUALS expression
+    (39) expression -> . expression AND expression
+    (40) expression -> . expression OR expression
+    (41) expression -> . expression COMMA expression
+    (42) expression -> . LPAREN expression RPAREN
+    (43) expression -> . NOT expression
+    (44) expression -> . VARIABLE
+    (45) expression -> . type
+    (46) expression -> . function_call
+    (47) expression -> . empty
+    (48) type -> . BOOL
+    (49) type -> . DECIMAL
+    (50) type -> . WSTRING
+    (51) function_call -> . VARIABLE LPAREN function_arguments RPAREN
+    (55) empty -> .
+
+    LPAREN          shift and go to state 21
+    NOT             shift and go to state 23
+    VARIABLE        shift and go to state 24
+    BOOL            shift and go to state 28
+    DECIMAL         shift and go to state 29
+    WSTRING         shift and go to state 30
+    PLUS            reduce using rule 55 (empty -> .)
+    MINUS           reduce using rule 55 (empty -> .)
+    MULTIPLY        reduce using rule 55 (empty -> .)
+    DIVIDE          reduce using rule 55 (empty -> .)
+    GREATERTHAN     reduce using rule 55 (empty -> .)
+    LESSTHAN        reduce using rule 55 (empty -> .)
+    EQUALS          reduce using rule 55 (empty -> .)
+    NOTEQUALS       reduce using rule 55 (empty -> .)
+    AND             reduce using rule 55 (empty -> .)
+    OR              reduce using rule 55 (empty -> .)
+    COMMA           reduce using rule 55 (empty -> .)
+    RPAREN          reduce using rule 55 (empty -> .)
+
+    expression                     shift and go to state 92
+    type                           shift and go to state 25
+    function_call                  shift and go to state 26
+    empty                          shift and go to state 27
+
+state 79
 
     (12) if_statement -> IF LPAREN expression RPAREN LBRACES statements . RBRACES
     (13) if_statement -> IF LPAREN expression RPAREN LBRACES statements . RBRACES ELSE LBRACES statements RBRACES
@@ -2552,7 +2835,7 @@ state 72
     (21) variable_declarator -> . LET
     (22) variable_declarator -> . VAR
 
-    RBRACES         shift and go to state 85
+    RBRACES         shift and go to state 93
     PRINT           shift and go to state 9
     IF              shift and go to state 10
     FUNC            shift and go to state 11
@@ -2566,7 +2849,7 @@ state 72
     function_declaration           shift and go to state 7
     variable_declarator            shift and go to state 8
 
-state 73
+state 80
 
     (16) function_parameters -> VARIABLE COLON data_type .
 
@@ -2574,7 +2857,7 @@ state 73
     COMMA           reduce using rule 16 (function_parameters -> VARIABLE COLON data_type .)
 
 
-state 74
+state 81
 
     (23) data_type -> INTEGER .
 
@@ -2583,7 +2866,7 @@ state 74
     LBRACES         reduce using rule 23 (data_type -> INTEGER .)
 
 
-state 75
+state 82
 
     (24) data_type -> STRING .
 
@@ -2592,7 +2875,7 @@ state 75
     LBRACES         reduce using rule 24 (data_type -> STRING .)
 
 
-state 76
+state 83
 
     (25) data_type -> BOOLEAN .
 
@@ -2601,7 +2884,7 @@ state 76
     LBRACES         reduce using rule 25 (data_type -> BOOLEAN .)
 
 
-state 77
+state 84
 
     (26) data_type -> DOUBLE .
 
@@ -2610,7 +2893,7 @@ state 77
     LBRACES         reduce using rule 26 (data_type -> DOUBLE .)
 
 
-state 78
+state 85
 
     (27) data_type -> FLOAT .
 
@@ -2619,7 +2902,7 @@ state 78
     LBRACES         reduce using rule 27 (data_type -> FLOAT .)
 
 
-state 79
+state 86
 
     (28) data_type -> INT .
 
@@ -2628,14 +2911,14 @@ state 79
     LBRACES         reduce using rule 28 (data_type -> INT .)
 
 
-state 80
+state 87
 
     (14) function_declaration -> FUNC VARIABLE LPAREN function_parameters RPAREN function_return_type . LBRACES expression return_statement RBRACES
 
-    LBRACES         shift and go to state 86
+    LBRACES         shift and go to state 94
 
 
-state 81
+state 88
 
     (18) function_return_type -> ARROW . data_type
     (23) data_type -> . INTEGER
@@ -2645,30 +2928,30 @@ state 81
     (27) data_type -> . FLOAT
     (28) data_type -> . INT
 
-    INTEGER         shift and go to state 74
-    STRING          shift and go to state 75
-    BOOLEAN         shift and go to state 76
-    DOUBLE          shift and go to state 77
-    FLOAT           shift and go to state 78
-    INT             shift and go to state 79
+    INTEGER         shift and go to state 81
+    STRING          shift and go to state 82
+    BOOLEAN         shift and go to state 83
+    DOUBLE          shift and go to state 84
+    FLOAT           shift and go to state 85
+    INT             shift and go to state 86
 
-    data_type                      shift and go to state 87
+    data_type                      shift and go to state 95
 
-state 82
+state 89
 
     (19) function_return_type -> empty .
 
     LBRACES         reduce using rule 19 (function_return_type -> empty .)
 
 
-state 83
+state 90
 
     (15) function_parameters -> function_parameters COMMA VARIABLE . COLON data_type
 
-    COLON           shift and go to state 88
+    COLON           shift and go to state 96
 
 
-state 84
+state 91
 
     (10) collection_block -> LSQUAREBRACKET expression . RSQUAREBRACKET
     (31) expression -> expression . PLUS expression
@@ -2683,21 +2966,53 @@ state 84
     (40) expression -> expression . OR expression
     (41) expression -> expression . COMMA expression
 
-    RSQUAREBRACKET  shift and go to state 89
-    PLUS            shift and go to state 37
-    MINUS           shift and go to state 38
-    MULTIPLY        shift and go to state 39
-    DIVIDE          shift and go to state 40
-    GREATERTHAN     shift and go to state 41
-    LESSTHAN        shift and go to state 42
-    EQUALS          shift and go to state 43
-    NOTEQUALS       shift and go to state 44
-    AND             shift and go to state 45
-    OR              shift and go to state 46
-    COMMA           shift and go to state 47
+    RSQUAREBRACKET  shift and go to state 97
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MULTIPLY        shift and go to state 40
+    DIVIDE          shift and go to state 41
+    GREATERTHAN     shift and go to state 42
+    LESSTHAN        shift and go to state 43
+    EQUALS          shift and go to state 44
+    NOTEQUALS       shift and go to state 45
+    AND             shift and go to state 46
+    OR              shift and go to state 47
+    COMMA           shift and go to state 48
 
 
-state 85
+state 92
+
+    (52) function_arguments -> function_arguments COMMA expression .
+    (31) expression -> expression . PLUS expression
+    (32) expression -> expression . MINUS expression
+    (33) expression -> expression . MULTIPLY expression
+    (34) expression -> expression . DIVIDE expression
+    (35) expression -> expression . GREATERTHAN expression
+    (36) expression -> expression . LESSTHAN expression
+    (37) expression -> expression . EQUALS expression
+    (38) expression -> expression . NOTEQUALS expression
+    (39) expression -> expression . AND expression
+    (40) expression -> expression . OR expression
+    (41) expression -> expression . COMMA expression
+
+  ! shift/reduce conflict for COMMA resolved as shift
+    RPAREN          reduce using rule 52 (function_arguments -> function_arguments COMMA expression .)
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MULTIPLY        shift and go to state 40
+    DIVIDE          shift and go to state 41
+    GREATERTHAN     shift and go to state 42
+    LESSTHAN        shift and go to state 43
+    EQUALS          shift and go to state 44
+    NOTEQUALS       shift and go to state 45
+    AND             shift and go to state 46
+    OR              shift and go to state 47
+    COMMA           shift and go to state 48
+
+  ! COMMA           [ reduce using rule 52 (function_arguments -> function_arguments COMMA expression .) ]
+
+
+state 93
 
     (12) if_statement -> IF LPAREN expression RPAREN LBRACES statements RBRACES .
     (13) if_statement -> IF LPAREN expression RPAREN LBRACES statements RBRACES . ELSE LBRACES statements RBRACES
@@ -2709,10 +3024,10 @@ state 85
     VAR             reduce using rule 12 (if_statement -> IF LPAREN expression RPAREN LBRACES statements RBRACES .)
     $end            reduce using rule 12 (if_statement -> IF LPAREN expression RPAREN LBRACES statements RBRACES .)
     RBRACES         reduce using rule 12 (if_statement -> IF LPAREN expression RPAREN LBRACES statements RBRACES .)
-    ELSE            shift and go to state 90
+    ELSE            shift and go to state 98
 
 
-state 86
+state 94
 
     (14) function_declaration -> FUNC VARIABLE LPAREN function_parameters RPAREN function_return_type LBRACES . expression return_statement RBRACES
     (31) expression -> . expression PLUS expression
@@ -2730,43 +3045,46 @@ state 86
     (43) expression -> . NOT expression
     (44) expression -> . VARIABLE
     (45) expression -> . type
-    (46) expression -> . empty
-    (47) type -> . BOOL
-    (48) type -> . DECIMAL
-    (49) type -> . WSTRING
-    (50) empty -> .
+    (46) expression -> . function_call
+    (47) expression -> . empty
+    (48) type -> . BOOL
+    (49) type -> . DECIMAL
+    (50) type -> . WSTRING
+    (51) function_call -> . VARIABLE LPAREN function_arguments RPAREN
+    (55) empty -> .
 
     LPAREN          shift and go to state 21
     NOT             shift and go to state 23
     VARIABLE        shift and go to state 24
-    BOOL            shift and go to state 27
-    DECIMAL         shift and go to state 28
-    WSTRING         shift and go to state 29
-    PLUS            reduce using rule 50 (empty -> .)
-    MINUS           reduce using rule 50 (empty -> .)
-    MULTIPLY        reduce using rule 50 (empty -> .)
-    DIVIDE          reduce using rule 50 (empty -> .)
-    GREATERTHAN     reduce using rule 50 (empty -> .)
-    LESSTHAN        reduce using rule 50 (empty -> .)
-    EQUALS          reduce using rule 50 (empty -> .)
-    NOTEQUALS       reduce using rule 50 (empty -> .)
-    AND             reduce using rule 50 (empty -> .)
-    OR              reduce using rule 50 (empty -> .)
-    COMMA           reduce using rule 50 (empty -> .)
-    RETURN          reduce using rule 50 (empty -> .)
+    BOOL            shift and go to state 28
+    DECIMAL         shift and go to state 29
+    WSTRING         shift and go to state 30
+    PLUS            reduce using rule 55 (empty -> .)
+    MINUS           reduce using rule 55 (empty -> .)
+    MULTIPLY        reduce using rule 55 (empty -> .)
+    DIVIDE          reduce using rule 55 (empty -> .)
+    GREATERTHAN     reduce using rule 55 (empty -> .)
+    LESSTHAN        reduce using rule 55 (empty -> .)
+    EQUALS          reduce using rule 55 (empty -> .)
+    NOTEQUALS       reduce using rule 55 (empty -> .)
+    AND             reduce using rule 55 (empty -> .)
+    OR              reduce using rule 55 (empty -> .)
+    COMMA           reduce using rule 55 (empty -> .)
+    RETURN          reduce using rule 55 (empty -> .)
 
-    expression                     shift and go to state 91
+    expression                     shift and go to state 99
     type                           shift and go to state 25
-    empty                          shift and go to state 26
+    function_call                  shift and go to state 26
+    empty                          shift and go to state 27
 
-state 87
+state 95
 
     (18) function_return_type -> ARROW data_type .
 
     LBRACES         reduce using rule 18 (function_return_type -> ARROW data_type .)
 
 
-state 88
+state 96
 
     (15) function_parameters -> function_parameters COMMA VARIABLE COLON . data_type
     (23) data_type -> . INTEGER
@@ -2776,16 +3094,16 @@ state 88
     (27) data_type -> . FLOAT
     (28) data_type -> . INT
 
-    INTEGER         shift and go to state 74
-    STRING          shift and go to state 75
-    BOOLEAN         shift and go to state 76
-    DOUBLE          shift and go to state 77
-    FLOAT           shift and go to state 78
-    INT             shift and go to state 79
+    INTEGER         shift and go to state 81
+    STRING          shift and go to state 82
+    BOOLEAN         shift and go to state 83
+    DOUBLE          shift and go to state 84
+    FLOAT           shift and go to state 85
+    INT             shift and go to state 86
 
-    data_type                      shift and go to state 92
+    data_type                      shift and go to state 100
 
-state 89
+state 97
 
     (10) collection_block -> LSQUAREBRACKET expression RSQUAREBRACKET .
 
@@ -2798,14 +3116,14 @@ state 89
     RBRACES         reduce using rule 10 (collection_block -> LSQUAREBRACKET expression RSQUAREBRACKET .)
 
 
-state 90
+state 98
 
     (13) if_statement -> IF LPAREN expression RPAREN LBRACES statements RBRACES ELSE . LBRACES statements RBRACES
 
-    LBRACES         shift and go to state 93
+    LBRACES         shift and go to state 101
 
 
-state 91
+state 99
 
     (14) function_declaration -> FUNC VARIABLE LPAREN function_parameters RPAREN function_return_type LBRACES expression . return_statement RBRACES
     (31) expression -> expression . PLUS expression
@@ -2821,22 +3139,22 @@ state 91
     (41) expression -> expression . COMMA expression
     (20) return_statement -> . RETURN expression
 
-    PLUS            shift and go to state 37
-    MINUS           shift and go to state 38
-    MULTIPLY        shift and go to state 39
-    DIVIDE          shift and go to state 40
-    GREATERTHAN     shift and go to state 41
-    LESSTHAN        shift and go to state 42
-    EQUALS          shift and go to state 43
-    NOTEQUALS       shift and go to state 44
-    AND             shift and go to state 45
-    OR              shift and go to state 46
-    COMMA           shift and go to state 47
-    RETURN          shift and go to state 95
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MULTIPLY        shift and go to state 40
+    DIVIDE          shift and go to state 41
+    GREATERTHAN     shift and go to state 42
+    LESSTHAN        shift and go to state 43
+    EQUALS          shift and go to state 44
+    NOTEQUALS       shift and go to state 45
+    AND             shift and go to state 46
+    OR              shift and go to state 47
+    COMMA           shift and go to state 48
+    RETURN          shift and go to state 103
 
-    return_statement               shift and go to state 94
+    return_statement               shift and go to state 102
 
-state 92
+state 100
 
     (15) function_parameters -> function_parameters COMMA VARIABLE COLON data_type .
 
@@ -2844,7 +3162,7 @@ state 92
     COMMA           reduce using rule 15 (function_parameters -> function_parameters COMMA VARIABLE COLON data_type .)
 
 
-state 93
+state 101
 
     (13) if_statement -> IF LPAREN expression RPAREN LBRACES statements RBRACES ELSE LBRACES . statements RBRACES
     (2) statements -> . statements statement
@@ -2868,7 +3186,7 @@ state 93
     LET             shift and go to state 12
     VAR             shift and go to state 13
 
-    statements                     shift and go to state 96
+    statements                     shift and go to state 104
     statement                      shift and go to state 3
     assignment_statement           shift and go to state 4
     print_statement                shift and go to state 5
@@ -2876,14 +3194,14 @@ state 93
     function_declaration           shift and go to state 7
     variable_declarator            shift and go to state 8
 
-state 94
+state 102
 
     (14) function_declaration -> FUNC VARIABLE LPAREN function_parameters RPAREN function_return_type LBRACES expression return_statement . RBRACES
 
-    RBRACES         shift and go to state 97
+    RBRACES         shift and go to state 105
 
 
-state 95
+state 103
 
     (20) return_statement -> RETURN . expression
     (31) expression -> . expression PLUS expression
@@ -2901,36 +3219,39 @@ state 95
     (43) expression -> . NOT expression
     (44) expression -> . VARIABLE
     (45) expression -> . type
-    (46) expression -> . empty
-    (47) type -> . BOOL
-    (48) type -> . DECIMAL
-    (49) type -> . WSTRING
-    (50) empty -> .
+    (46) expression -> . function_call
+    (47) expression -> . empty
+    (48) type -> . BOOL
+    (49) type -> . DECIMAL
+    (50) type -> . WSTRING
+    (51) function_call -> . VARIABLE LPAREN function_arguments RPAREN
+    (55) empty -> .
 
     LPAREN          shift and go to state 21
     NOT             shift and go to state 23
     VARIABLE        shift and go to state 24
-    BOOL            shift and go to state 27
-    DECIMAL         shift and go to state 28
-    WSTRING         shift and go to state 29
-    PLUS            reduce using rule 50 (empty -> .)
-    MINUS           reduce using rule 50 (empty -> .)
-    MULTIPLY        reduce using rule 50 (empty -> .)
-    DIVIDE          reduce using rule 50 (empty -> .)
-    GREATERTHAN     reduce using rule 50 (empty -> .)
-    LESSTHAN        reduce using rule 50 (empty -> .)
-    EQUALS          reduce using rule 50 (empty -> .)
-    NOTEQUALS       reduce using rule 50 (empty -> .)
-    AND             reduce using rule 50 (empty -> .)
-    OR              reduce using rule 50 (empty -> .)
-    COMMA           reduce using rule 50 (empty -> .)
-    RBRACES         reduce using rule 50 (empty -> .)
+    BOOL            shift and go to state 28
+    DECIMAL         shift and go to state 29
+    WSTRING         shift and go to state 30
+    PLUS            reduce using rule 55 (empty -> .)
+    MINUS           reduce using rule 55 (empty -> .)
+    MULTIPLY        reduce using rule 55 (empty -> .)
+    DIVIDE          reduce using rule 55 (empty -> .)
+    GREATERTHAN     reduce using rule 55 (empty -> .)
+    LESSTHAN        reduce using rule 55 (empty -> .)
+    EQUALS          reduce using rule 55 (empty -> .)
+    NOTEQUALS       reduce using rule 55 (empty -> .)
+    AND             reduce using rule 55 (empty -> .)
+    OR              reduce using rule 55 (empty -> .)
+    COMMA           reduce using rule 55 (empty -> .)
+    RBRACES         reduce using rule 55 (empty -> .)
 
-    expression                     shift and go to state 98
+    expression                     shift and go to state 106
     type                           shift and go to state 25
-    empty                          shift and go to state 26
+    function_call                  shift and go to state 26
+    empty                          shift and go to state 27
 
-state 96
+state 104
 
     (13) if_statement -> IF LPAREN expression RPAREN LBRACES statements RBRACES ELSE LBRACES statements . RBRACES
     (2) statements -> statements . statement
@@ -2947,7 +3268,7 @@ state 96
     (21) variable_declarator -> . LET
     (22) variable_declarator -> . VAR
 
-    RBRACES         shift and go to state 99
+    RBRACES         shift and go to state 107
     PRINT           shift and go to state 9
     IF              shift and go to state 10
     FUNC            shift and go to state 11
@@ -2961,7 +3282,7 @@ state 96
     function_declaration           shift and go to state 7
     variable_declarator            shift and go to state 8
 
-state 97
+state 105
 
     (14) function_declaration -> FUNC VARIABLE LPAREN function_parameters RPAREN function_return_type LBRACES expression return_statement RBRACES .
 
@@ -2974,7 +3295,7 @@ state 97
     RBRACES         reduce using rule 14 (function_declaration -> FUNC VARIABLE LPAREN function_parameters RPAREN function_return_type LBRACES expression return_statement RBRACES .)
 
 
-state 98
+state 106
 
     (20) return_statement -> RETURN expression .
     (31) expression -> expression . PLUS expression
@@ -2990,20 +3311,20 @@ state 98
     (41) expression -> expression . COMMA expression
 
     RBRACES         reduce using rule 20 (return_statement -> RETURN expression .)
-    PLUS            shift and go to state 37
-    MINUS           shift and go to state 38
-    MULTIPLY        shift and go to state 39
-    DIVIDE          shift and go to state 40
-    GREATERTHAN     shift and go to state 41
-    LESSTHAN        shift and go to state 42
-    EQUALS          shift and go to state 43
-    NOTEQUALS       shift and go to state 44
-    AND             shift and go to state 45
-    OR              shift and go to state 46
-    COMMA           shift and go to state 47
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MULTIPLY        shift and go to state 40
+    DIVIDE          shift and go to state 41
+    GREATERTHAN     shift and go to state 42
+    LESSTHAN        shift and go to state 43
+    EQUALS          shift and go to state 44
+    NOTEQUALS       shift and go to state 45
+    AND             shift and go to state 46
+    OR              shift and go to state 47
+    COMMA           shift and go to state 48
 
 
-state 99
+state 107
 
     (13) if_statement -> IF LPAREN expression RPAREN LBRACES statements RBRACES ELSE LBRACES statements RBRACES .
 
@@ -3018,39 +3339,17 @@ state 99
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for PLUS in state 48 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 48 resolved as shift
-WARNING: shift/reduce conflict for MULTIPLY in state 48 resolved as shift
-WARNING: shift/reduce conflict for DIVIDE in state 48 resolved as shift
-WARNING: shift/reduce conflict for GREATERTHAN in state 48 resolved as shift
-WARNING: shift/reduce conflict for LESSTHAN in state 48 resolved as shift
-WARNING: shift/reduce conflict for EQUALS in state 48 resolved as shift
-WARNING: shift/reduce conflict for NOTEQUALS in state 48 resolved as shift
-WARNING: shift/reduce conflict for AND in state 48 resolved as shift
-WARNING: shift/reduce conflict for OR in state 48 resolved as shift
-WARNING: shift/reduce conflict for COMMA in state 48 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 55 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 55 resolved as shift
-WARNING: shift/reduce conflict for MULTIPLY in state 55 resolved as shift
-WARNING: shift/reduce conflict for DIVIDE in state 55 resolved as shift
-WARNING: shift/reduce conflict for GREATERTHAN in state 55 resolved as shift
-WARNING: shift/reduce conflict for LESSTHAN in state 55 resolved as shift
-WARNING: shift/reduce conflict for EQUALS in state 55 resolved as shift
-WARNING: shift/reduce conflict for NOTEQUALS in state 55 resolved as shift
-WARNING: shift/reduce conflict for AND in state 55 resolved as shift
-WARNING: shift/reduce conflict for OR in state 55 resolved as shift
-WARNING: shift/reduce conflict for COMMA in state 55 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 56 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 56 resolved as shift
-WARNING: shift/reduce conflict for MULTIPLY in state 56 resolved as shift
-WARNING: shift/reduce conflict for DIVIDE in state 56 resolved as shift
-WARNING: shift/reduce conflict for GREATERTHAN in state 56 resolved as shift
-WARNING: shift/reduce conflict for LESSTHAN in state 56 resolved as shift
-WARNING: shift/reduce conflict for EQUALS in state 56 resolved as shift
-WARNING: shift/reduce conflict for NOTEQUALS in state 56 resolved as shift
-WARNING: shift/reduce conflict for AND in state 56 resolved as shift
-WARNING: shift/reduce conflict for OR in state 56 resolved as shift
-WARNING: shift/reduce conflict for COMMA in state 56 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 49 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 49 resolved as shift
+WARNING: shift/reduce conflict for MULTIPLY in state 49 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 49 resolved as shift
+WARNING: shift/reduce conflict for GREATERTHAN in state 49 resolved as shift
+WARNING: shift/reduce conflict for LESSTHAN in state 49 resolved as shift
+WARNING: shift/reduce conflict for EQUALS in state 49 resolved as shift
+WARNING: shift/reduce conflict for NOTEQUALS in state 49 resolved as shift
+WARNING: shift/reduce conflict for AND in state 49 resolved as shift
+WARNING: shift/reduce conflict for OR in state 49 resolved as shift
+WARNING: shift/reduce conflict for COMMA in state 49 resolved as shift
 WARNING: shift/reduce conflict for PLUS in state 57 resolved as shift
 WARNING: shift/reduce conflict for MINUS in state 57 resolved as shift
 WARNING: shift/reduce conflict for MULTIPLY in state 57 resolved as shift
@@ -3150,3 +3449,30 @@ WARNING: shift/reduce conflict for NOTEQUALS in state 65 resolved as shift
 WARNING: shift/reduce conflict for AND in state 65 resolved as shift
 WARNING: shift/reduce conflict for OR in state 65 resolved as shift
 WARNING: shift/reduce conflict for COMMA in state 65 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 66 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 66 resolved as shift
+WARNING: shift/reduce conflict for MULTIPLY in state 66 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 66 resolved as shift
+WARNING: shift/reduce conflict for GREATERTHAN in state 66 resolved as shift
+WARNING: shift/reduce conflict for LESSTHAN in state 66 resolved as shift
+WARNING: shift/reduce conflict for EQUALS in state 66 resolved as shift
+WARNING: shift/reduce conflict for NOTEQUALS in state 66 resolved as shift
+WARNING: shift/reduce conflict for AND in state 66 resolved as shift
+WARNING: shift/reduce conflict for OR in state 66 resolved as shift
+WARNING: shift/reduce conflict for COMMA in state 66 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 67 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 67 resolved as shift
+WARNING: shift/reduce conflict for MULTIPLY in state 67 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 67 resolved as shift
+WARNING: shift/reduce conflict for GREATERTHAN in state 67 resolved as shift
+WARNING: shift/reduce conflict for LESSTHAN in state 67 resolved as shift
+WARNING: shift/reduce conflict for EQUALS in state 67 resolved as shift
+WARNING: shift/reduce conflict for NOTEQUALS in state 67 resolved as shift
+WARNING: shift/reduce conflict for AND in state 67 resolved as shift
+WARNING: shift/reduce conflict for OR in state 67 resolved as shift
+WARNING: shift/reduce conflict for COMMA in state 67 resolved as shift
+WARNING: shift/reduce conflict for COMMA in state 69 resolved as shift
+WARNING: shift/reduce conflict for COMMA in state 92 resolved as shift
+WARNING: reduce/reduce conflict in state 70 resolved using rule (expression -> empty)
+WARNING: rejected rule (function_arguments -> empty) in state 70
+WARNING: Rule (function_arguments -> empty) is never reduced

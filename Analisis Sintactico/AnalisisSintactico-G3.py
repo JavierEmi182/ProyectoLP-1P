@@ -105,6 +105,7 @@ def p_expression(p):
                | NOT expression
                | VARIABLE
                | type
+               | function_call
                | empty
     '''
 def p_type(p):
@@ -113,16 +114,25 @@ def p_type(p):
         | DECIMAL
         | WSTRING
     '''
+def p_function_call(p):
+    '''
+    function_call : VARIABLE LPAREN function_arguments RPAREN
+    '''
+def p_function_arguments(p):
+    '''
+    function_arguments : function_arguments COMMA expression
+                       | expression
+                       | empty
+    '''
 def p_empty(p):
     '''
     empty :
     '''
 def p_error(p):
-    if p:
-        print("Error de sintaxis en token:", p.type, "with token: ",p.value[0])
-    #sintactico.errok()
-    else:
-        print("Syntax error at EOF")
+    errorFormat = ("Error sintáctico con: {0}. Sentencia errónea linea: {1}, caracter: {2}"
+                   .format(p.value, p.lineno-1, p.lexpos))
+
+    print(errorFormat)
 
 # Build the parser
 parser = yacc.yacc()
@@ -142,6 +152,8 @@ var numbers: [int] = [1,2,3,4,5]
 func add(a: int, b: int) -> int {
     return a + b
 }
+
+var y = add(1 + 1)
 '''
 
 # Parsing
