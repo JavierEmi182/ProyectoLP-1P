@@ -124,7 +124,7 @@ t_OR=r'\|\|'
 t_RANGE=r'\.\.\.'
 t_OPTIONALVARIABLE=r'\?'
 #VICTOR PEÑA
-t_COLLECTIONTYPE = r'<(int|string|bool|double|float)+>'
+t_COLLECTIONTYPE = r'\[(int|string|bool|double|float)\]'
 t_DICTIONARYTYPE = r'\[(int|string)\:\ ?(int|string|bool|double|float)\]'
 t_VALUESTYPE = r'\[(int|string|bool|double|float)\]'
 
@@ -248,6 +248,17 @@ for (name, age) in ages {
 dataS = '''
 let x = 5 + 3 * 2
 print(x)
+if ( x > 10 ) {
+    print("x is greater than 10")
+} else {
+    print("x is less than or equal to 10")
+}
+
+var numbers: [int] = [1,2,3,4,5]
+
+func add(a: int, b: int) -> int {
+    return a + b
+}
 '''
 #Datos de entrada
 #lexer.input(dataJV)
@@ -261,3 +272,5 @@ while True:
   if not tok:
     break  #Rompe
   print(tok)
+
+#lexer.lineno=0
