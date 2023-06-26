@@ -97,7 +97,8 @@ def p_function_parameters(p):
 def p_function_return_type(p):
     '''
     function_return_type : ARROW data_type
-                        | empty
+                         | ARROW LPAREN function_parameters RPAREN
+                         | empty
     '''
 def p_return_statement(p):
     '''
@@ -117,6 +118,7 @@ def p_data_type(p):
               | FLOAT
               | INT
     '''
+
 def p_data_collection_type(p):
     '''
     data_collection_type : COLLECTIONTYPE
@@ -206,7 +208,7 @@ func add() -> int {
 '''
 
 # Parsing
-
+parser.parse(data)
 """
 while True:
   try:
@@ -235,5 +237,8 @@ switch prueba {
 
 
 var diccionario: [int:string] = [1:"Uno", 2:"Dos", 3:"Tres"]
+
+func minMax(a: int, b: int) -> (min:int, max:int) {
+    return (a, b)
+}
 """
-parser.parse(data)
