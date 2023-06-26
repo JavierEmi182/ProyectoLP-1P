@@ -18,7 +18,8 @@ def p_statement(p):
     statement : assignment_statement
               | print_statement
               | if_statement
-              | function_declaration
+              | function_general
+              | while_statement
     '''
 
 
@@ -26,6 +27,7 @@ def p_assignment_statement(p):
     '''
     assignment_statement : variable_declarator VARIABLE ASSIGN expression
                         | variable_declarator VARIABLE COLON data_collection_type ASSIGN collection_block
+                        | variable_declarator VARIABLE COLON SET ASSIGN collection_block 
     '''
 def p_collection_block(p):
     '''
@@ -42,16 +44,33 @@ def p_if_statement(p):
     if_statement : IF LPAREN expression RPAREN LBRACES statements RBRACES
                  | IF LPAREN expression RPAREN LBRACES statements RBRACES ELSE LBRACES statements RBRACES
     '''
+
+def p_while_statement(p):
+    '''
+    while_statement : WHILE LPAREN expression RPAREN LBRACES statements RBRACES                   
+    '''
+def p_function_general(p):
+    '''
+    function_general : function_declaration
+                    | function_declaration_empty
+                    
+
+    '''
 def p_function_declaration(p):
     '''
     function_declaration : FUNC VARIABLE LPAREN function_parameters RPAREN function_return_type LBRACES expression return_statement RBRACES
+    '''
+
+def p_function_declaration_empty(p):
+    '''
+    function_declaration_empty : FUNC VARIABLE LPAREN empty  RPAREN function_return_type LBRACES expression return_statement RBRACES
     '''
 
 def p_function_parameters(p):
     '''
     function_parameters : function_parameters COMMA VARIABLE COLON data_type
                         | VARIABLE COLON data_type
-                        | empty
+                        
     '''
 
 def p_function_return_type(p):
@@ -114,6 +133,7 @@ def p_type(p):
         | DECIMAL
         | WSTRING
     '''
+
 def p_function_call(p):
     '''
     function_call : VARIABLE LPAREN function_arguments RPAREN
@@ -154,15 +174,27 @@ func add(a: int, b: int) -> int {
 }
 
 var y = add(1 + 1)
+
+var favoriteGenres: set  = ["hola","chao"]
+var favorite: set = [1,2,3,4]
+func add() -> int {
+    return a + b
+}
+
 '''
 
 # Parsing
 parser.parse(data)
-#while True:
-#  try:
-#    s = input('swift > ')
-#  except EOFError:
-#    break
-#  if not s: continue
-#  result = sintactico.parse(s)
-#  if result != None: print(result)
+"""
+while True:
+  try:
+    s = input('swift > ')
+  except EOFError:
+    break
+  if not s: continue
+  result = parser.parse(s)
+  if result != None: print(result)
+
+while (True):
+    print("hola")
+"""

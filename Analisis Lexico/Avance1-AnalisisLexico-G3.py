@@ -134,7 +134,7 @@ def t_newline(t):
 
 
 def t_VARIABLE(t):
-  r'`[a-zA-Z]+`|([a-zA-Z]+[\w\d]*)'
+  r'`[a-zA-Z_]+`|([a-zA-Z_]+[\w\d]*)'
   #r'[a-zA-Z]+[\w\d]*'
   t.type = reserved.get(t.value, 'VARIABLE')
   return t
@@ -242,6 +242,7 @@ ages.removeValue(forKey: "Emily")
 for (name, age) in ages {
     print("\(name) tiene \(age) años.")
 }
+let var_ = 4
 '''.lower()
 #Datos de entrada
 #lexer.input(dataJV)
