@@ -29,6 +29,7 @@ def p_assignment_statement(p):
     assignment_statement : variable_declarator VARIABLE ASSIGN expression
                         | variable_declarator VARIABLE COLON data_collection_type ASSIGN collection_block
                         | variable_declarator VARIABLE COLON SET ASSIGN collection_block 
+                        | variable_declarator VARIABLE COLON DICTIONARYTYPE ASSIGN collection_block
                         | VARIABLE ASSIGN expression
     '''
 def p_collection_block(p):
@@ -140,6 +141,7 @@ def p_expression(p):
                | expression AND expression
                | expression OR expression
                | expression COMMA expression
+               | expression COLON expression
                | LPAREN expression RPAREN
                | NOT expression
                | VARIABLE
@@ -230,5 +232,8 @@ switch prueba {
     default:
         print("default")
 }
+
+
+var diccionario: [int:string] = [1:"Uno", 2:"Dos", 3:"Tres"]
 """
 parser.parse(data)
