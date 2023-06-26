@@ -20,6 +20,7 @@ def p_statement(p):
               | if_statement
               | function_general
               | while_statement
+              | switch_statement
     '''
 
 
@@ -28,6 +29,7 @@ def p_assignment_statement(p):
     assignment_statement : variable_declarator VARIABLE ASSIGN expression
                         | variable_declarator VARIABLE COLON data_collection_type ASSIGN collection_block
                         | variable_declarator VARIABLE COLON SET ASSIGN collection_block 
+                        | VARIABLE ASSIGN expression
     '''
 def p_collection_block(p):
     '''
@@ -49,6 +51,24 @@ def p_while_statement(p):
     '''
     while_statement : WHILE LPAREN expression RPAREN LBRACES statements RBRACES                   
     '''
+
+def p_switch_statement(p):
+    '''
+    switch_statement : SWITCH VARIABLE LBRACES caso RBRACES
+    '''
+
+def p_caso(p):
+    '''
+    caso : CASE expression COLON cuerpo_caso caso
+         | CASE expression COLON cuerpo_caso DEFAULT COLON cuerpo_caso
+    '''
+
+def p_cuerpo_caso(p):
+    '''
+    cuerpo_caso : expression 
+                | statement
+    '''
+
 def p_function_general(p):
     '''
     function_general : function_declaration
@@ -184,7 +204,7 @@ func add() -> int {
 '''
 
 # Parsing
-parser.parse(data)
+
 """
 while True:
   try:
@@ -198,3 +218,17 @@ while True:
 while (True):
     print("hola")
 """
+
+
+data =  """
+let numero = 0
+switch prueba {
+    case "1":
+        print("caso 1")
+    case "2":
+        numero = 9
+    default:
+        print("default")
+}
+"""
+parser.parse(data)
