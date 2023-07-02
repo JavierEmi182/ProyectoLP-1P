@@ -1,0 +1,2 @@
+var numeros : [integer] = [1,2,3]
+var num : integer = 7
