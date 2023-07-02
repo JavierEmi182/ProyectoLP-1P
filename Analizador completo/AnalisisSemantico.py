@@ -75,7 +75,7 @@ def p_mul_float(p):
 
 def p_error(p):
   if p:
-    str = f"Error de sintaxis - Token: {p.type}, Línea: {p.lineno}, Col: {p.lexpos}"
+    str = f"Error semantico - Token: {p.type}, Línea: {p.lineno}, Col: {p.lexpos}"
     parser.errok()
     listerr.append(str)
 
