@@ -193,6 +193,13 @@ data = '''
    let var : integer = 45
    let arreglo : [integer] = [1,2,3,4] 
 
+   let variable = "hola"
+   let variable = 5 > 10
+   if (10>8){
+      print("hola")
+   }else{
+      print("no")
+   }
 
    var conjunto : Set<String> = ["prueba", "hola"]
    let prueba = (true && false) || false

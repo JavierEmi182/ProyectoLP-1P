@@ -1,2 +1,11 @@
 var numeros : [integer] = [1,2,3]
 var num : integer = 7
+let variable = "hola"
+let varr = 5 > 10
+if (10>8){
+      print("hola")
+}else{
+      print("no")
+}
+var conjunto : Set<String> = ["prueba", "hola"]
+let prueba = (true && false) || false
