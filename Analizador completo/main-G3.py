@@ -131,11 +131,11 @@ def parser_sem():
 
 #Ventana principal
 mainwindow = tk.Tk()
-mainwindow.geometry("1024x768")
+mainwindow.geometry("1024x640")
 mainwindow.resizable(False, False)
 mainwindow.title("Analizador Swift")
 
-#Contenedores
+#Contenedor superior
 container1 = tk.Frame(mainwindow,height=200)
 container1.config(bg="black")
 tag_container1 = tk.Label(container1,text="Validar para Swift",font=("Arial",35),bg="black",fg="white").pack(anchor="w",side=tk.LEFT)
@@ -154,8 +154,8 @@ container3.pack(side=tk.LEFT,anchor="w")
 
 contenedorinf.pack(fill=tk.BOTH)
 
+#Contenedor central derecha
 container2 = tk.Frame(contenedorinf)
-#container2 = tk.Frame(mainwindow,height=1080)
 container2.pack(fill=tk.BOTH)
 container2.config(bg='gray')
 container2_txt = tk.Frame(container2)
@@ -167,10 +167,6 @@ container2_txt.pack(side=tk.TOP,anchor="n")
 container2_but.pack()
 container2_res.pack(side=tk.BOTTOM,anchor="s")
 container2.pack(side=tk.LEFT,anchor="n")
-
-container4 = tk.Frame(mainwindow)
-container4.config(bg="orange")
-container4.pack(fill=tk.BOTH)
 
 #Campos de texto y labels
 labeltxt = tk.Label(container2_txt,text="Código Fuente :", bg="#7E82C4",font=("Arial",20)).pack(side=tk.TOP,anchor="n",fill=tk.X)
@@ -189,22 +185,18 @@ text_arear = scrolledtext.ScrolledText(container2_res, bg='#FDD99C',
                                       font = ("Arial",12),state ='disabled')
 text_arear.pack(anchor="s")
 
+#Contenedor para analizadores
 labelactions = tk.Label(container2_but, text='Análisis disponibles : ',bg='gray',padx=50,pady=5 ,font=('Arial bold',18)).pack(side=tk.TOP)
 button_lex = tk.Button(container2_but,bg="dark cyan", text="Análisis léxico", command=lambda: lexer(),font=('Arial',11), padx=65,pady=10).pack(pady=5,padx=15,side=tk.LEFT)
 button_syn = tk.Button(container2_but,bg="dark cyan", text="Análisis sintáctico", command=lambda: parser(),font=('Arial',11), padx=50,pady=10).pack(pady=5,padx=15,side=tk.LEFT)
 button_sem = tk.Button(container2_but,bg="dark cyan", text="Análisis semántico", command=lambda: parser_sem(),font=('Arial',11), padx=45,pady=10).pack(pady=5,padx=15,side=tk.LEFT)
 
 
-#Contenedor para analizadores
+#Contenedor para acciones
 labelactions1 = tk.Label(container3,width=4, text='Acciones',bg='gray',padx=30 ,font=('Arial bold',22)).pack()
 labelactions2 = tk.Label(container3,height=1,width=4, text='disponibles: ',bg='gray',padx=55 ,font=('Arial bold',22)).pack()
-#botonupload = tk.Button(container3,height=1,width=4, text="Realizar Análisis",bg='#788199',fg='white', command=save_content, padx=85,pady=40,font=("Arial",15)).pack(padx=15,pady=20)
 botonupload = tk.Button(container3,height=1,width=4, text="Borrar reporte",bg='#788199',fg='white', command=delete_content, padx=85,pady=40,font=("Arial",15)).pack(padx=15,pady=20)
 botonupload = tk.Button(container3,height=1,width=4,text='Importar Archivo',bg='#788199',fg='white',command=file_chooser, padx=85,pady=40,font=("Arial",15)).pack(padx=15,pady=20)
-
-
-
-
 
 mainwindow.mainloop()
 
