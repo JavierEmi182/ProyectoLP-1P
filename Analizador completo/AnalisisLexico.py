@@ -5,7 +5,7 @@ reserved = {
   #JAVIER VERGARA
   'print': 'PRINT',
   'func':'FUNC',
-  'string':'STRING',
+  'String':'STRING',
   'boolean':'BOOLEAN',
   'bool':'BOOL',
   'integer':'INTEGER',
@@ -42,7 +42,7 @@ reserved = {
   #VICTOR PEÑA
   'int':'INT',
   'float':'FLOAT',
-  'set':'SET'
+  'Set':'SET'
 
 }
 
