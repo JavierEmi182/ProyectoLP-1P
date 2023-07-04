@@ -17,13 +17,43 @@ def p_statements(p):
 def p_statement(p):
     '''
     statement : assignment_to_type
-              | assignment_to_type_collection
+              | assignment_to_type_collection 
+              | variable_declarator VARIABLE ASSIGN expression
+              | ifComp
+              | print_statement
     '''
 def p_variable_declarator(p):
     '''
     variable_declarator : LET
                         | VAR
     '''
+def p_print_statement(p):
+    '''
+    print_statement : PRINT LPAREN expression RPAREN
+    '''
+
+def p_expression(p):
+    '''
+    expression : expression PLUS expression
+               | expression MINUS expression
+               | expression MULTIPLY expression
+               | expression DIVIDE expression
+               | expression GREATERTHAN expression
+               | expression LESSTHAN expression
+               | expression EQUALS expression
+               | expression NOTEQUALS expression
+               | expression AND expression
+               | expression OR expression
+               | expression COMMA expression
+               | expression COLON expression
+               | LPAREN expression RPAREN
+               | NOT expression
+               | VARIABLE
+               | type
+               | comparacion
+               
+    '''
+
 
 ##JAVIER VERGARA
 #Que si se especifica el tipo al crear la variable, solo acepte ese tipo
@@ -72,6 +102,48 @@ def p_mul_float(p):
    '''mul_float : mul_float COMMA DECIMAL
                     | DECIMAL
    '''
+
+#JOSSELINE ASTUDILLO
+# que se comparen valores del mismo tipo entre sí
+def p_comparacion(p):
+   '''
+   comparacion : VARIABLE operadorComp VARIABLE
+               | DECIMAL operadorComp DECIMAL
+               | WSTRING operadorComp WSTRING
+               | NUMBER operadorComp NUMBER
+               | VARIABLE operadorComp DECIMAL  
+               | DECIMAL operadorComp VARIABLE
+               | WSTRING operadorComp VARIABLE
+               | VARIABLE operadorComp WSTRING
+               | NUMBER operadorComp VARIABLE
+               | VARIABLE operadorComp NUMBER
+   '''
+
+
+def p_operadorComp(p):
+
+  '''operadorComp :  GREATERTHAN
+                     | LESSTHAN
+                     | EQUALS
+                     | NOTEQUALS
+  '''
+
+#dentro del if que se establezca una comparación
+def p_ifComp(p):
+   '''
+   ifComp : IF LPAREN comparacion RPAREN LBRACES statements RBRACES
+         | IF LPAREN comparacion RPAREN LBRACES statements RBRACES ELSE LBRACES statements RBRACES
+   '''
+
+
+
+def p_type(p):
+    '''
+    type : BOOL
+        | DECIMAL
+        | WSTRING
+        | NUMBER
+    '''
 
 def p_error(p):
   if p:
