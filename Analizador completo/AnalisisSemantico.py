@@ -18,6 +18,7 @@ def p_statement(p):
     '''
     statement : assignment_to_type
               | assignment_to_type_collection 
+              | assignment_to_type_collection_set
               | variable_declarator VARIABLE ASSIGN expression
               | ifComp
               | print_statement
@@ -51,6 +52,7 @@ def p_expression(p):
                | VARIABLE
                | type
                | comparacion
+               | boolean_expresion
                
     '''
 
@@ -71,9 +73,9 @@ def p_assignment_to_type(p):
 def p_assignment_to_type_collection(p):
   '''
   assignment_to_type_collection : variable_declarator VARIABLE COLON LSQUAREBRACKET integer_options RSQUAREBRACKET ASSIGN LSQUAREBRACKET mul_integuer RSQUAREBRACKET
-                    | variable_declarator VARIABLE COLON LSQUAREBRACKET STRING RSQUAREBRACKET ASSIGN LSQUAREBRACKET mul_string RSQUAREBRACKET
-                    | variable_declarator VARIABLE COLON LSQUAREBRACKET BOOLEAN RSQUAREBRACKET ASSIGN LSQUAREBRACKET mul_booleano RSQUAREBRACKET
-                    | variable_declarator VARIABLE COLON LSQUAREBRACKET FLOAT RSQUAREBRACKET ASSIGN LSQUAREBRACKET mul_float RSQUAREBRACKET
+                                | variable_declarator VARIABLE COLON LSQUAREBRACKET STRING RSQUAREBRACKET ASSIGN LSQUAREBRACKET mul_string RSQUAREBRACKET
+                                | variable_declarator VARIABLE COLON LSQUAREBRACKET BOOLEAN RSQUAREBRACKET ASSIGN LSQUAREBRACKET mul_booleano RSQUAREBRACKET
+                                | variable_declarator VARIABLE COLON LSQUAREBRACKET FLOAT RSQUAREBRACKET ASSIGN LSQUAREBRACKET mul_float RSQUAREBRACKET
   '''
 def p_integer_options(p):
    '''
@@ -145,6 +147,30 @@ def p_type(p):
         | NUMBER
     '''
 
+#Victor Peña
+def p_assignment_to_type_collection_set(p):
+  '''
+  assignment_to_type_collection_set : variable_declarator VARIABLE COLON SET LESSTHAN integer_options GREATERTHAN ASSIGN LSQUAREBRACKET mul_integuer RSQUAREBRACKET
+                                    | variable_declarator VARIABLE COLON SET LESSTHAN STRING GREATERTHAN ASSIGN LSQUAREBRACKET mul_string RSQUAREBRACKET
+                                    | variable_declarator VARIABLE COLON SET LESSTHAN BOOLEAN GREATERTHAN ASSIGN LSQUAREBRACKET mul_booleano RSQUAREBRACKET
+                                    | variable_declarator VARIABLE COLON SET LESSTHAN FLOAT GREATERTHAN ASSIGN LSQUAREBRACKET mul_float RSQUAREBRACKET
+  '''
+
+def p_boolean_expresion(p):
+  '''
+  boolean_expresion : LPAREN boolean_option logical_operator boolean_option RPAREN boolean_expresion
+                    | boolean_expresion LPAREN boolean_option logical_operator boolean_option RPAREN 
+                    | boolean_option logical_operator boolean_option
+                    | logical_operator boolean_option
+                    | boolean_option logical_operator
+  ''' 
+
+def p_logical_operator(p):
+  '''
+  logical_operator : AND
+                   | OR  
+  '''
+
 def p_error(p):
   if p:
     str = f"Error semantico - Token: {p.type}, Línea: {p.lineno}, Col: {p.lexpos}"
@@ -163,9 +189,13 @@ def validaRegla(s):
   print(result)
   return str(result)
 
-#data = '''
-#    let var : integer = 45
-#    let arreglo : [integer] = [1,2,3,4] 
-#'''
+data = '''
+   let var : integer = 45
+   let arreglo : [integer] = [1,2,3,4] 
 
-#parser.parse(data)
+
+   var conjunto : Set<String> = ["prueba", "hola"]
+   let prueba = (true && false) || false
+'''
+
+parser.parse(data)

@@ -198,7 +198,7 @@ button_sem = tk.Button(container2_but,bg="dark cyan", text="Análisis semántico
 #Contenedor para analizadores
 labelactions1 = tk.Label(container3,width=4, text='Acciones',bg='gray',padx=30 ,font=('Arial bold',22)).pack()
 labelactions2 = tk.Label(container3,height=1,width=4, text='disponibles: ',bg='gray',padx=55 ,font=('Arial bold',22)).pack()
-botonupload = tk.Button(container3,height=1,width=4, text="Realizar Análisis",bg='#788199',fg='white', command=save_content, padx=85,pady=40,font=("Arial",15)).pack(padx=15,pady=20)
+#botonupload = tk.Button(container3,height=1,width=4, text="Realizar Análisis",bg='#788199',fg='white', command=save_content, padx=85,pady=40,font=("Arial",15)).pack(padx=15,pady=20)
 botonupload = tk.Button(container3,height=1,width=4, text="Borrar reporte",bg='#788199',fg='white', command=delete_content, padx=85,pady=40,font=("Arial",15)).pack(padx=15,pady=20)
 botonupload = tk.Button(container3,height=1,width=4,text='Importar Archivo',bg='#788199',fg='white',command=file_chooser, padx=85,pady=40,font=("Arial",15)).pack(padx=15,pady=20)
 
