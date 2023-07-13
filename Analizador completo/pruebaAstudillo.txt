@@ -1,0 +1,33 @@
+import library 
+// inicializar con variable reservada  
+let `let` = 3
+//inicialización múltiple
+let amarillo,azul,rojo : String
+
+//estructura de control for
+for i in 1...4 { print(i) }
+for variable in lista{
+	print(variable)
+}
+let name: String
+var address: String
+let age :Int?
+
+init() {
+    name = "maria"
+    address = addrs
+}
+let x = 0
+switch x {
+    case 0:
+        print("x is 0")
+    case 1:
+        print("x is 1")
+    default:
+        print("x is neither 0 nor 1")
+}
+var favoriteGenres: Set<String>  = ["hola","chao"]
+var favorite: Set = [1,2,3,4]
+func edad() -> Int {
+    return 21
+}
