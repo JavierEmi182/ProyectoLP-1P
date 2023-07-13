@@ -278,6 +278,7 @@ def p_return_statement(p):
 def p_function_init(p):
     '''
     function_init : INIT LPAREN function_parameters RPAREN LBRACES statements RBRACES
+                    | INIT LPAREN empty RPAREN LBRACES statements RBRACES
     '''
 def p_function_call(p):
     '''
@@ -304,12 +305,12 @@ def p_error(p):
     listerr.append(str)
 
 def getErrors():
-  parser.lineno=1
+  #parser.lineno=1
   return listerr
 
 # Build the parser
 parser = yacc.yacc()
-parser.lineno = 0
+#parser.lineno = 0
 
 def validaRegla(s):
   result = parser.parse(s, debug=False)

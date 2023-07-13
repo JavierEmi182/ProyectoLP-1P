@@ -163,7 +163,7 @@ def t_error(t):
 
 #Contruir analizador
 lexer = lex.lex()
-
+#lexer.lineno=1
 #Testeando JAVIER VERGARA
 dataJV = '''//abc
 /*  ASDASD

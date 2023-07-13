@@ -181,6 +181,7 @@ def p_return_statement(p):
 def p_function_init(p):
     '''
     function_init : INIT LPAREN function_parameters RPAREN LBRACES statements RBRACES
+                    | INIT LPAREN empty RPAREN LBRACES statements RBRACES
     '''
 #JAVIER VERGARA
 def p_variable_declarator(p):
@@ -286,11 +287,12 @@ def p_error(p):
     listerr.append(str)
 
 def getErrors():
-  parser.lineno=1
+  #parser.lineno=1
   return listerr
 
 # Build the parser
 parser = yacc.yacc()
+#parser.lineno=1
 ##sintactico =  yacc.yacc()
 # Test data
 data = '''
