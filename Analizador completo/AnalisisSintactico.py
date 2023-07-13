@@ -54,7 +54,7 @@ def p_assignment_statement(p):
     assignment_statement : variable_declarator VARIABLE ASSIGN expression
                         |  variable_declarator VARIABLE ASSIGN READLN
                         | variable_declarator VARIABLE COLON data_collection_type ASSIGN collection_block
-                        | variable_declarator VARIABLE COLON SET ASSIGN collection_block 
+                        | variable_declarator VARIABLE COLON SET data_diamond_type ASSIGN collection_block 
                         | variable_declarator VARIABLE COLON DICTIONARYTYPE ASSIGN collection_block
                         | VARIABLE ASSIGN expression
                         | VARIABLE ASSIGN READLN
@@ -90,11 +90,9 @@ def p_multiple_variables(p):
                         | VARIABLE
                         
     '''
-
-
 def p_collection_block(p):
     '''
-    collection_block : LSQUAREBRACKET expression RSQUAREBRACKET
+    collection_block : LSQUAREBRACKET types RSQUAREBRACKET
     '''
 def p_print_statement(p):
     '''
@@ -174,6 +172,7 @@ def p_variable_declarator(p):
     variable_declarator : LET
                         | VAR
     '''
+
 def p_data_type(p):
     '''
     data_type : INTEGER
@@ -191,6 +190,14 @@ def p_data_collection_type(p):
                         | LSQUAREBRACKET BOOLEAN RSQUAREBRACKET
                         | LSQUAREBRACKET DOUBLE RSQUAREBRACKET
                         | LSQUAREBRACKET INT RSQUAREBRACKET
+    '''
+def p_data_diamond_type(p):
+    '''
+    data_diamond_type : LESSTHAN INTEGER GREATERTHAN
+                       | LESSTHAN STRING GREATERTHAN
+                       | LESSTHAN BOOLEAN GREATERTHAN
+                       | LESSTHAN DOUBLE GREATERTHAN
+                       | LESSTHAN INT GREATERTHAN
     '''
 
 def p_break_statement(p):
@@ -220,6 +227,13 @@ def p_expression(p):
                | function_call
                
     '''
+
+def p_types(p):
+    '''
+    types : types COMMA type
+          | type
+    '''
+
 def p_type(p):
     '''
     type : TRUE
