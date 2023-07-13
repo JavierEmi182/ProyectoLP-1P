@@ -29,6 +29,7 @@ def p_statement(p):
               | function_general
               | function_call
               | function_init
+              | comment
     '''
 
 
@@ -229,6 +230,7 @@ def p_functionbody(p):
                 | import_statement
                 | for_statement
                 | empty
+                | comment
     '''
 
 def p_function_general(p):
@@ -290,6 +292,10 @@ def p_function_arguments(p):
 def p_empty(p):
     '''
     empty :
+    '''
+def p_comment(p):
+    '''
+    comment : COMMENT
     '''
 def p_error(p):
   if p:

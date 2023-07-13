@@ -29,6 +29,7 @@ def p_statement(p):
               | switch_statement
               | import_statement
               | for_statement 
+              | comment
     '''
 
 def p_functionstatements(p):
@@ -47,6 +48,7 @@ def p_functionbody(p):
                 | import_statement
                 | for_statement
                 | empty
+                | comment
     '''
 
 def p_assignment_statement(p):
@@ -257,6 +259,10 @@ def p_function_arguments(p):
 def p_empty(p):
     '''
     empty :
+    '''
+def p_comment(p):
+    '''
+    comment : COMMENT
     '''
 ##def p_error(p):
 ##    errorFormat = ("Error sintáctico con: {0}. Sentencia errónea linea: {1}, caracter: {2}"
