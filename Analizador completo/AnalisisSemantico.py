@@ -72,7 +72,7 @@ def p_expression(p):
 def p_assignment_to_type(p):
   '''
   assignment_to_type : variable_declarator VARIABLE COLON STRING ASSIGN WSTRING
-                    | variable_declarator VARIABLE COLON INTEGER ASSIGN NUMBER
+                    | variable_declarator VARIABLE COLON integer_options ASSIGN NUMBER
                     | variable_declarator VARIABLE COLON BOOLEAN ASSIGN TRUE
                     | variable_declarator VARIABLE COLON BOOLEAN ASSIGN FALSE
                     | variable_declarator VARIABLE COLON FLOAT ASSIGN DECIMAL
