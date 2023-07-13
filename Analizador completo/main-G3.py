@@ -30,7 +30,7 @@ def open_file(nomarch):
     text_area.delete('1.0',tk.END)
     for line in file:
         text_area.insert(tk.INSERT, line)
-    showinfo(title="Importacion correcta!",message="Se pudo añadir el texto a cuadro de código fuente correctamente.")
+    showinfo(title="Import exitoso",message="El cuadro de texto contiene la información del archivo importado")
     text_arear.config(state='normal')
     text_arear.delete('1.0',tk.END)
     write_result("Codigo añadido.")

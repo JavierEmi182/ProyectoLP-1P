@@ -7,8 +7,8 @@ reserved = {
   'func':'FUNC',
   'String':'STRING',
   'boolean':'BOOLEAN',
-  'bool':'BOOL',
-  'integer':'INTEGER',
+  'Bool':'BOOL',
+  'Integer':'INTEGER',
   'guard':'GUARD',
   'else':'ELSE',
   'return':'RETURN',
@@ -34,14 +34,15 @@ reserved = {
   'static':'STATIC',
   'typealias':'TYPEALIAS',
   'case':'CASE',
-  'double': 'DOUBLE',
+  'Double': 'DOUBLE',
   'in':'IN',
   'init':'INIT',
   'default':'DEFAULT',
   'repeat':'REPEAT',
+  'readLine()' : 'READLN',
   #VICTOR PEÑA
-  'int':'INT',
-  'float':'FLOAT',
+  'Int':'INT',
+  'Float':'FLOAT',
   'Set':'SET'
 
 }
@@ -82,16 +83,19 @@ tokens = (
   'OR',
   'RANGE',
   'OPTIONALVARIABLE',
+  
   #VICTOR PEÑA
   'COLLECTIONTYPE',
   'DICTIONARYTYPE',
-  'VALUESTYPE'
+  'VALUESTYPE',
+  'RESIDUE'
 ) + tuple(reserved.values())
 
 #Exp Regulares para tokens de símbolos
 t_PLUS = r'\+'
 t_MINUS = r'-'
 t_DIVIDE = r'/'
+t_RESIDUE = r'\%'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_NUMBER = r'\d+'
@@ -117,12 +121,14 @@ t_WSTRING= r'("[^"]*")'
 t_MULTIPLY = r'\*'
 t_PLUSONE = r'\+='
 t_MINUSONE = r'\-='
+
 #JOSSELINE ASTUDILLO
 t_SETVARIABLE=r'\.[A-Za-z0-9]+'
 t_AND=r'\&\&'
 t_OR=r'\|\|'
 t_RANGE=r'\.\.\.'
 t_OPTIONALVARIABLE=r'\?'
+
 #VICTOR PEÑA
 #t_COLLECTIONTYPE = r'\[(int|integer|string|bool|double|float)\]'
 t_DICTIONARYTYPE = r'\[(int|string)\:\ ?(int|string|bool|double|float)\]'

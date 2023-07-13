@@ -1,5 +1,5 @@
-var numeros : [integer] = [1,2,3]
-var num : integer = 7
+var numeros : [Integer] = [1,2,3]
+var num : Integer = 7
 let variable = "hola"
 let varr = 5 > 10
 if (10>8){
@@ -7,5 +7,5 @@ if (10>8){
 }else{
       print("no")
 }
-var conjunto : Set<String> = ["prueba", "hola"]
+var conjunto : Set = ["prueba", "hola"]
 let prueba = (true && false) || false

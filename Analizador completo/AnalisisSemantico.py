@@ -141,7 +141,8 @@ def p_ifComp(p):
 
 def p_type(p):
     '''
-    type : BOOL
+    type : TRUE
+        | FALSE
         | DECIMAL
         | WSTRING
         | NUMBER

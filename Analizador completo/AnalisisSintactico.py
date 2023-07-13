@@ -23,23 +23,75 @@ def p_statement(p):
               | print_statement
               | if_statement
               | function_general
+              | function_call
+              | function_init
               | while_statement
               | switch_statement
+              | import_statement
+              | for_statement 
     '''
 
+def p_functionstatements(p):
+    '''
+    functionstatements : functionstatements functionbody
+                        | functionbody
+    '''
+def p_functionbody(p):
+    '''
+    functionbody : assignment_statement
+                | assignment_statement_type
+                | print_statement
+                | if_statement
+                | while_statement
+                | switch_statement
+                | import_statement
+                | for_statement
+                | empty
+    '''
 
 def p_assignment_statement(p):
     '''
     assignment_statement : variable_declarator VARIABLE ASSIGN expression
+                        |  variable_declarator VARIABLE ASSIGN READLN
                         | variable_declarator VARIABLE COLON data_collection_type ASSIGN collection_block
                         | variable_declarator VARIABLE COLON SET ASSIGN collection_block 
                         | variable_declarator VARIABLE COLON DICTIONARYTYPE ASSIGN collection_block
                         | VARIABLE ASSIGN expression
+                        | VARIABLE ASSIGN READLN
     '''
 def p_assignment_statement_type(p):
     '''
-    assignment_statement_type : variable_declarator VARIABLE COLON data_type ASSIGN expression
+    assignment_statement_type : variable_declarator VARIABLE COLON data_type
+                                | variable_declarator VARIABLE COLON data_type OPTIONALVARIABLE
+                                | variable_declarator multiple_variables COLON data_type
+                                | variable_declarator VARIABLE COLON data_type ASSIGN expression
+                                | variable_declarator VARIABLE COLON data_type ASSIGN READLN
+                                 
     '''
+def p_multiple_assign(p):
+    '''
+    multiple_assign : multiple_assign assignment_statement
+                    | assignment_statement
+    '''
+def p_import_statement(p):
+    '''
+    import_statement : IMPORT VARIABLE
+    '''
+def p_for_statement(p):
+    '''
+    for_statement : FOR VARIABLE IN NUMBER RANGE NUMBER LBRACES statements RBRACES
+                    | FOR VARIABLE IN VARIABLE LBRACES statements RBRACES
+    '''
+
+
+def p_multiple_variables(p):
+    '''
+    multiple_variables : multiple_variables COMMA VARIABLE
+                        | VARIABLE
+                        
+    '''
+
+
 def p_collection_block(p):
     '''
     collection_block : LSQUAREBRACKET expression RSQUAREBRACKET
@@ -58,7 +110,8 @@ def p_if_statement(p):
 
 def p_while_statement(p):
     '''
-    while_statement : WHILE LPAREN expression RPAREN LBRACES statements RBRACES                   
+    while_statement : WHILE LPAREN expression RPAREN LBRACES statements RBRACES
+                    | REPEAT LBRACES statements RBRACES WHILE LPAREN expression RPAREN                   
     '''
 
 def p_switch_statement(p):
@@ -87,12 +140,12 @@ def p_function_general(p):
     '''
 def p_function_declaration(p):
     '''
-    function_declaration : FUNC VARIABLE LPAREN function_parameters RPAREN function_return_type LBRACES expression return_statement RBRACES
+    function_declaration : FUNC VARIABLE LPAREN function_parameters RPAREN function_return_type LBRACES functionstatements return_statement RBRACES
     '''
 
 def p_function_declaration_empty(p):
     '''
-    function_declaration_empty : FUNC VARIABLE LPAREN empty  RPAREN function_return_type LBRACES expression return_statement RBRACES
+    function_declaration_empty : FUNC VARIABLE LPAREN empty  RPAREN function_return_type LBRACES functionstatements return_statement RBRACES
     '''
 
 def p_function_parameters(p):
@@ -111,6 +164,10 @@ def p_function_return_type(p):
 def p_return_statement(p):
     '''
     return_statement : RETURN expression
+    '''
+def p_function_init(p):
+    '''
+    function_init : INIT LPAREN function_parameters RPAREN LBRACES statements RBRACES
     '''
 def p_variable_declarator(p):
     '''
@@ -161,11 +218,12 @@ def p_expression(p):
                | VARIABLE
                | type
                | function_call
-               | empty
+               
     '''
 def p_type(p):
     '''
-    type : BOOL
+    type : TRUE
+        | FALSE
         | DECIMAL
         | WSTRING
         | NUMBER
@@ -213,7 +271,7 @@ if ( x > 10 ) {
     print("x is less than or equal to 10")
 }
 
-var numbers: [int] = [1,2,3,4,5]
+var numbers: [Int] = [1,2,3,4,5]
 
 func add(a: int, b: int) -> int {
     return a + b
@@ -223,7 +281,7 @@ var y = add(1 + 1)
 
 var favoriteGenres: set  = ["hola","chao"]
 var favorite: set = [1,2,3,4]
-func add() -> int {
+func add() -> Int {
     return a + b
 }
 
