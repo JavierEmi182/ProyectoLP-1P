@@ -55,6 +55,7 @@ def p_assignment_statement(p):
                         |  variable_declarator VARIABLE ASSIGN READLN
                         | variable_declarator VARIABLE COLON data_collection_type ASSIGN collection_block
                         | variable_declarator VARIABLE COLON SET data_diamond_type ASSIGN collection_block 
+                        | variable_declarator VARIABLE COLON SET ASSIGN collection_block
                         | variable_declarator VARIABLE COLON DICTIONARYTYPE ASSIGN collection_block
                         | VARIABLE ASSIGN expression
                         | VARIABLE ASSIGN READLN

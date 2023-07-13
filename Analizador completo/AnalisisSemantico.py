@@ -22,7 +22,16 @@ def p_statement(p):
               | variable_declarator VARIABLE ASSIGN expression
               | ifComp
               | print_statement
+              | while_statement
+              | switch_statement
+              | import_statement
+              | for_statement 
+              | function_general
+              | function_call
+              | function_init
     '''
+
+
 def p_variable_declarator(p):
     '''
     variable_declarator : LET
@@ -172,6 +181,116 @@ def p_logical_operator(p):
                    | OR  
   '''
 
+#SINTACTICO
+def p_import_statement(p):
+    '''
+    import_statement : IMPORT VARIABLE
+    '''
+def p_for_statement(p):
+    '''
+    for_statement : FOR VARIABLE IN NUMBER RANGE NUMBER LBRACES statements RBRACES
+                    | FOR VARIABLE IN VARIABLE LBRACES statements RBRACES
+    '''
+def p_while_statement(p):
+    '''
+    while_statement : WHILE LPAREN expression RPAREN LBRACES statements RBRACES
+                    | REPEAT LBRACES statements RBRACES WHILE LPAREN expression RPAREN                   
+    '''
+
+def p_switch_statement(p):
+    '''
+    switch_statement : SWITCH VARIABLE LBRACES caso RBRACES
+    '''
+
+def p_caso(p):
+    '''
+    caso : CASE expression COLON cuerpo_caso caso
+         | CASE expression COLON cuerpo_caso DEFAULT COLON cuerpo_caso
+    '''
+
+def p_cuerpo_caso(p):
+    '''
+    cuerpo_caso : expression 
+                | statement
+    '''
+
+def p_functionstatements(p):
+    '''
+    functionstatements : functionstatements functionbody
+                        | functionbody
+    '''
+def p_functionbody(p):
+    '''
+    functionbody : assignment_to_type
+                | print_statement
+                | ifComp
+                | while_statement
+                | switch_statement
+                | import_statement
+                | for_statement
+                | empty
+    '''
+
+def p_function_general(p):
+    '''
+    function_general : function_declaration
+                    | function_declaration_empty
+                    
+
+    '''
+def p_function_declaration(p):
+    '''
+    function_declaration : FUNC VARIABLE LPAREN function_parameters RPAREN function_return_type LBRACES functionstatements return_statement RBRACES
+    '''
+
+def p_function_declaration_empty(p):
+    '''
+    function_declaration_empty : FUNC VARIABLE LPAREN empty  RPAREN function_return_type LBRACES functionstatements return_statement RBRACES
+    '''
+def p_data_type(p):
+    '''
+    data_type : INTEGER
+              | STRING
+              | BOOLEAN
+              | DOUBLE
+              | FLOAT
+              | INT
+    '''
+def p_function_parameters(p):
+    '''
+    function_parameters : function_parameters COMMA VARIABLE COLON data_type
+                        | VARIABLE COLON data_type
+                        
+    '''
+
+def p_function_return_type(p):
+    '''
+    function_return_type : ARROW data_type
+                         | ARROW LPAREN function_parameters RPAREN
+                         | empty
+    '''
+def p_return_statement(p):
+    '''
+    return_statement : RETURN expression
+    '''
+def p_function_init(p):
+    '''
+    function_init : INIT LPAREN function_parameters RPAREN LBRACES statements RBRACES
+    '''
+def p_function_call(p):
+    '''
+    function_call : VARIABLE LPAREN function_arguments RPAREN
+    '''
+def p_function_arguments(p):
+    '''
+    function_arguments : function_arguments COMMA expression
+                       | expression
+                       | empty
+    '''
+def p_empty(p):
+    '''
+    empty :
+    '''
 def p_error(p):
   if p:
     str = f"Error semantico - Token: {p.type}, Línea: {p.lineno}, Col: {p.lexpos}"
@@ -206,4 +325,4 @@ data = '''
    let prueba = (true && false) || false
 '''
 
-parser.parse(data)
+#parser.parse(data)

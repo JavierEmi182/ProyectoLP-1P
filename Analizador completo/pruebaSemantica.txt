@@ -7,5 +7,5 @@ if (10>8){
 }else{
       print("no")
 }
-var conjunto : Set = ["prueba", "hola"]
+var conjunto : Set<String> = ["prueba", "hola"]
 let prueba = (true && false) || false

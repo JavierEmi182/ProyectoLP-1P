@@ -98,9 +98,9 @@ def parser():
     datos_parse=text_area.get('1.0',tk.END)
     resultado = sn.parser.parse(datos_parse,tracking=True)
     error = sn.getErrors()
-    text_arear.config(state='normal')
-    text_arear.delete('1.0',tk.END)
-    text_arear.config(state='disabled')
+    text_arear.config(state='normal') 
+    text_arear.delete('1.0',tk.END) 
+    text_arear.config(state='disabled') 
     if len(error) > 0:
         resultado = error
         write_result("Resultados del analizador sintactico:\n")
@@ -120,6 +120,10 @@ def parser_sem():
     datos_parse=text_area.get('1.0',tk.END)
     resultado = sm.parser.parse(datos_parse,tracking=True)
     error = sm.getErrors()
+    text_arear.config(state='normal') 
+    text_arear.delete('1.0',tk.END) 
+    text_arear.config(state='disabled') 
+
     if len(error) > 0:
         resultado = error
         write_result("Resultados del analizador semantico:\n")
