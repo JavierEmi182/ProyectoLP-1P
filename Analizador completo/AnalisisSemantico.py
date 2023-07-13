@@ -304,6 +304,7 @@ def p_error(p):
     listerr.append(str)
 
 def getErrors():
+  parser.lineno=1
   return listerr
 
 # Build the parser

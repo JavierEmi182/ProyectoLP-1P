@@ -4,18 +4,20 @@ from AnalisisLexico import tokens
 global listerr
 listerr = []
 
+#JAVIER VERGARA
 def p_program(p):
     '''
     program : statements
     '''
 
+#JAVIER VERGARA
 def p_statements(p):
     '''
     statements : statements statement
                | statement
     '''
 
-
+#JAVIER VERGARA
 def p_statement(p):
     '''
     statement : assignment_statement
@@ -32,11 +34,13 @@ def p_statement(p):
               | comment
     '''
 
+#JOSSELINE ASTUDILLO
 def p_functionstatements(p):
     '''
     functionstatements : functionstatements functionbody
                         | functionbody
     '''
+#JOSSELINE ASTUDILLO
 def p_functionbody(p):
     '''
     functionbody : assignment_statement
@@ -51,6 +55,7 @@ def p_functionbody(p):
                 | comment
     '''
 
+#JAVIER VERGARA
 def p_assignment_statement(p):
     '''
     assignment_statement : variable_declarator VARIABLE ASSIGN expression
@@ -62,6 +67,7 @@ def p_assignment_statement(p):
                         | VARIABLE ASSIGN expression
                         | VARIABLE ASSIGN READLN
     '''
+#JAVIER VERGARA
 def p_assignment_statement_type(p):
     '''
     assignment_statement_type : variable_declarator VARIABLE COLON data_type
@@ -71,6 +77,7 @@ def p_assignment_statement_type(p):
                                 | variable_declarator VARIABLE COLON data_type ASSIGN READLN
                                  
     '''
+
 def p_multiple_assign(p):
     '''
     multiple_assign : multiple_assign assignment_statement
@@ -86,23 +93,25 @@ def p_for_statement(p):
                     | FOR VARIABLE IN VARIABLE LBRACES statements RBRACES
     '''
 
-
+#JAVIER VERGARA
 def p_multiple_variables(p):
     '''
     multiple_variables : multiple_variables COMMA VARIABLE
                         | VARIABLE
                         
     '''
+#JAVIER VERGARA
 def p_collection_block(p):
     '''
     collection_block : LSQUAREBRACKET types RSQUAREBRACKET
     '''
+#JAVIER VERGARA
 def p_print_statement(p):
     '''
     print_statement : PRINT LPAREN expression RPAREN
     '''
 
-
+#JAVIER VERGARA
 def p_if_statement(p):
     '''
     if_statement : IF LPAREN expression RPAREN LBRACES statements RBRACES
@@ -139,6 +148,7 @@ def p_function_general(p):
                     
 
     '''
+#JAVIER VERGARA
 def p_function_declaration(p):
     '''
     function_declaration : FUNC VARIABLE LPAREN function_parameters RPAREN function_return_type LBRACES functionstatements return_statement RBRACES
@@ -149,19 +159,21 @@ def p_function_declaration_empty(p):
     function_declaration_empty : FUNC VARIABLE LPAREN empty  RPAREN function_return_type LBRACES functionstatements return_statement RBRACES
     '''
 
+#JAVIER VERGARA
 def p_function_parameters(p):
     '''
     function_parameters : function_parameters COMMA VARIABLE COLON data_type
                         | VARIABLE COLON data_type
                         
     '''
-
+#JAVIER VERGARA
 def p_function_return_type(p):
     '''
     function_return_type : ARROW data_type
                          | ARROW LPAREN function_parameters RPAREN
                          | empty
     '''
+#JAVIER VERGARA
 def p_return_statement(p):
     '''
     return_statement : RETURN expression
@@ -170,12 +182,13 @@ def p_function_init(p):
     '''
     function_init : INIT LPAREN function_parameters RPAREN LBRACES statements RBRACES
     '''
+#JAVIER VERGARA
 def p_variable_declarator(p):
     '''
     variable_declarator : LET
                         | VAR
     '''
-
+#JAVIER VERGARA
 def p_data_type(p):
     '''
     data_type : INTEGER
@@ -185,7 +198,7 @@ def p_data_type(p):
               | FLOAT
               | INT
     '''
-
+#JAVIER VERGARA
 def p_data_collection_type(p):
     '''
     data_collection_type : LSQUAREBRACKET INTEGER RSQUAREBRACKET
@@ -208,7 +221,7 @@ def p_break_statement(p):
     break_statement : BREAK
     '''
 
-
+#JAVIER VERGARA
 def p_expression(p):
     '''
     expression : expression PLUS expression
@@ -230,13 +243,13 @@ def p_expression(p):
                | function_call
                
     '''
-
+#JAVIER VERGARA
 def p_types(p):
     '''
     types : types COMMA type
           | type
     '''
-
+#JAVIER VERGARA
 def p_type(p):
     '''
     type : TRUE
@@ -250,6 +263,7 @@ def p_function_call(p):
     '''
     function_call : VARIABLE LPAREN function_arguments RPAREN
     '''
+#JAVIER VERGARA
 def p_function_arguments(p):
     '''
     function_arguments : function_arguments COMMA expression
@@ -264,11 +278,6 @@ def p_comment(p):
     '''
     comment : COMMENT
     '''
-##def p_error(p):
-##    errorFormat = ("Error sintáctico con: {0}. Sentencia errónea linea: {1}, caracter: {2}"
-##                   .format(p.value, p.lineno-1, p.lexpos))
-
-##    print(errorFormat)
 
 def p_error(p):
   if p:
@@ -277,6 +286,7 @@ def p_error(p):
     listerr.append(str)
 
 def getErrors():
+  parser.lineno=1
   return listerr
 
 # Build the parser

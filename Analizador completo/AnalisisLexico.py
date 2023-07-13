@@ -286,6 +286,3 @@ def getTokens(lexer):
   lexer.lineno = 1
   return listatok
 # Tokenizador
-
-
-#lexer.lineno=0
