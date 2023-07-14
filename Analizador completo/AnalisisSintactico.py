@@ -64,6 +64,7 @@ def p_assignment_statement(p):
                         | variable_declarator VARIABLE COLON SET data_diamond_type ASSIGN collection_block 
                         | variable_declarator VARIABLE COLON SET ASSIGN collection_block
                         | variable_declarator VARIABLE COLON DICTIONARYTYPE ASSIGN collection_block
+                        | variable_declarator VARIABLE COLON VALUESTYPE ASSIGN collection_block
                         | VARIABLE ASSIGN expression
                         | VARIABLE ASSIGN READLN
     '''
@@ -207,7 +208,7 @@ def p_data_collection_type(p):
                         | LSQUAREBRACKET BOOLEAN RSQUAREBRACKET
                         | LSQUAREBRACKET DOUBLE RSQUAREBRACKET
                         | LSQUAREBRACKET INT RSQUAREBRACKET
-                        | LSQUAREBRACKET DICTIONARYTYPE RSQUAREBRACKET
+                        | DICTIONARYTYPE 
     '''
 def p_data_diamond_type(p):
     '''
