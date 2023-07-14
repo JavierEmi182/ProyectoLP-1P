@@ -1,0 +1,16 @@
+let numero = 0
+switch prueba {
+    case "1":
+        print("caso 1")
+    case "2":
+        numero = 9
+    default:
+        print("default")
+}
+
+
+var diccionario: [Int:String] = [1:"Uno", 2:"Dos", 3:"Tres"]
+
+func minMax(a: int, b: int) -> (min:int, max:int) {
+    return (a, b)
+}

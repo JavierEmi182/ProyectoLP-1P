@@ -131,8 +131,8 @@ t_OPTIONALVARIABLE=r'\?'
 
 #VICTOR PEÑA
 #t_COLLECTIONTYPE = r'\[(int|integer|string|bool|double|float)\]'
-t_DICTIONARYTYPE = r'\[(int|string)\:\ ?(int|string|bool|double|float)\]'
-t_VALUESTYPE = r'\[(int|string|bool|double|float)\]'
+t_DICTIONARYTYPE = r'\[(Int|String)\:\ ?(Int|String|Bool|Double|Float)\]'
+t_VALUESTYPE = r'\[(Int|String|Bool|Double|Float)\]'
 
 #Para contabilizar nro de líneas
 def t_newline(t):

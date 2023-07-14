@@ -207,6 +207,7 @@ def p_data_collection_type(p):
                         | LSQUAREBRACKET BOOLEAN RSQUAREBRACKET
                         | LSQUAREBRACKET DOUBLE RSQUAREBRACKET
                         | LSQUAREBRACKET INT RSQUAREBRACKET
+                        | LSQUAREBRACKET DICTIONARYTYPE RSQUAREBRACKET
     '''
 def p_data_diamond_type(p):
     '''
@@ -248,6 +249,8 @@ def p_expression(p):
 def p_types(p):
     '''
     types : types COMMA type
+          | key_value COMMA types
+          | key_value
           | type
     '''
 #JAVIER VERGARA
@@ -258,6 +261,11 @@ def p_type(p):
         | DECIMAL
         | WSTRING
         | NUMBER
+    '''
+
+def p_key_value(p):
+    '''
+    key_value : type COLON type
     '''
 
 def p_function_call(p):
@@ -349,9 +357,10 @@ switch prueba {
 }
 
 
-var diccionario: [int:string] = [1:"Uno", 2:"Dos", 3:"Tres"]
+var diccionario: [Int:String] = [1:"Uno", 2:"Dos", 3:"Tres"]
 
 func minMax(a: int, b: int) -> (min:int, max:int) {
     return (a, b)
 }
 """
+parser.parse(data)
