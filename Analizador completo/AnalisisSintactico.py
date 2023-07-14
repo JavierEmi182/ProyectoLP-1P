@@ -63,8 +63,7 @@ def p_assignment_statement(p):
                         | variable_declarator VARIABLE COLON data_collection_type ASSIGN collection_block
                         | variable_declarator VARIABLE COLON SET data_diamond_type ASSIGN collection_block 
                         | variable_declarator VARIABLE COLON SET ASSIGN collection_block
-                        | variable_declarator VARIABLE COLON DICTIONARYTYPE ASSIGN collection_block
-                        | variable_declarator VARIABLE COLON VALUESTYPE ASSIGN collection_block
+                        | variable_declarator VARIABLE COLON DICTIONARYTYPE ASSIGN collection_block_d
                         | VARIABLE ASSIGN expression
                         | VARIABLE ASSIGN READLN
     '''
@@ -250,8 +249,6 @@ def p_expression(p):
 def p_types(p):
     '''
     types : types COMMA type
-          | key_value COMMA types
-          | key_value
           | type
     '''
 #JAVIER VERGARA
@@ -263,12 +260,19 @@ def p_type(p):
         | WSTRING
         | NUMBER
     '''
-
+def p_key(p):
+    '''
+    key :  key COMMA key_value
+          | key_value
+    '''
 def p_key_value(p):
     '''
     key_value : type COLON type
     '''
-
+def p_collection_block_d(p):
+    '''
+    collection_block_d : LSQUAREBRACKET key RSQUAREBRACKET
+    '''
 def p_function_call(p):
     '''
     function_call : VARIABLE LPAREN function_arguments RPAREN
@@ -364,4 +368,4 @@ func minMax(a: int, b: int) -> (min:int, max:int) {
     return (a, b)
 }
 """
-parser.parse(data)
+#parser.parse(data)

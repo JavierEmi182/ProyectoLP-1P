@@ -24,7 +24,6 @@ Unused terminals:
     STATIC
     STRUCT
     TYPEALIAS
-    VALUESTYPE
 
 Grammar
 
@@ -238,7 +237,6 @@ STRUCT               :
 SWITCH               : 97
 TRUE                 : 41 56 76
 TYPEALIAS            : 
-VALUESTYPE           : 
 VAR                  : 19
 VARIABLE             : 7 35 39 40 41 42 43 44 45 46 47 60 60 64 65 66 67 68 69 81 82 83 84 92 93 94 94 97 115 116 123 124 131
 WHILE                : 95 96
