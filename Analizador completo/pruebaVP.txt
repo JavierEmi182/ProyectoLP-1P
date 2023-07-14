@@ -11,6 +11,7 @@ switch prueba {
 
 var diccionario: [Int:String] = [1:"Uno", 2:"Dos", 3:"Tres"]
 
-func minMax(a: int, b: int) -> (min:int, max:int) {
+func minMax(a: Int, b: Int) -> (min:Int, max:Int) {
     return (a, b)
 }
+
